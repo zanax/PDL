@@ -21,6 +21,7 @@ public class User {
     private char gender;
     private boolean isBanned;
     
+    //yomama is fat
     public User(){
         
     }
