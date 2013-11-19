@@ -88,3 +88,17 @@ div.content-header {
     height: 30px;
     border: 1px solid #E3E3E3;
 }
+
+.button {
+	background: #E3E3E3;
+        border: none;
+        cursor: pointer;
+}
+
+#button{
+	float: right;
+}
+
+#back-button{
+	float: right;
+}
