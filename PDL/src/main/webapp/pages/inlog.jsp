@@ -83,7 +83,7 @@
 								<input type="password" placeholder="Password" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
 							</div>
 							<div class="course-button info" style="left: 654px;">
-								<a href="register.jsp" class="button" id="button">Register</a>
+								<a href="/PDL/register" class="button" id="button">Register</a>
 							</div>
 							<div class="course-button info" style="left: 745px;">
 								<a href="test.html" class="button" id="button">Log in</a>

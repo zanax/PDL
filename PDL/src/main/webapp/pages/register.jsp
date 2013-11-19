@@ -1,20 +1,15 @@
-<%-- 
-    Document   : register
-    Created on : Nov 11, 2013, 10:22:03 AM
-    Author     : Bono
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="windows-1252"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<title>3 2 Learn</title>
 		
-		<script type="text/javascript" src="../plugins/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+		<script type="text/javascript" src="plugins/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
 		
-		<link rel="stylesheet" type="text/css" href="../css/main.css" />
-		<link rel="stylesheet" type="text/css" href="../css/header.css" />
-		<link rel="stylesheet" type="text/css" href="../css/course.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/header.css" />
+		<link rel="stylesheet" type="text/css" href="css/course.css" />
 	</head>
 	
 	<body>
@@ -59,7 +54,7 @@
 					</li>
 					<li>
 						<div id="nav-search">
-							<a href="" style="vertical-align: middle; display: inline;"><img src="../img/toolbar_find.png"></a><input type="text" placeholder="Search">
+							<a href="" style="vertical-align: middle; display: inline;"><img src="img/toolbar_find.png"></a><input type="text" placeholder="Search">
 						</div>
 					</li>
 				</ul>
@@ -72,7 +67,10 @@
 					Register
 				</div>
 				<div class="course">
-					<div id="course-content" style="text-align: center;">
+                                    <div id="course-content">
+                                            <c:forEach var="error" items="${errors}">
+                                                ${error}
+                                            </c:forEach>
 						<form method="post" action="/PDL/register">
                                                     <label class="label">
                                                     </label>
@@ -80,6 +78,7 @@
                                                         <span class="form-span">Gender:</span>
                                                         M<input name="gender" type="radio" value="m">
                                                         F<input name="gender" type="radio" value="f">
+                                                        <input type="hidden" name="gender" value="empty">
                                                     </div>
                                                     <label class="label">
                                                         <span class="form-span">Firstname:</span>
@@ -121,6 +120,15 @@
                                                         <span class="form-span">E-mail:</span>
                                                         <input type="text" name="email" placeholder="you@mail.com" class="form-input">
                                                     </label>
+                                                    <label class="label">
+                                                        <span class="form-span">Password:</span>
+                                                        <input type="password" name="password" placeholder="********" class="form-input">
+                                                    </label>
+                                                    <label class="label">
+                                                        <span class="form-span">Confirm password:</span>
+                                                        <input type="password" name="confirm_password" placeholder="********" class="form-input">
+                                                    </label>
+                                                    
                                                     <input type="submit" class="button" id="button" value="Register">
                                                 </form>
 					</div>
