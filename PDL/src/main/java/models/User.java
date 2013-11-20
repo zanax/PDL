@@ -4,24 +4,65 @@
  */
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  *
  * @author Bono
  */
+@Entity
+@Table(name="User")
 public class User {
+    
+    @Id
+    @GeneratedValue
+    @Column(name="user_id")
+    private Long ID;
+    
+    @Column(name="firstname")
     private String firstname;
+   
+    @Column(name="surname")
     private String surname;
+    
+    @Column(name="address")
     private String address;
+    
+    @Column(name="zipcode")
     private String zipcode;
+    
+    @Column(name="password")
     private String password;
+    
+    @Column(name="email")
     private String email;
+    
+    @ManyToOne
+    @JoinColumn(name="city_id")
     private City city;
+    
+    @ManyToOne
+    @JoinColumn(name="country_id")
     private Country country;
+    
+    @ManyToOne
+    @JoinColumn(name="language_id")
     private Language language;
+    
+    @Column(name="gender")
     private char gender;
+    
+    @Column(name="banned")
     private boolean isBanned;
     
-    //yomama is fat
+
     public User(){
         
     }
@@ -178,5 +219,16 @@ public class User {
      */
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
+    }
+    
+    public long getID() {
+        return ID;
+    }
+
+    /**
+     * @param isBanned the isBanned to set
+     */
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 }
