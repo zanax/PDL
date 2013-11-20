@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %>       
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Register
@@ -81,5 +81,3 @@
         </form>
     </div>
 </div>
-
-<%@include file="/includes/footer.jsp" %>

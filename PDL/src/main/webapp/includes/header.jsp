@@ -26,10 +26,10 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="../index.html">Courses</a>
+                                <a href="index.jsp">Courses</a>
                             </li>
                             <li>
-                                <a href="mycourses.html">My Courses</a>
+                                <a href="pages/mycourses.html">My Courses</a>
                             </li>
                             <li>
                                 <a href="">Ipsum</a>
@@ -47,10 +47,10 @@
                                 <a href="">Merinum</a>
                             </li>
                             <li>
-                                <a href="contact.html">Contact</a>
+                                <a href="pages/contact.html">Contact</a>
                             </li>
                             <li>
-                                <a href="inlog.html">Log In</a>
+                                <a href="/PDL/inlog">Log In</a>
                             </li>
                             <li>
                                 <div id="nav-search">
