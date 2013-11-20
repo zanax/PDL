@@ -77,6 +77,7 @@ public class register extends HttpServlet {
         //Password pattern
         Pattern ptr_pass = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*()&+=])(?=\\S+$).{8,}$");
         this.errors.clear();
+        this.success = false;
         
         //Are required fields empty or have they gotten wrong values?
         if(gender.equals("") || ! (gender.equals("m") || gender.equals("f")))   this.errors.add("\"Gender\" is a required field.\nIt must have value M or F.");
@@ -84,7 +85,7 @@ public class register extends HttpServlet {
         if(surname.equals(""))                                                  this.errors.add("\"Surname\" is a required field.");
         if(address.equals(""))                                                  this.errors.add("\"Address\" is a required field.");
         if(zipcode.equals(""))                                                  this.errors.add("\"Zipcode\" is a required field.");
-        if(password.equals("") || ! ptr_pass.matcher(password).matches())       this.errors.add("\"Password\" is a required field.\nPasswords must have a minimum length of 8 characters and must contain:\n-a digit\n-a lower case letter\n-an upper case letter\n-a special character (!@#$%^&*+=())\n-no whitespace");
+        if(password.equals("") || ! ptr_pass.matcher(password).matches())       this.errors.add("\"Password\" is a required field.\nPasswords must have a minimum length of 8 characters and must contain:<br>-a digit<br>-a lower case letter<br>-an upper case letter<br>-a special character (!@#$%^&*+=())<br>-no whitespace");
         if( ! password_confirm.equals(password))                                this.errors.add("The two passwords do not match");
         if(email.equals("") || ! ptr_email.matcher(email).matches())            this.errors.add("\"Email\" is a required field.\nExample: You@mail.com");
         if(city_id.equals("") || ! isInt(city_id))                              this.errors.add("\"City\" is a required field.");
@@ -99,10 +100,10 @@ public class register extends HttpServlet {
             user.setZipcode(request.getParameter("zipcode"));
             user.setPassword(request.getParameter("password"));
             user.setEmail(request.getParameter("email"));
-    //        user.setCity(request.getParameter("city"));
-    //        user.setCountry(request.getParameter("country"));
-    //        user.setLanguage(request.getParameter("language"));
-    //        user.setGender(request.getParameter("gender"));
+//            user.setCity(request.getParameter("city"));
+//            user.setCountry(request.getParameter("country"));
+//            user.setLanguage(request.getParameter("language"));
+//            user.setGender(request.getParameter("gender"));
             
             //query
             this.success = true;
