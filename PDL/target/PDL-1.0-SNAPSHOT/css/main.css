@@ -21,7 +21,7 @@ body{
 }
 
 div.main-page {
-	height: 750px;
+	height: 100%;
 	background: #E3E3E3;
 }
 
@@ -101,4 +101,29 @@ div.content-header {
 
 #back-button{
 	float: right;
+}
+
+.success_message{
+    background: #00B711;
+    text-align: center;
+    color: #ffffff;
+    padding: 7px;
+}
+
+.error_message{
+    border: 1px solid white;
+    background: #FF4F4F;
+    color: #ffffff;
+    padding: 7px;
+}
+
+.footer{
+    margin: 0 auto;
+    position: relative;
+    width: 980px;
+    background: transparent;
+    font-size: 15px;
+    margin-left: 80px;
+    margin-right: 80px;
+    height: 100px;
 }
