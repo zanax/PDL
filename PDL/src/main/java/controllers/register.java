@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import service.HibernateUtil;
 
 /**
  *
@@ -93,6 +96,10 @@ public class register extends HttpServlet {
         if(language_id.equals("") || ! isInt(language_id))                      this.errors.add("\"Language\" is a required field.");
         
         if(errors.isEmpty()){
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            session.beginTransaction();
+
             User user = new User();
             user.setFirstname(request.getParameter("firstname"));
             user.setSurname(request.getParameter("surname"));
@@ -106,6 +113,9 @@ public class register extends HttpServlet {
 //            user.setGender(request.getParameter("gender"));
             
             //query
+            session.save(user);
+            session.getTransaction().commit();
+            session.close();
             this.success = true;
         }
         else{
