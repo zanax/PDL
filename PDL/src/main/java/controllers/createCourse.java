@@ -48,7 +48,7 @@ public class createCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/register.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
         rd.forward(request, response);
     }
 

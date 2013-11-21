@@ -32,7 +32,7 @@
                                 <a href="pages/mycourses.html">My Courses</a>
                             </li>
                             <li>
-                                <a href="">Ipsum</a>
+                                <a href="/PDL/createCourse">Create course</a>
                             </li>
                             <li>
                                 <a href="">Mordem</a>
