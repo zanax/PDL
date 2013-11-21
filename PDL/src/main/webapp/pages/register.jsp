@@ -7,7 +7,7 @@
     <div id="course-content">
         <c:if test="${success}">
             <div class="success_message">
-                U bent succesvol geregistreerd!
+                You have been successfully registered!
             </div>
         </c:if>
         <c:forEach var="error" items="${errors}">
