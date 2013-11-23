@@ -4,6 +4,7 @@
  */
 package models;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,14 +28,14 @@ public class Country {
     private Long id;
     
     @OneToMany(mappedBy="country")
-    private Set<User> users;
+    private List<User> users;
 
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

@@ -6,10 +6,14 @@
 
 package models;
 
+import javax.persistence.Entity;
+
 /**
  *
  * @author Zanax
  */
+
+@Entity
 public class Teacher extends User {
     
 }

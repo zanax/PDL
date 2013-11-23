@@ -20,6 +20,8 @@ public class Main {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
         session.beginTransaction();
+        
+        //maak hier objecten aan
 
         session.getTransaction().commit();
         session.close();
