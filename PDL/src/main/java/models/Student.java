@@ -6,10 +6,27 @@
 
 package models;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author Zanax
  */
-public class Student extends User {
+@Entity
+public class Student extends User { 
+      
+      
+    @ManyToOne
+    @JoinColumn(name="courseID")
+    private Course course; 
     
-}
+      
+    public Student() { 
+    } 
+
+  
+  
+      
+} 

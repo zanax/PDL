@@ -17,5 +17,10 @@
     <mapping class="models.Language"/>
     <mapping class="models.City"/>
     <mapping class="models.Country"/>
+    <mapping class="models.Course"/>
+    <mapping class="models.Test"/>
+    <mapping class="models.Chapter"/>
+    <mapping class="models.Student"/>
+    <mapping class="models.Teacher"/>
   </session-factory>
 </hibernate-configuration>
