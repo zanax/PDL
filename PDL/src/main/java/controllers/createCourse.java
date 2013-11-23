@@ -6,7 +6,7 @@
 
 package controllers;
 
-import connection.DatabaseConnection;
+import connection.DB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ import models.User;
  */
 @WebServlet(name = "createCourse", urlPatterns = {"/createCourse"})
 public class createCourse extends HttpServlet {
-    private DatabaseConnection connection;
+    private DB connection;
     private List<String> errors;
     private boolean success = false;
     
     public createCourse(){
-        this.connection = new DatabaseConnection();
+        this.connection = new DB();
         this.errors = new ArrayList<String>();
     }
     

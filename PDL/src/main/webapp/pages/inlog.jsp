@@ -5,20 +5,30 @@
 </div>
 <div class="course">
     <div id="course-content" style="text-align: center;">
-        <form method="post" action="">
+        <c:if test="${success}">
+            <div class="success_message">
+                Welcome ${user.getFirstname()}
+            </div>
+        </c:if>
+        <c:forEach var="error" items="${errors}">
+            <div class="error_message">
+                ${error}
+            </div>
+        </c:forEach>
+        <form method="post" action="/PDL/inlog">
             <div id="course-content-title">
-                <h4>Username</h4>
-                <input type="text" placeholder="Username" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
+                <h4>E-mail</h4>
+                <input type="text" name="email" placeholder="you@mail.com" required class="form-input" style="text-align: center;">
             </div><br/>
             <div id="course-content-title">
                 <h4>Password</h4>
-                <input type="password" placeholder="Password" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
+                <input name="password" type="password" placeholder="Password" required class="form-input" style="text-align: center;">
             </div>
             <div class="course-button info" style="left: 654px;">
                 <a href="/PDL/register" class="button" id="button">Register</a>
             </div>
             <div class="course-button info" style="left: 745px;">
-                <a href="test.html" class="button" id="button">Log in</a>
+                <input type="submit" value="Log in" class="button">
             </div> <br/>
         </form>
     </div>

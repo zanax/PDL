@@ -19,7 +19,7 @@ public class User {
     
     @Id
     @GeneratedValue
-    private Long ID;
+    private Long id;
     
     private String firstname;
    
@@ -208,14 +208,9 @@ public class User {
         this.isBanned = isBanned;
     }
     
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
-
-    /**
-     * @param isBanned the isBanned to set
-     */
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
+    
+    
 }

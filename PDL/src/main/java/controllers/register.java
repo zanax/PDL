@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import connection.DatabaseConnection;
+import connection.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,12 @@ import service.HibernateUtil;
  */
 @WebServlet(name = "register", urlPatterns = {"/register"})
 public class register extends HttpServlet {
-    private DatabaseConnection connection;
+    private DB connection;
     private List<String> errors;
     private boolean success = false;
     
     public register(){
-        this.connection = new DatabaseConnection();
+        this.connection = new DB();
         this.errors = new ArrayList<String>();
     }
     
@@ -96,10 +96,6 @@ public class register extends HttpServlet {
         if(language_id.equals("") || ! isInt(language_id))                      this.errors.add("\"Language\" is a required field.");
         
         if(errors.isEmpty()){
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-            Session session = sf.openSession();
-            session.beginTransaction();
-
             User user = new User();
             user.setFirstname(request.getParameter("firstname"));
             user.setSurname(request.getParameter("surname"));
@@ -112,10 +108,9 @@ public class register extends HttpServlet {
 //            user.setLanguage(request.getParameter("language"));
 //            user.setGender(request.getParameter("gender"));
             
-            //query
-            session.save(user);
-            session.getTransaction().commit();
-            session.close();
+            DB db = new DB();
+            db.insertUser(user);
+            
             this.success = true;
         }
         else{

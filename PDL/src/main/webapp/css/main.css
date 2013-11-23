@@ -91,6 +91,7 @@ div.content-header {
 
 .button {
 	background: #E3E3E3;
+        color: #575757;
         border: none;
         cursor: pointer;
 }

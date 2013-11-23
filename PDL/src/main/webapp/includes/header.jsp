@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
+<%@ page session="true" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -13,7 +14,8 @@
     </head>
 
     <body>
-
+        
+        
         <div id="container">
             <div id="container-header"></div>
             <div id="container-middle">
@@ -49,9 +51,11 @@
                             <li>
                                 <a href="pages/contact.html">Contact</a>
                             </li>
+                            <% if(session.getAttribute("user") == null) { %>
                             <li>
                                 <a href="/PDL/inlog">Log In</a>
                             </li>
+                            <% } %>
                             <li>
                                 <div id="nav-search">
                                     <a href="" style="vertical-align: middle; display: inline;"><img src="img/toolbar_find.png"></a><input type="text" placeholder="Search">
