@@ -26,15 +26,15 @@
         <form method="post" action="createCourse">
             <label class="label">
                 <span class="form-span">Name:</span>
-                <input name="name" type="text" placeholder="Name" value="${name}" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
+                <input name="name" type="text" placeholder="Name" value="${name}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Description:</span>
-                <input name="description" type="text" placeholder="Description" value="${description}" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 75px; text-align: center; width: 215px;">
+                <textarea name="description" placeholder="Description" class="form-input-textarea" required>${description}</textarea>
             </label>
             <label class="label">
                 <span class="form-span">Category:</span>
-                <select class="form-input-select" name="category">
+                <select class="form-input-select" name="category" required>
                     <!-- TODO ${category} Set selected if category != null -->
                     <option value="">Select category...</option>
                     <option value="Art">Art</option>
@@ -47,17 +47,10 @@
                     <option value="Science">Science</option>
                 </select>
             </label>
-            <label class="label">
-                <input type="submit" class="button" id="button" name="Create" value="Create">
-            </label>
+                    
+            <input type="submit" class="button" id="button" name="Create" value="Create">
         </form>
     </div>
 </div>
-
-<!--
-
-TODO: CSS van inputs naar een format
-
--->
 
 <%@include file="/includes/footer.jsp" %>

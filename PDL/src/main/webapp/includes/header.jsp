@@ -40,9 +40,6 @@
                                 <a href="">Mordem</a>
                             </li>
                             <li>
-                                <a href="">Straticum</a>
-                            </li>
-                            <li>
                                 <a href="">Platica</a>
                             </li>
                             <li>

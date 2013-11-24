@@ -89,6 +89,11 @@ div.content-header {
     border: 1px solid #E3E3E3;
 }
 
+.form-input-textarea {
+    width: 400px;
+    height: 140px;
+}
+
 .button {
 	background: #E3E3E3;
         color: #575757;

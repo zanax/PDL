@@ -80,13 +80,13 @@ public class createCourse extends HttpServlet {
 
             //Are required fields empty or have they gotten wrong values?
             if (name.equals("")) {
-                this.errors.add("\"Name\" is required a filled in field.");
+                this.errors.add("\"Name\" is a required field.");
             }
             if (description.equals("")) {
-                this.errors.add("\"Description\" is required a filled in field.");
+                this.errors.add("\"Description\" is a required field.");
             }
             if (category.equals("")) {
-                this.errors.add("\"Category\" is required a selection.");
+                this.errors.add("\"Category\" is a required field.");
             }
 
             if (errors.isEmpty()) {
@@ -121,51 +121,4 @@ public class createCourse extends HttpServlet {
             rd.forward(request, response);
         }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-    public boolean isInt(String string) {
-        try {
-            Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
 }
-
-/**
- * 
- * 
- * 
- * // Session
-                SessionFactory sf = HibernateUtil.getSessionFactory();
-                Session session = sf.openSession();
-                session.beginTransaction();
-                // Course
-                Course course = new Course();
-                course.setName(name);
-                course.setDescription(description);
-                //course.setCategory(null); // Transfer String into the Category Object
-                //course.setHeadTeacher(null); // get Teacher who doPost
-                // Query
-                session.save(course);
-                session.getTransaction().commit();
-                session.close();
-                // Request
-                request.setAttribute("id", 1);
-                this.success = true;
- * 
- * 
- * 
- * 
- */

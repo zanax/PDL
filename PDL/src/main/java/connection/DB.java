@@ -186,7 +186,7 @@ public class DB {
                     + "     limit 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            prepared_statement.setString(1, Integer.toString(id));
+            prepared_statement.setInt(1, id);
 
             ResultSet rs = prepared_statement.executeQuery();
 

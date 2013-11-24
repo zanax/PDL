@@ -2,52 +2,24 @@ package models;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
 
 /**
  *
  * @author Zanax
  */
-@Entity
 public class Course {
-    
-    @Id
-    @GeneratedValue
     private int courseID;
-    
-    @OneToMany(mappedBy="course")
     private List<Chapter> chapters;
-    
-    @OneToMany(mappedBy="course")
     private List<Student> students;
-    
-    @OneToMany(mappedBy="course")
     private List<Test> tests;
-    
     private int maximumStudents = 0; // 0 betekent geen limiet
-    
-    @ManyToOne
-    @JoinColumn(name="teacher_id")
     private Teacher headTeacher;
-    
     private boolean isActive = false;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date startDate;
-    
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
-    
     private String name;
-    
     private String description;
-
+    private String category;
     
     public Course() {
         
@@ -141,5 +113,11 @@ public class Course {
         this.description = description;
     }
     
-   
+    public String getCategory() {
+        return category;
+    }
+    
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
