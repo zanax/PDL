@@ -25,7 +25,7 @@
                 <input name="password" type="password" placeholder="Password" required class="form-input" style="text-align: center;">
             </div>
             <div class="course-button info" style="left: 654px;">
-                <a href="/PDL/register" class="button" id="button">Register</a>
+                <a href="register" class="button" id="button">Register</a>
             </div>
             <div class="course-button info" style="left: 745px;">
                 <input type="submit" value="Log in" class="button">

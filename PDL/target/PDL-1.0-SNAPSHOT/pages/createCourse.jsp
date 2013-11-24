@@ -5,59 +5,54 @@
 </div>
 
 <div class="course">
-    <div id="course-content" style="text-align: center;">
-        <form method="post" action="">
-            <div id="course-content-title">
-                <h4>Title</h4>
-                <input type="text" placeholder="Title" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
+    <div id="course-content">
+        <c:if test="${success != null}">
+            <c:if test="${success}">
+                <a href="editCourse?id=${id}" >
+                    <div class="success_message">
+                        U have successfully created a Course. Go to Course      
+                    </div>
+                </a>
+            </c:if>
+        </c:if>
+        <c:forEach var="error" items="${errors}">
+            <div class="error_message">
+                ${error}
             </div>
-            <div id="course-content-title">
-                <h4>Description</h4>
-                <input type="text" placeholder="Description" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 100px; text-align: center; width: 215px;">
-            </div>
-
-            <!-- TODO: Dropdown List waar je meerdere opties
-            <div class="container"> <input type="checkbox" /> This is checkbox <br/ >
-                <input type="checkbox" /> This is checkbox <br />
-                <input type="checkbox" /> This is checkbox <br /> 
-                <input type="checkbox" /> This is checkbox <br />
-                <input type="checkbox" /> This is checkbox <br />
-                <input type="checkbox" /> This is checkbox <br /> 
-                <input type="checkbox" /> This is checkbox <br />
-                <input type="checkbox" /> This is checkbox <br />
-                <input type="checkbox" /> This is checkbox <br /> 
-                <input type="checkbox" /> This is checkbox <br />
-            </div> -->
-
+        </c:forEach>
+        <form method="post" action="createCourse">
             <label class="label">
-                <span class="form-span">Category</span>
-                <select class="form-input-select" name="Category" required>
+                <span class="form-span">Name:</span>
+                <input name="name" type="text" placeholder="Name" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 25px; text-align: center; width: 215px;">
+            </label>
+            <label class="label">
+                <span class="form-span">Description:</span>
+                <input name="description" type="text" placeholder="Description" style="border: 1px solid #00B711; border-radius: 5px 5px 5px 5px; height: 75px; text-align: center; width: 215px;">
+            </label>
+            <label class="label">
+                <span class="form-span">Category:</span>
+                <select class="form-input-select" name="category">
                     <option value="">Select category...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Geography</option>
-                    <option value="3">History</option>
-                    <option value="4">Languages</option>
-                    <option value="5">Literacy</option>
-                    <option value="6">Music</option>
-                    <option value="7">Mathematics</option>
-                    <option value="8">Science</option>
+                    <option value="Art">Art</option>
+                    <option value="Geography">Geography</option>
+                    <option value="History">History</option>
+                    <option value="Languages">Languages</option>
+                    <option value="Literacy">Literacy</option>
+                    <option value="Music">Music</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
                 </select>
             </label>
-
-            <div class="course-button info" style="left: 550px;">
-                <a href="courseConfig.jsp" class="button" id="button">Create</a>
-            </div>
-            <div class="course-button info" style="left: 650px;">
-                <input type="button" class="button" name="reset_form" value="Reset Form" onclick="this.form.reset();">
-            </div>
+            <label class="label">
+                <input type="submit" class="button" id="button" name="Create" value="Create">
+            </label>
         </form>
     </div>
 </div>
 
 <!--
 
-* Category - Database ophalen
-* Gegevens moeten na 'Create' button opgeslagen worden in de Database (inc Teacher)
+TODO: CSS van inputs naar een format
 
 -->
 
