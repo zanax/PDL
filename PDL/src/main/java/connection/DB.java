@@ -72,15 +72,17 @@ public class DB {
 
     //
     // User
-    public void insertUser(User user) {
-        try {
+    public int insertUser(User user) {
+        int id = -1;
+        
+        try {            
             startConnection();
 
             String sql = "insert "
                     + "   into User(firstname, surname, address, zipcode, gender, email, banned, password)"
                     + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
 
-            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, user.getFirstname());
             prepared_statement.setString(2, user.getSurname());
             prepared_statement.setString(3, user.getAddress());
@@ -90,13 +92,20 @@ public class DB {
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
 
-            prepared_statement.executeQuery();
+            prepared_statement.execute();
 
+            ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
+            if(generatedKeys.next()) {
+                id = (int) generatedKeys.getLong(1);
+            } generatedKeys.close(); 
+            
             closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return id;
     }
 
     public User getUser(String email) {
@@ -191,8 +200,7 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                course = new Course();
-                course.setCourseID(id);
+                course = new Course(id);
                 course.setName(rs.getString("name"));
                 course.setDescription(rs.getString("description"));
                 course.setCategory(rs.getString("category"));

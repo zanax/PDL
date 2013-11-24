@@ -22,8 +22,8 @@ import models.User;
  *
  * @author Bono
  */
-@WebServlet(name = "inlog", urlPatterns = {"/inlog"})
-public class inlog extends HttpServlet {
+@WebServlet(name = "login", urlPatterns = {"/login"})
+public class login extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,7 +38,7 @@ public class inlog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/inlog.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
         rd.forward(request, response);
     }
 
@@ -58,7 +58,7 @@ public class inlog extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         boolean success = false;
-        String url = "/pages/inlog.jsp";
+        String url = "/pages/login.jsp";
         
         if(email.trim().equals("")) errors.add("\"E-mail\" is a required field.");
         if(password.trim().equals("")) errors.add("\"Password\" is a required field.");

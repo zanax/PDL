@@ -8,7 +8,7 @@ import java.util.List;
  * @author Zanax
  */
 public class Course {
-    private int courseID;
+    private int id;
     private List<Chapter> chapters;
     private List<Student> students;
     private List<Test> tests;
@@ -24,15 +24,15 @@ public class Course {
     public Course() {
         
     }
-
-    public int getCourseID() {
-        return courseID;
+    
+    public Course(int id){
+        this.id = id;
     }
 
-    public void setCourseID(int courseID) {
-        this.courseID = courseID;
+    public int getId() {
+        return id;
     }
-
+    
     public List<Chapter> getChapters() {
         return chapters;
     }

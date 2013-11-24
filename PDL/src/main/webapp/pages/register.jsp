@@ -6,7 +6,7 @@
 <div class="course">
     <div id="course-content">
         <c:if test="${success != null}">
-            <c:if test="${success}">
+            <c:if test="${success != false}">
                 <div class="success_message">
                     You have been successfully registered!
                 </div>
@@ -17,30 +17,30 @@
                 ${error}
             </div>
         </c:forEach>
-        <form method="post" action="/PDL/register">
+        <form method="post" action="register">
             <label class="label">
             </label>
             <div class="form-input-radio">
                 <span class="form-span">Gender:</span>
-                F<input name="gender" type="radio" value="f" required>
-                M<input name="gender" type="radio" value="m" required>
+                F<input name="gender" type="radio" value="f" required <c:if test="${gender == 'f'}">selected</c:if>>
+                M<input name="gender" type="radio" value="m" required <c:if test="${gender == 'm'}">selected</c:if>>
                 <input type="hidden" name="gender" value="empty">
             </div>
             <label class="label">
                 <span class="form-span">Firstname:</span>
-                <input type="text" name="firstname" placeholder="firstname" class="form-input" required>
+                <input type="text" name="firstname" placeholder="firstname" class="form-input" required value="${firstname}">
             </label>
             <label class="label">
                 <span class="form-span">Surname:</span>
-                <input type="text" name="surname" placeholder="surename" class="form-input" required>
+                <input type="text" name="surname" placeholder="surename" class="form-input" required value="${surname}">
             </label>
             <label class="label">
                 <span class="form-span">Address:</span>
-                <input type="text" name="address" placeholder="address" class="form-input" required>
+                <input type="text" name="address" placeholder="address" class="form-input" required value="${address}">
             </label>
             <label class="label">
                 <span class="form-span">Zipcode:</span>
-                <input type="text" name="zipcode" placeholder="zipcode" class="form-input" required>
+                <input type="text" name="zipcode" placeholder="zipcode" class="form-input" required value="${zipcode}">
             </label>
             <label class="label">
                 <span class="form-span">Country:</span>
@@ -68,7 +68,7 @@
             </label>
             <label class="label">
                 <span class="form-span">E-mail:</span>
-                <input type="text" name="email" placeholder="you@mail.com" class="form-input" required>
+                <input type="text" name="email" placeholder="you@mail.com" class="form-input" required value="${email}">
             </label>
             <label class="label">
                 <span class="form-span">Password:</span>

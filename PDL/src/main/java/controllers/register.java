@@ -16,9 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import service.HibernateUtil;
 
 /**
  *
@@ -90,6 +87,7 @@ public class register extends HttpServlet {
         if(zipcode.equals(""))                                                  this.errors.add("\"Zipcode\" is a required field.");
         if(password.equals("") || ! ptr_pass.matcher(password).matches())       this.errors.add("\"Password\" is a required field.\nPasswords must have a minimum length of 8 characters and must contain:<br>-a digit<br>-a lower case letter<br>-an upper case letter<br>-a special character (!@#$%^&*+=())<br>-no whitespace");
         if( ! password_confirm.equals(password))                                this.errors.add("The two passwords do not match");
+        //TODO: Check if email already exists
         if(email.equals("") || ! ptr_email.matcher(email).matches())            this.errors.add("\"Email\" is a required field.\nExample: You@mail.com");
         if(city_id.equals("") || ! isInt(city_id))                              this.errors.add("\"City\" is a required field.");
         if(country_id.equals("") || ! isInt(country_id))                        this.errors.add("\"Country\" is a required field.");
@@ -109,13 +107,30 @@ public class register extends HttpServlet {
 //            user.setGender(request.getParameter("gender"));
             
             DB db = new DB();
-            db.insertUser(user);
+            int user_id = db.insertUser(user);
             
-            this.success = true;
+            if(user_id > 0){
+                this.success = true;
+            }
+            else{
+                this.errors.add("Something went wrong when creating the user, please try again.");
+                request.setAttribute("errors", this.errors);
+            }
         }
         else{
             request.setAttribute("errors", this.errors);
+            
         }
+        
+        request.setAttribute("gender", gender);
+        request.setAttribute("firstname", firstname);
+        request.setAttribute("surname", surname);
+        request.setAttribute("address", address);
+        request.setAttribute("zipcode", zipcode);
+        request.setAttribute("country_id", country_id);
+        request.setAttribute("city_id", city_id);
+        request.setAttribute("language_id", language_id);
+        request.setAttribute("email", email);
         
         request.setAttribute("success", this.success);
         RequestDispatcher rd = request.getRequestDispatcher("/pages/register.jsp");

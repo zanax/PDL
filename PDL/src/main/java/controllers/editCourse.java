@@ -42,12 +42,13 @@ public class editCourse extends HttpServlet {
             throws ServletException, IOException {
 
         // IF-Statement als de User en Teacher is
+        //TODO: Kijken of id ook echt wel een int is, kan bijvoorbeeld ook een String zijn (als de gebruiker het zelf invoert)
         
         if (request.getParameter("id") != null) {
             DB db = new DB();
             Course course = db.getCourse(Integer.parseInt(request.getParameter("id")));
             
-            if (course != null) { // Als database niet goedt werkte zal dit NULL zijn
+            if (course != null) { // Als database niet goedt werkte zal dit NULL zijn, of als de course niet bestaat(!)?
                 request.setAttribute("course", course);
             } else {
                this.databaseError = true;
@@ -75,41 +76,4 @@ public class editCourse extends HttpServlet {
 //        RequestDispatcher rd = request.getRequestDispatcher("/pages/register.jsp");
 //        rd.forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-    public boolean isInt(String string) {
-        try {
-            Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
 }
-
-/**
- *
- *
- * if (request.getParameter("id") != null) { // // Session // long ID =
- * Long.parseLong(request.getParameter("ID")); // Session session =
- * HibernateUtil.getSessionFactory().getCurrentSession(); // Transaction tx =
- * session.beginTransaction(); // Course managedCourse = (Course)
- * session.load(Course.class, ID); // tx.commit(); // // Request
- * request.setAttribute("id", 1); // request.setAttribute("name",
- * managedCourse.getName()); // request.setAttribute("description",
- * managedCourse.getDescription()); RequestDispatcher rd =
- * request.getRequestDispatcher("/pages/editCourse.jsp"); rd.forward(request,
- * response); }
- *
- *
- */

@@ -101,7 +101,6 @@ public class createCourse extends HttpServlet {
                 // Query
                 int id = db.insertCourse(course);
                 if(id != -1) { // Als database niet goed werkte al dit -1 zijn
-                    course.setCourseID(id);
                     request.setAttribute("id", id);
                     request.setAttribute("name", name);
                     this.success = true;

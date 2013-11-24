@@ -34,7 +34,7 @@
                                 <a href="pages/mycourses.html">My Courses</a>
                             </li>
                             <li>
-                                <a href="/PDL/createCourse">Create course</a>
+                                <a href="createCourse">Create course</a>
                             </li>
                             <li>
                                 <a href="">Mordem</a>
@@ -50,7 +50,7 @@
                             </li>
                             <% if(session.getAttribute("user") == null) { %>
                             <li>
-                                <a href="/PDL/inlog">Log In</a>
+                                <a href="login">Log In</a>
                             </li>
                             <% } %>
                             <li>

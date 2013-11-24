@@ -13,24 +13,24 @@
         </c:if>
         <!-- TODO: Dit is gewoon een voorbeeld voor hoe het er ongeveer uitziet, De Css klopt voor geen meter (kwa buttons iig) -->
         <div id="course-content-title">
-            <h4>Name: ${course.getName()}</h4>
-            <h5>Description: ${course.getDescription()}</h5>
-            <h5>Category: ${course.getCategory()}</h5>
+            <h4>Name: ${course.name}</h4>
+            <h5>Description: ${course.description}</h5>
+            <h5>Category: ${course.category}</h5>
         </div>
         <label class="label">
-            <a href="editCourseTeachers?id=${course.getId()}" class="button" id="button">Teachers</a>
+            <a href="editCourseTeachers?id=${course.id}" class="button" id="button">Teachers</a>
         </label>
         <label class="label">
-            <a href="editCourseTests?id=${course.getId()}" class="button" id="button">Tests</a>
+            <a href="editCourseTests?id=${course.id}" class="button" id="button">Tests</a>
         </label>
         <label class="label">
-            <a href="editCourseStudents?id=${course.getId()}" class="button" id="button">Students</a>
+            <a href="editCourseStudents?id=${course.id}" class="button" id="button">Students</a>
         </label>
         <label class="label">
-            <a href="editCourseChapters?id=${course.getId()}" class="button" id="button">Chapters</a>
+            <a href="editCourseChapters?id=${course.id}" class="button" id="button">Chapters</a>
         </label>
         <label class="label">
-            <a href="editCourseConfig?id=${course.getId()}" class="button" id="button">Config</a>
+            <a href="editCourseConfig?id=${course.id}" class="button" id="button">Config</a>
         </label>
 
     </div>
