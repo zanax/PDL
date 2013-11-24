@@ -1,11 +1,12 @@
 package connection;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import models.Course;
 import models.User;
 
 public class DB {
@@ -22,7 +23,7 @@ public class DB {
      * @param args the command line arguments
      */
     public DB() {
-        
+
     }
 
     private void startConnection() {
@@ -68,15 +69,17 @@ public class DB {
     public Connection getConnection() {
         return conn;
     }
-    
-    public void insertUser(User user){
-        try{      
+
+    //
+    // User
+    public void insertUser(User user) {
+        try {
             startConnection();
-            
+
             String sql = "insert "
                     + "   into User(firstname, surname, address, zipcode, gender, email, banned, password)"
                     + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setString(1, user.getFirstname());
             prepared_statement.setString(2, user.getSurname());
@@ -86,23 +89,22 @@ public class DB {
             prepared_statement.setString(6, user.getEmail());
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
-            
+
             prepared_statement.executeQuery();
-            
+
             closeConnection();
 
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    public User getUser(String email){
+
+    public User getUser(String email) {
         User user = null;
-        
-        try{      
+
+        try {
             startConnection();
-            
+
             String sql = "  select "
                     + "         *"
                     + "     from "
@@ -110,13 +112,13 @@ public class DB {
                     + "     where "
                     + "         email = ?"
                     + "     limit 1";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setString(1, email);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 user = new User();
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
@@ -127,14 +129,81 @@ public class DB {
                 user.setIsBanned(rs.getBoolean("banned"));
                 user.setPassword(rs.getString("password"));
             }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    // Course
+    public int insertCourse(Course course) {
+        int id = -1;
+        
+        try {
+            startConnection();
+
+            String sql = "insert "
+                    + "   into Course(name, description, category)"
+                    + "   values (?, ?, ?)  ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setString(1, course.getName());
+            prepared_statement.setString(2, course.getDescription());
+            prepared_statement.setString(3, course.getCategory());
+
+            prepared_statement.execute();
+            
+            ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
+            if(generatedKeys.next()) {
+                id = (int) generatedKeys.getLong(1);
+            } generatedKeys.close(); 
             
             closeConnection();
 
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        return user;
+        return id;
+    }
+
+    public Course getCourse(int id) {
+        Course course = null;
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         Course"
+                    + "     where "
+                    + "         courseID = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setString(1, Integer.toString(id));
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                course = new Course();
+                course.setCourseID(id);
+                course.setName(rs.getString("name"));
+                course.setDescription(rs.getString("description"));
+                course.setCategory(rs.getString("category"));
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return course;
     }
 }

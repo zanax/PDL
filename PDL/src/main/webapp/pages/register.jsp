@@ -5,10 +5,12 @@
 </div>
 <div class="course">
     <div id="course-content">
-        <c:if test="${success}">
-            <div class="success_message">
-                You have been successfully registered!
-            </div>
+        <c:if test="${success != null}">
+            <c:if test="${success}">
+                <div class="success_message">
+                    You have been successfully registered!
+                </div>
+            </c:if>
         </c:if>
         <c:forEach var="error" items="${errors}">
             <div class="error_message">
