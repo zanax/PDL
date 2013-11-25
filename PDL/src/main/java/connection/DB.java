@@ -19,11 +19,22 @@ public class DB {
     private int affectedRows = -1;
     Connection conn = null;
 
-    /**
-     * @param args the command line arguments
-     */
-    public DB() {
+    private static DB db = null;
 
+    private DB() {
+    }
+
+    ;
+    
+    public static DB getInstance() {
+        if (db == null) {
+            db = new DB();
+        }
+        return db;
+    }
+
+    public void destroy() {
+        db = null;
     }
 
     private void startConnection() {
@@ -74,8 +85,8 @@ public class DB {
     // User
     public int insertUser(User user) {
         int id = -1;
-        
-        try {            
+
+        try {
             startConnection();
 
             String sql = "insert "
@@ -95,16 +106,17 @@ public class DB {
             prepared_statement.execute();
 
             ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
-            if(generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 id = (int) generatedKeys.getLong(1);
-            } generatedKeys.close(); 
-            
+            }
+            generatedKeys.close();
+
             closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return id;
     }
 
@@ -151,7 +163,7 @@ public class DB {
     // Course
     public int insertCourse(Course course) {
         int id = -1;
-        
+
         try {
             startConnection();
 
@@ -165,18 +177,19 @@ public class DB {
             prepared_statement.setString(3, course.getCategory());
 
             prepared_statement.execute();
-            
+
             ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
-            if(generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 id = (int) generatedKeys.getLong(1);
-            } generatedKeys.close(); 
-            
+            }
+            generatedKeys.close();
+
             closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return id;
     }
 

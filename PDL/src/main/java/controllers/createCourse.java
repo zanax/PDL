@@ -26,13 +26,11 @@ import models.User;
  */
 @WebServlet(name = "createCourse", urlPatterns = {"/createCourse"})
 public class createCourse extends HttpServlet {
-    private DB connection;
     private List<String> errors;
     private boolean success = false;
     private boolean databaseError = false;
     
     public createCourse(){
-        this.connection = new DB();
         this.errors = new ArrayList<String>();
     }
 
@@ -70,7 +68,7 @@ public class createCourse extends HttpServlet {
 //        User user = (User) session.getAttribute("user");
 //        if(user == null || !(user instanceof Teacher)) { return; }
         
-        if (request.getParameter("Create") != null) { // Check of create button is geklikt
+        
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             String category = request.getParameter("category");
@@ -91,7 +89,7 @@ public class createCourse extends HttpServlet {
 
             if (errors.isEmpty()) {
                 // Session
-                DB db = new DB();
+                DB db = DB.getInstance();
                 // Course
                 Course course = new Course();
                 course.setName(name);
@@ -118,6 +116,6 @@ public class createCourse extends HttpServlet {
             request.setAttribute("success", this.success);
             RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
             rd.forward(request, response);
-        }
+        
     }
 }

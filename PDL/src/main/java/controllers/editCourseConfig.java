@@ -7,6 +7,8 @@ package controllers;
 
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,13 +21,14 @@ import models.Course;
  *
  * @author Zanax
  */
-@WebServlet(name = "editCourse", urlPatterns = {"/editCourse"})
-public class editCourse extends HttpServlet {
+@WebServlet(name = "editCourseConfig", urlPatterns = {"/editCourseConfig"})
+public class editCourseConfig extends HttpServlet {
 
+    private List<String> errors;
     private boolean databaseError = false;
 
-    public editCourse() {
-
+    public editCourseConfig() {
+        this.errors = new ArrayList<String>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -40,22 +43,20 @@ public class editCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // IF-statement als User een Teacher is
 
-        // IF-Statement als de User en Teacher is
-        //TODO: Kijken of id ook echt wel een int is, kan bijvoorbeeld ook een String zijn (als de gebruiker het zelf invoert)
-        
         if (request.getParameter("id") != null) {
             DB db = DB.getInstance();
             Course course = db.getCourse(Integer.parseInt(request.getParameter("id")));
-            
+
             if (course != null) { // Als database niet goedt werkte zal dit NULL zijn, of als de course niet bestaat(!)?
                 request.setAttribute("course", course);
             } else {
-               this.databaseError = true;
+                this.databaseError = true;
             }
-            
+
             request.setAttribute("databaseError", this.databaseError);
-            RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourseConfig.jsp");
             rd.forward(request, response);
         }
     }
@@ -72,8 +73,20 @@ public class editCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        request.setAttribute("success", this.success);
-//        RequestDispatcher rd = request.getRequestDispatcher("/pages/register.jsp");
-//        rd.forward(request, response);
+        if (request.getParameter("id") != null) {
+            DB db = DB.getInstance();
+            Course course = db.getCourse(Integer.parseInt(request.getParameter("id")));
+        }
     }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }

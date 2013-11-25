@@ -65,7 +65,7 @@ public class login extends HttpServlet {
         
         //TODO: Zoek naar email in db, fetch user
         if(errors.isEmpty()){
-            DB db = new DB();
+            DB db = DB.getInstance();
             User user = db.getUser(email);
             
             if(user == null){

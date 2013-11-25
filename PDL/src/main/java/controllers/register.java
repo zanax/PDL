@@ -23,12 +23,10 @@ import models.User;
  */
 @WebServlet(name = "register", urlPatterns = {"/register"})
 public class register extends HttpServlet {
-    private DB connection;
     private List<String> errors;
     private boolean success = false;
     
     public register(){
-        this.connection = new DB();
         this.errors = new ArrayList<String>();
     }
     
@@ -106,7 +104,7 @@ public class register extends HttpServlet {
 //            user.setLanguage(request.getParameter("language"));
 //            user.setGender(request.getParameter("gender"));
             
-            DB db = new DB();
+            DB db = DB.getInstance();
             int user_id = db.insertUser(user);
             
             if(user_id > 0){
