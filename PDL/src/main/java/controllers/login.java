@@ -65,6 +65,8 @@ public class login extends HttpServlet {
         
         //TODO: Zoek naar email in db, fetch user
         if(errors.isEmpty()){
+            password = register.md5(password);
+            
             DB db = DB.getInstance();
             User user = db.getUser(email);
             

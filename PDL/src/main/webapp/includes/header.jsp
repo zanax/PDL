@@ -1,3 +1,4 @@
+<%@page import="models.Teacher"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <%@ page session="true" %>
@@ -33,17 +34,16 @@
                             <li>
                                 <a href="pages/mycourses.html">My Courses</a>
                             </li>
+                            <% if(session.getAttribute("user") != null && session.getAttribute("user") instanceof Teacher) { %>
                             <li>
                                 <a href="createCourse">Create course</a>
                             </li>
+                            <% } %>
                             <li>
                                 <a href="">Mordem</a>
                             </li>
                             <li>
                                 <a href="">Platica</a>
-                            </li>
-                            <li>
-                                <a href="">Merinum</a>
                             </li>
                             <li>
                                 <a href="pages/contact.html">Contact</a>
@@ -52,7 +52,14 @@
                             <li>
                                 <a href="login">Log In</a>
                             </li>
-                            <% } %>
+                            <li>
+                                <a href="register">Register</a>
+                            </li>
+                            <% } else { %>
+                            <li>
+                                <a href="logout">Log Out</a>
+                            </li>
+                            <%}%>
                             <li>
                                 <div id="nav-search">
                                     <a href="" style="vertical-align: middle; display: inline;"><img src="img/toolbar_find.png"></a><input type="text" placeholder="Search">

@@ -5,13 +5,6 @@
 </div>
 <div class="course">
     <div id="course-content">
-        <c:if test="${success != null}">
-            <c:if test="${success != false}">
-                <div class="success_message">
-                    You have been successfully registered!
-                </div>
-            </c:if>
-        </c:if>
         <c:forEach var="error" items="${errors}">
             <div class="error_message">
                 ${error}
@@ -22,8 +15,8 @@
             </label>
             <div class="form-input-radio">
                 <span class="form-span">Gender:</span>
-                F<input name="gender" type="radio" value="f" required <c:if test="${gender == 'f'}">selected</c:if>>
-                M<input name="gender" type="radio" value="m" required <c:if test="${gender == 'm'}">selected</c:if>>
+                Male<input name="gender" type="radio" value="f" required <c:if test="${gender == 'f'}">selected</c:if>>
+                Female<input name="gender" type="radio" value="m" required <c:if test="${gender == 'm'}">selected</c:if>>
                 <input type="hidden" name="gender" value="empty">
             </div>
             <label class="label">
@@ -33,14 +26,6 @@
             <label class="label">
                 <span class="form-span">Surname:</span>
                 <input type="text" name="surname" placeholder="surename" class="form-input" required value="${surname}">
-            </label>
-            <label class="label">
-                <span class="form-span">Address:</span>
-                <input type="text" name="address" placeholder="address" class="form-input" required value="${address}">
-            </label>
-            <label class="label">
-                <span class="form-span">Zipcode:</span>
-                <input type="text" name="zipcode" placeholder="zipcode" class="form-input" required value="${zipcode}">
             </label>
             <label class="label">
                 <span class="form-span">Country:</span>
@@ -57,6 +42,14 @@
                     <option value="1">Winkel</option>
                     <option value="2">Amsterdam</option>
                 </select>
+            </label>
+            <label class="label">
+                <span class="form-span">Zipcode:</span>
+                <input type="text" name="zipcode" placeholder="zipcode" class="form-input" required value="${zipcode}">
+            </label>
+            <label class="label">
+                <span class="form-span">Address:</span>
+                <input type="text" name="address" placeholder="address" class="form-input" required value="${address}">
             </label>
             <label class="label">
                 <span class="form-span">Language:</span>

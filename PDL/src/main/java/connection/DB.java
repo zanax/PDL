@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import models.Course;
+import models.Student;
+import models.Teacher;
 import models.User;
 
 public class DB {
@@ -132,6 +134,8 @@ public class DB {
                     + "         User"
                     + "     where "
                     + "         email = ?"
+                    + "         and"
+                    + "             banned = 0"
                     + "     limit 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
@@ -140,7 +144,12 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                user = new User();
+                if(rs.getBoolean("is_teacher") == false){
+                    user = new Student();
+                }
+                else{
+                    user = new Teacher();
+                }
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
                 user.setAddress(rs.getString("address"));

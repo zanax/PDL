@@ -48,7 +48,8 @@ public class User {
     private char gender;
     
     private boolean isBanned;
-    
+    private boolean is_student;
+    private boolean is_teacher;
 
     public User(){
         
