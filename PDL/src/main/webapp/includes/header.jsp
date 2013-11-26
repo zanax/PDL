@@ -29,24 +29,19 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="index.jsp">Courses</a>
+                                <a href="Courses">Courses</a>
                             </li>
+                             <% if(session.getAttribute("user") != null) { %>
                             <li>
-                                <a href="pages/mycourses.html">My Courses</a>
+                                <a href="myCourses">My Courses</a>
                             </li>
-                            <% if(session.getAttribute("user") != null && session.getAttribute("user") instanceof Teacher) { %>
+                            <% if(session.getAttribute("user") instanceof Teacher) { %>
                             <li>
                                 <a href="createCourse">Create course</a>
                             </li>
-                            <% } %>
+                            <% } } %>
                             <li>
-                                <a href="">Mordem</a>
-                            </li>
-                            <li>
-                                <a href="">Platica</a>
-                            </li>
-                            <li>
-                                <a href="pages/contact.html">Contact</a>
+                                <a href="Contact">Contact</a>
                             </li>
                             <% if(session.getAttribute("user") == null) { %>
                             <li>

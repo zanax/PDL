@@ -15,19 +15,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Course;
 import models.Teacher;
 
 /**
  *
  * @author Zanax
  */
-@WebServlet(name = "editCourseTeachers", urlPatterns = {"/editCourseTeachers"})
-public class editCourseTeachers extends HttpServlet {
+@WebServlet(name = "editCourseChaptersEdit", urlPatterns = {"/editCourseChaptersEdit"})
+public class editCourseChaptersEdit extends HttpServlet {
 
     private List<String> errors;
 
-    public editCourseTeachers() {
+    public editCourseChaptersEdit() {
         this.errors = new ArrayList<String>();
     }
 
@@ -43,11 +42,9 @@ public class editCourseTeachers extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("id") != null) { // Als de title bekend is van de Course, direct de user er dan heen
-            request.setAttribute("course", DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id"))));
-            RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourseTeachers.jsp");
-            rd.forward(request, response);
-        }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourseChaptersEdit.jsp");
+        rd.forward(request, response);
+
     }
 
     /**

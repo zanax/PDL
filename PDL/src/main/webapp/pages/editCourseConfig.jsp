@@ -44,7 +44,8 @@
                     <option value="Science">Science</option>
                 </select>
             </label>   
-            <input type="submit" class="button" id="button" name="id" value="${id}">
+            <input name="id" type="hidden" value="${course.id}"/> <!-- WORKAROUND! -->
+            <input type="submit" class="button" id="button" name="save" value="Save">
             <a href="editCourse?id=${course.id}" class="button" id="button">Back</a>
         </form>
     </div>

@@ -13,9 +13,7 @@
         </c:if>
         <!-- TODO: Dit is gewoon een voorbeeld voor hoe het er ongeveer uitziet, De Css klopt voor geen meter (kwa buttons iig) -->
         <div id="course-content-title">
-            <h4>Name: ${course.name}</h4>
-            <h5>Description: ${course.description}</h5>
-            <h5>Category: ${course.category}</h5>
+            Name: ${course.name}
         </div>
         <label class="label">
             <a href="editCourseTeachers?id=${course.id}" class="button" id="button">Teachers</a>
@@ -31,6 +29,9 @@
         </label>
         <label class="label">
             <a href="editCourseConfig?id=${course.id}" class="button" id="button">Config</a>
+        </label>
+        <label class="label">
+            <a class="button" id="button">Open Course</a>
         </label>
 
     </div>

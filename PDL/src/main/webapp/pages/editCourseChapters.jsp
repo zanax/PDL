@@ -5,27 +5,23 @@
 </div>
 
 <div class="course">
-    <div id="course-content" style="text-align: center;">
-        <form method="post" action="">
-            <div id="course-content-title">
-                <h4>Chapters</h4>
-            </div>
-
-            <!-- TABLE with Teachers that are in the course-->
-
-            <div class="course-button info" style="left: 550px;">
-                <a class="button" id="button">Add Chapter</a>
-            </div>
-            <div class="course-button info" style="left: 550px;">
-                <a class="button" id="button">Edit Chapter</a>
-            </div>
-            <div class="course-button info" style="left: 550px;">
-                <a class="button" id="button">Remove Chapter</a>
-            </div>
-            <div class="course-button info" style="left: 550px;">
-                <a href="editCourse?id=${id}" class="button" id="button">Back</a>
-            </div>
+    <div id="course-content">
+        <form method="post" action="editCourseChapters">
+            <c:forEach var="chapter" items="${course.chapters}">
+                <label class="label">
+                    <span class="form-span">${chapter.name}</span>
+                    <a href="editCourseChaptersEdit?id=${chapter.id}" class="button" id="button">Edit Chapter</a>
+                    <input name="removeChapter" type="submit" value="Remove Chapter" class="form-input">
+                    <!-- hoe stuur ik de chapterID mee naar de post zodat ie weggehaald wordt-->
+                </label>
+            </c:forEach>
         </form>
+        <label class="label">
+            <a href="editCourseChapterCreate?id=${course.id}" class="button" id="button">Create Chapter</a>
+        </label>
+        <label class="label">
+            <a href="editCourse?id=${course.id}" class="button" id="button">Back</a>
+        </label>
     </div>
 </div>
 

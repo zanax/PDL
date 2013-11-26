@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import connection.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Teacher;
 
 /**
  *
@@ -40,14 +42,12 @@ public class editCourseChapters extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // IF-statement als User een Teacher is
-        
-        
         if (request.getParameter("id") != null) { // Als de title bekend is van de Course, direct de user er dan heen
-            request.setAttribute("id", request.getParameter("id"));
+            request.setAttribute("course", DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id"))));
             RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourseChapters.jsp");
             rd.forward(request, response);
         }
+
     }
 
     /**

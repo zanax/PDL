@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import connection.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +42,9 @@ public class editCourseTests extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // IF-statement als User een Teacher is
-        
-        
+
         if (request.getParameter("id") != null) { // Als de title bekend is van de Course, direct de user er dan heen
-            request.setAttribute("id", request.getParameter("id"));
+            request.setAttribute("course", DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id"))));
             RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourseTests.jsp");
             rd.forward(request, response);
         }

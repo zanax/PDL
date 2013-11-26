@@ -8,37 +8,47 @@ import java.util.List;
  * @author Zanax
  */
 public class Course {
+
     private int id;
     private List<Chapter> chapters;
     private List<Student> students;
     private List<Test> tests;
-    private int maximumStudents = 0; // 0 betekent geen limiet
+    private List<Teacher> teachers;
     private Teacher headTeacher;
+    private int maximumStudents = 0; // 0 betekent geen limiet
     private boolean isActive = false;
     private Date startDate;
     private Date endDate;
     private String name;
     private String description;
     private String category;
-    
+
     public Course() {
-        
+
     }
-    
-    public Course(int id){
+
+    public Course(int id) {
         this.id = id;
     }
 
     public int getId() {
         return id;
     }
-    
+
     public List<Chapter> getChapters() {
         return chapters;
     }
 
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+    
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     public List<Student> getStudents() {
@@ -112,11 +122,11 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getCategory() {
         return category;
     }
-    
+
     public void setCategory(String category) {
         this.category = category;
     }

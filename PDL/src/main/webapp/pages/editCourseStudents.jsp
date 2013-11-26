@@ -5,18 +5,15 @@
 </div>
 
 <div class="course">
-    <div id="course-content" style="text-align: center;">
-        <form method="post" action="">
-            <div id="course-content-title">
-                <h4>Students</h4>
-            </div>
-            
-            <!-- TABLE with Students that are in the course-->
-
-            <div class="course-button info" style="left: 100px;">
-                <a href="editCourse?id=${id}" class="button" id="button">Back</a>
-            </div>
-        </form>
+    <div id="course-content">
+        <c:forEach var="student" items="${course.students}">
+            <label class="label">
+                <span class="form-span">${student.name}</span>
+            </label>
+        </c:forEach>
+        <label class="label">
+            <a href="editCourse?id=${course.id}" class="button" id="button">Back</a>
+        </label>
     </div>
 </div>
 

@@ -41,20 +41,8 @@ public class editCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // IF-Statement als de User en Teacher is
-        //TODO: Kijken of id ook echt wel een int is, kan bijvoorbeeld ook een String zijn (als de gebruiker het zelf invoert)
-        
-        if (request.getParameter("id") != null) {
-            DB db = DB.getInstance();
-            Course course = db.getCourse(Integer.parseInt(request.getParameter("id")));
-            
-            if (course != null) { // Als database niet goedt werkte zal dit NULL zijn, of als de course niet bestaat(!)?
-                request.setAttribute("course", course);
-            } else {
-               this.databaseError = true;
-            }
-            
-            request.setAttribute("databaseError", this.databaseError);
+        if (request.getParameter("id") != null) { // Als de title bekend is van de Course, direct de user er dan heen
+            request.setAttribute("course", DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id"))));
             RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
             rd.forward(request, response);
         }
