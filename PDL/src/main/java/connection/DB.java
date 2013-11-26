@@ -6,9 +6,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import models.Chapter;
 import models.Course;
 import models.Student;
 import models.Teacher;
+import models.Test;
 import models.User;
 
 public class DB {
@@ -201,7 +203,50 @@ public class DB {
 
         return id;
     }
+    
+    public int insertTest(Test test) {
+        int id = -1;
 
+        try {
+            startConnection();
+
+            String sql = "insert "
+                    + "   into Test(course_id, chapter_id, amount_of_questions, time, title, description, start_date, end_date)"
+                    + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
+            System.out.println(test.getChapter_id());
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setInt(1, test.getCourse_id());
+            prepared_statement.setInt(3, test.getAmount_of_questions());
+            prepared_statement.setInt(4, test.getTime());
+            prepared_statement.setString(5, test.getTitle());
+            prepared_statement.setString(6, test.getDescription());
+            prepared_statement.setString(7, test.getStart_date());
+            prepared_statement.setString(8, test.getEnd_date());
+            if(test.getChapter_id() == 0){
+                prepared_statement.setNull(2, java.sql.Types.INTEGER);
+            }
+            else{
+                prepared_statement.setInt(2, test.getChapter_id());
+            }
+            
+            
+            prepared_statement.execute();
+
+            ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = (int) generatedKeys.getLong(1);
+            }
+            generatedKeys.close();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+    
     public Course getCourse(int id) {
         Course course = null;
 
@@ -235,5 +280,39 @@ public class DB {
         }
 
         return course;
+    }
+    
+    public Chapter getChapter(int id){
+        Chapter chapter = null;
+        
+        try{
+            startConnection();
+            
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Chapter"
+                    + "     where"
+                    + "         id = ?"
+                    + "     limit 1";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while(rs.next()){
+                chapter = new Chapter(id);
+                chapter.setCourse_id(rs.getInt("courseID"));
+                chapter.setTitle(rs.getString("title"));
+            }
+            
+            closeConnection();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return chapter;
     }
 }

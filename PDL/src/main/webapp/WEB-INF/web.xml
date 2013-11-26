@@ -20,6 +20,10 @@
         <servlet-name>editCourse</servlet-name>
         <servlet-class>controllers.editCourse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>createTest</servlet-name>
+        <servlet-class>controllers.createTest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>editCourse</servlet-name>
         <url-pattern>/editCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createTest</servlet-name>
+        <url-pattern>/createTest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

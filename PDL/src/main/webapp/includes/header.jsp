@@ -38,6 +38,9 @@
                             <li>
                                 <a href="createCourse">Create course</a>
                             </li>
+                            <li>
+                                <a href="createTest">Create test</a>
+                            </li>
                             <% } %>
                             <li>
                                 <a href="">Mordem</a>
