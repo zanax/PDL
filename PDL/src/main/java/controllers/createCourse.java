@@ -15,10 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import models.Course;
 import models.Teacher;
-import models.User;
 
 /**
  *
@@ -28,8 +26,6 @@ import models.User;
 public class createCourse extends HttpServlet {
 
     private List<String> errors;
-    private boolean success = false;
-    private boolean databaseError = false;
 
     public createCourse() {
         this.errors = new ArrayList<String>();
@@ -48,9 +44,12 @@ public class createCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
-            RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
-            rd.forward(request, response);
+            request.setAttribute("show", true);
+        } else {
+            request.setAttribute("errors", "You have not the right permissions");
         }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -64,56 +63,70 @@ public class createCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // TODO: Check of de User wel een Teacher is.
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user == null || !(user instanceof Teacher)) {
-            return;
-        }
-
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        String category = request.getParameter("category");
-        this.errors.clear();
-        this.success = false;
-
-        //Are required fields empty or have they gotten wrong values?
-        if (name.equals("")) {
-            this.errors.add("\"Name\" is a required field.");
-        }
-        if (description.equals("")) {
-            this.errors.add("\"Description\" is a required field.");
-        }
-        if (category.equals("")) {
-            this.errors.add("\"Category\" is a required field.");
-        }
-
-        if (errors.isEmpty()) {
+        if (request.getSession().getAttribute("user") instanceof Teacher) {
+            // Course
             Course course = new Course();
-            course.setName(name);
-            course.setDescription(description);
-            course.setCategory(category);
-            course.setHeadTeacher((Teacher) user);
-            int id = DB.getInstance().insertCourse(course);
-            if (id != -1) { // Als database niet goed werkte al dit -1 zijn
-                request.setAttribute("id", id);
-                request.setAttribute("name", name);
-                this.success = true;
+            // Get parameters
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            String maximumStudents = request.getParameter("maximumStudents");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            String category = request.getParameter("category");
+            this.errors.clear();
+            // Name
+            if (name.equals("")) {
+                this.errors.add("\"Name\" is a required field.");
             } else {
-                this.databaseError = false;
+                course.setName(name);
             }
+            // Maximm Students
+            if (!maximumStudents.equals("")) {
+                try {
+                    course.setMaximumStudents(Integer.parseInt(maximumStudents));
+                } catch (NumberFormatException e) {
+                    course.setMaximumStudents(0);
+                    this.errors.add("\"Maximum Students\" only accepts numbers.");
+                }
+            }
+            // Description
+            if (description.equals("")) {
+                this.errors.add("\"Description\" is a required field.");
+            } else {
+                course.setDescription(description);
+            }
+            // Start Date
+            if (!startDate.equals("")) {
+                course.setStartDate(null);
+            }
+            // End Date
+            if (!endDate.equals("")) {
+                course.setEndDate(null);
+            }
+            // Category
+            if (category.equals("")) {
+                this.errors.add("\"Category\" is a required field.");
+            } else {
+                course.setCategory(category);
+            }
+            // Error Check
+            if (errors.isEmpty()) {
+                int id = DB.getInstance().insertCourse(course);
+                if (id != -1) {
+                    request.setAttribute("createdCourse", name);
+                    request.setAttribute("success", true);
+                } else {
+                    request.setAttribute("errors", "Something went wrong with the Database.");
+                }
+            } else {
+                request.setAttribute("course", course);
+                request.setAttribute("errors", this.errors);
+            }
+            request.setAttribute("show", true);
         } else {
-            request.setAttribute("name", name);
-            request.setAttribute("description", description);
-            request.setAttribute("category", category);
-            request.setAttribute("errors", this.errors);
+            request.setAttribute("errors", "You have not the permission to Create a Course.");
         }
-
-        request.setAttribute("databaseError", this.databaseError);
-        request.setAttribute("success", this.success);
         RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
         rd.forward(request, response);
-
     }
 }

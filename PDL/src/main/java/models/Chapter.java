@@ -1,59 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package models;
 
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-/**
- *
- * @author Zanax
- */
-@Entity
-public class Chapter { 
+public class Chapter {
+    private int id;
+    private int course_id; 
+    private String title;
       
-      
-    @Id
-    @GeneratedValue
-    private long chapterId; 
-      
-    @ManyToOne
-    @JoinColumn(name="courseID")
-    private Course course; 
-    
-    private String chapterName;
-      
-    public Chapter() { 
+    public Chapter(int id) { 
+        this.id = id;
     } 
 
-    public long getChapterId() {
-        return chapterId;
+    public int getId() {
+        return id;
     }
 
-    public Course getCourse() {
-        return course;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setTitle(String title) {
+        this.title = title;
     }
-
-    public String getChapterName() {
-        return chapterName;
+    
+    public int getCourse_id() {
+        return course_id;
     }
-
-    public void setChapterName(String chapterName) {
-        this.chapterName = chapterName;
+    
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
     }
-  
-      
 } 
