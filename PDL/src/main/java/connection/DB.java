@@ -27,8 +27,6 @@ public class DB {
 
     private DB() {
     }
-
-    ;
     
     public static DB getInstance() {
         if (db == null) {
@@ -314,5 +312,45 @@ public class DB {
         }
         
         return chapter;
+    }
+    
+    public Test getTest(int id){
+        Test test = null;
+        
+        try{
+            startConnection();
+            
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Test"
+                    + "     where"
+                    + "         id = ?"
+                    + "     limit 1";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while(rs.next()){
+                test = new Test(id);
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+            }
+            
+            closeConnection();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return test;
     }
 }

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
 import models.Course;
+import models.Helper;
 import models.Test;
 
 /**
@@ -66,15 +67,15 @@ public class createTest extends HttpServlet {
         if(title.equals(""))                                                this.errors.add("\"Title\" is a required field.");
         if(description.equals(""))                                          this.errors.add("\"Description\" is a required field.");
         if(time.equals(""))                                                 this.errors.add("\"Time\" is a required field.");
-        if((int_time = isInt(time)) == -1)                                  this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
+        if((int_time = Helper.isInt(time)) == -1)                                  this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
         if(start_date.equals(""))                                           this.errors.add("\"Start date\" is a required field.");
         if(end_date.equals(""))                                             this.errors.add("\"End date\" is a required field.");
         if(course_id.equals(""))                                            this.errors.add("\"Course\" is a required field.");
         if(amount_of_questions.equals(""))                                  this.errors.add("\"Amount of questions\" is a required field.");
-        if((int_amount_of_questions = isInt(amount_of_questions)) == -1)    this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
+        if((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1)    this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
         
         Course course = null;
-        int int_course_id = isInt(course_id);
+        int int_course_id = Helper.isInt(course_id);
         if(int_course_id > 0){
             course = DB.getInstance().getCourse(int_course_id);
             if(course == null) this.errors.add("Selected course does not exist");
@@ -84,7 +85,7 @@ public class createTest extends HttpServlet {
         }
         
         Chapter chapter = null;
-        int int_chapter_id = isInt(chapter_id);
+        int int_chapter_id = Helper.isInt(chapter_id);
         if(int_chapter_id == -1){ //non-correct id
             this.errors.add("The selected chapter does not exist.");
         }
@@ -139,18 +140,5 @@ public class createTest extends HttpServlet {
 //        }
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-    }
-    
-    private int isInt(String string){
-        int outcome = -1;
-        
-        try{
-            outcome = Integer.parseInt(string);
-        }
-        catch(NumberFormatException e){
-            return outcome;
-        }
-        
-        return outcome;
     }
 }

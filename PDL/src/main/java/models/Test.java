@@ -11,6 +11,10 @@ public class Test {
     private String start_date;
     private String end_date;
 
+    public Test(int id){
+        this.id = id;
+    }
+    
     public int getId() {
         return id;
     }
