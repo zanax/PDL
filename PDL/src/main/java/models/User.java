@@ -4,6 +4,7 @@
  */
 package models;
 
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ import javax.persistence.ManyToOne;
  *
  * @author Bono
  */
-@Entity
+
 public class User {
     
     @Id
@@ -33,25 +34,27 @@ public class User {
     
     private String email;
     
-    @ManyToOne
-    @JoinColumn(name="city_id")
     private City city;
     
-    @ManyToOne
-    @JoinColumn(name="country_id")
     private Country country;
     
-    @ManyToOne
-    @JoinColumn(name="language_id")
     private Language language;
     
     private char gender;
     
     private boolean isBanned;
     
+    private int[] subscribed_courses;
 
+    
+    
     public User(){
+    
+    }
+
+    public User(long id){
         
+         this.id = id;
     }
 
     /**
@@ -210,6 +213,14 @@ public class User {
     
     public long getId() {
         return id;
+    }
+    
+    public int[] getSubscribed_courses() {
+        return subscribed_courses;
+    }
+
+    public void setSubscribed_courses(int[] subscribed_courses) {
+        this.subscribed_courses = subscribed_courses;
     }
     
     

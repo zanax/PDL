@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import models.Course;
 import models.User;
 
@@ -140,7 +142,7 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                user = new User();
+                user = new User(rs.getLong("user_id"));
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
                 user.setAddress(rs.getString("address"));
@@ -226,5 +228,39 @@ public class DB {
         }
 
         return course;
+    }
+    
+    public List<Course> getUserCourses(User user) {
+        
+        long user_id = user.getId();
+        
+        List<Course> courses = new ArrayList<Course>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         SubbedCourses"
+                    + "     where "
+                    + "         userID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setLong(1, user_id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                courses.add(getCourse(rs.getInt("courseID")));
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
     }
 }
