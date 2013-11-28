@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers;
 
 import connection.DB;
-import static controllers.register.md5;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,29 +15,50 @@ import models.Course;
 import models.Helper;
 import models.Test;
 
-/**
- *
- * @author Bono
- */
-@WebServlet(name = "createTest", urlPatterns = {"/createTest"})
-public class createTest extends HttpServlet {
+@WebServlet(name = "editTest", urlPatterns = {"/editTest"})
+public class editTest extends HttpServlet {
     private List<String> errors;
     private boolean success = false;
     
-    public createTest(){
+    public editTest(){
         this.errors = new ArrayList<String>();
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        this.errors.clear();
         //TODO: kijk of teacher
         
-        //courses ophalen en doorgeven aan jsp
+        //Haal id op van test, haal test op
+        int test_id = Helper.isInt(request.getParameter("id"));
+        Test test = null;
+        if(test_id > -1){
+            test = DB.getInstance().getTest(test_id);
+            
+            if(test == null){
+                this.errors.add("The requested test does not exist.");
+            }
+        }
+        else{
+            this.errors.add("The requested test does not exist.");
+        }
+        
+        request.setAttribute("test", test);
+        if( ! this.errors.isEmpty()) request.setAttribute("errors", this.errors);
+        
+        //Courses ophalen voor form
         ArrayList<Course> courses = DB.getInstance().getCourses();
         request.setAttribute("courses", courses);
         
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createTest.jsp");
+        for(Course course : courses){
+            System.out.println(course.getId() +" - "+ course.getName());
+        }
+        
+        String url = "/pages/editTest.jsp";
+        if( ! errors.isEmpty()) url = "/pages/createTest.jsp";
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
     
@@ -61,6 +73,7 @@ public class createTest extends HttpServlet {
         String course_id = request.getParameter("course_id").trim();
         String chapter_id = request.getParameter("chapter_id").trim();
         String amount_of_questions = request.getParameter("question_amount").trim();
+        int id = Helper.isInt(request.getParameter("id"));
         this.errors.clear();
         this.success = false;
         int int_time;
@@ -68,15 +81,15 @@ public class createTest extends HttpServlet {
         
         //TODO: check if start/end dates are correct (Date object?)
         
-        if(title.equals(""))                                                this.errors.add("\"Title\" is a required field.");
-        if(description.equals(""))                                          this.errors.add("\"Description\" is a required field.");
-        if(time.equals(""))                                                 this.errors.add("\"Time\" is a required field.");
-        if((int_time = Helper.isInt(time)) == -1)                                  this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
-        if(start_date.equals(""))                                           this.errors.add("\"Start date\" is a required field.");
-        if(end_date.equals(""))                                             this.errors.add("\"End date\" is a required field.");
-        if(course_id.equals(""))                                            this.errors.add("\"Course\" is a required field.");
-        if(amount_of_questions.equals(""))                                  this.errors.add("\"Amount of questions\" is a required field.");
-        if((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1)    this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
+        if(title.equals(""))                                                    this.errors.add("\"Title\" is a required field.");
+        if(description.equals(""))                                              this.errors.add("\"Description\" is a required field.");
+        if(time.equals(""))                                                     this.errors.add("\"Time\" is a required field.");
+        if((int_time = Helper.isInt(time)) == -1)                               this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
+        if(start_date.equals(""))                                               this.errors.add("\"Start date\" is a required field.");
+        if(end_date.equals(""))                                                 this.errors.add("\"End date\" is a required field.");
+        if(course_id.equals(""))                                                this.errors.add("\"Course\" is a required field.");
+        if(amount_of_questions.equals(""))                                      this.errors.add("\"Amount of questions\" is a required field.");
+        if((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
         
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
@@ -103,9 +116,14 @@ public class createTest extends HttpServlet {
             }
         }
         
-        String url = "/pages/createTest.jsp";
+        
+        String url = "/pages/editTest.jsp";
+        if( ! (id > 0)){
+            url = "createTest";
+        }
+        
         if(errors.isEmpty()){
-            Test test = new Test();
+            Test test = new Test(id);
             test.setTitle(title);
             test.setDescription(description);
             test.setTime(int_time);
@@ -115,33 +133,21 @@ public class createTest extends HttpServlet {
             test.setChapter_id(int_chapter_id);
             test.setAmount_of_questions(int_amount_of_questions);
             
-            int test_id = DB.getInstance().insertTest(test);
+            int affected_rows = DB.getInstance().updateTest(test);
             
-            if(test_id > 0){
-                this.success = true;
-                url = "editTest?id="+test_id;
-                
-                response.sendRedirect(url);
-                return;
+            if(affected_rows > 0){
+                this.success = true;                
+                request.setAttribute("test", test);
             }
             else{
-                this.errors.add("Something went wrong creating the test, please try again.");
-                request.setAttribute("errors", this.errors);
+                this.errors.add("Something went wrong with saving the test. Please try again.");
             }
         }
-        else{
-            request.setAttribute("errors", this.errors);
-        }
         
-        request.setAttribute("title", title);
-        request.setAttribute("description", description);
-        request.setAttribute("time", time);
-        request.setAttribute("start_date", start_date);
-        request.setAttribute("end_date", end_date);
-        request.setAttribute("course_id", course_id);
-        request.setAttribute("chapter_id", chapter_id);
-        request.setAttribute("question_amount", amount_of_questions);
-
+        request.setAttribute("courses", DB.getInstance().getCourses());
+        request.setAttribute("success", this.success);
+        request.setAttribute("errors", this.errors);
+        
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }

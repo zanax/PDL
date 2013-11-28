@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,6 @@ public class DB {
 
     private DB() {
     }
-
-    ;
     
     public static DB getInstance() {
         if (db == null) {
@@ -215,7 +215,7 @@ public class DB {
             String sql = "insert "
                     + "   into Test(course_id, chapter_id, amount_of_questions, time, title, description, start_date, end_date)"
                     + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
-            System.out.println(test.getChapter_id());
+            
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, test.getCourse_id());
             prepared_statement.setInt(3, test.getAmount_of_questions());
@@ -342,13 +342,132 @@ public class DB {
             while (rs.next()) {
                 courses.add(getCourse(rs.getInt("courseID")));
             }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return courses;
+    }
+    
+    public Test getTest(int id){
+        Test test = null;
+        
+        try{
+            startConnection();
+            
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Test"
+                    + "     where"
+                    + "         id = ?"
+                    + "     limit 1";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while(rs.next()){
+                test = new Test(id);
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+            }
+            
+            closeConnection();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return test;
+    }
+    
+    public ArrayList<Course> getCourses(){
+        ArrayList<Course> courses = new ArrayList<Course>();
+        
+        try{
+            startConnection();
+            
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Course "
+                    + "     where isActive = 1 "
+                    + "     order by name asc";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while(rs.next()){
+                Course course = new Course(rs.getInt("courseID"));
+                course.setCategory(rs.getString("category"));
+                course.setDescription(rs.getString("description"));
+                course.setEndDate(rs.getDate("endDate"));
+//                course.setHeadTeacher(this.getTeacher());
+                course.setIsActive(rs.getBoolean("isActive"));
+                course.setMaximumStudents(rs.getInt("maximumStudents"));
+                course.setName(rs.getString("name"));
+                course.setStartDate(rs.getDate("startDate"));
+//                course.setStudents(null);
+//                course.setTests(null);
+//                course.setChapters(null);
+                
+                courses.add(course);
+            }
+            
+            closeConnection();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return courses;
+    }
+    
+    public int updateTest(Test test) {
+        int affected_rows = 0;
+        
+        try {
+            startConnection();
+
+            String sql = "update Test "
+                    + "   set amount_of_questions = ?, time = ?, course_id = ?, chapter_id = ?, title = ?, description = ?, start_date = ?, end_date = ?"
+                    + "   where id = ?  ";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setInt(1, test.getAmount_of_questions());
+            prepared_statement.setInt(2, test.getTime());
+            prepared_statement.setInt(3, test.getCourse_id());
+            prepared_statement.setInt(9, test.getId());
+            prepared_statement.setString(5, test.getTitle());
+            prepared_statement.setString(6, test.getDescription());
+            prepared_statement.setString(7, test.getStart_date());
+            prepared_statement.setString(8, test.getEnd_date());
+            if(test.getChapter_id() == 0){
+                prepared_statement.setNull(4, java.sql.Types.INTEGER);
+            }
+            else{
+                prepared_statement.setInt(4, test.getChapter_id());
+            }
+            
+            
+            affected_rows = prepared_statement.executeUpdate();
 
             closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return courses;
+        
+        return affected_rows;
     }
 }
