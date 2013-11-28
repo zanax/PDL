@@ -42,6 +42,10 @@ public class createTest extends HttpServlet {
             throws ServletException, IOException {
         //TODO: kijk of teacher
         
+        //courses ophalen en doorgeven aan jsp
+        ArrayList<Course> courses = DB.getInstance().getCourses();
+        request.setAttribute("courses", courses);
+        
         RequestDispatcher rd = request.getRequestDispatcher("/pages/createTest.jsp");
         rd.forward(request, response);
     }
@@ -99,6 +103,7 @@ public class createTest extends HttpServlet {
             }
         }
         
+        String url = "/pages/createTest.jsp";
         if(errors.isEmpty()){
             Test test = new Test();
             test.setTitle(title);
@@ -114,6 +119,10 @@ public class createTest extends HttpServlet {
             
             if(test_id > 0){
                 this.success = true;
+                url = "editTest?id="+test_id;
+                
+                response.sendRedirect(url);
+                return;
             }
             else{
                 this.errors.add("Something went wrong creating the test, please try again.");
@@ -132,12 +141,7 @@ public class createTest extends HttpServlet {
         request.setAttribute("course_id", course_id);
         request.setAttribute("chapter_id", chapter_id);
         request.setAttribute("question_amount", amount_of_questions);
-        request.setAttribute("success", this.success);
-        
-        String url = "/pages/createTest.jsp";
-//        if(success){
-//            url = "/pages/editTest.jsp";
-//        }
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }

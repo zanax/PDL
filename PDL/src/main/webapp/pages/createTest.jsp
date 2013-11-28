@@ -6,11 +6,6 @@
 
 <div class="course">
     <div id="course-content">
-        <c:if test="${success != null && success}">
-            <div class="success_message">
-                U have successfully created a test      
-            </div>
-        </c:if>
         <c:forEach var="error" items="${errors}">
             <div class="error_message">
                 ${error}
@@ -35,7 +30,9 @@
                 <select class="form-input-select" name="course_id" required>
                     <!-- Courses ophalen en in select zetten -->
                     <option value="">Select course...</option>
-                    <option value="1">HTML 5</option>
+                    <c:forEach items="${courses}" var="course">
+                        <option value="${course.id}" <c:if test="${course_id != null && course_id == course.id}">selected</c:if>>${course.name}</option>
+                    </c:forEach>
                 </select>
             </label>
             <label class="label">
@@ -63,7 +60,7 @@
                 <input name="end_date" type="text" placeholder="dd-mm-yyy" value="${end_date}" class="form-input" required>
             </label>
             
-            <input type="submit" class="button" id="button">
+            <input type="submit" class="button" id="button" value="Create">
         </form>
     </div>
 </div>

@@ -8,7 +8,12 @@
     <div id="course-content">
         <c:if test="${success != null && success}">
             <div class="success_message">
-                U have successfully created a test      
+                The test has been successfully edited.
+            </div>
+        </c:if>
+        <c:if test="${create_success != null && create_success}">
+            <div class="success_message">
+                The test has been successfully created.
             </div>
         </c:if>
         <c:forEach var="error" items="${errors}">
@@ -22,6 +27,7 @@
             </div>
         </c:if>
         <form method="post" action="editTest">
+            <input type="hidden" value="${test.id}" name="id">
             <label class="label">
                 <span class="form-span">Title:</span>
                 <input name="title" type="text" placeholder="Title" value="${test.title}" class="form-input" required>
@@ -32,15 +38,16 @@
             </label>
             <label class="label">
                 <span class="form-span">Course:</span>
-                <select class="form-input-select" name="course_id" required>
-                    <!-- Courses ophalen en in select zetten -->
+                <select class="form-input-select" name="course_id" required autocomplete="off">
                     <option value="">Select course...</option>
-                    <option value="1">HTML 5</option>
+                    <c:forEach items="${courses}" var="course">
+                        <option value="${course.id}" ${course.id == test.course_id ? 'selected' : ''}>${course.name}</option>
+                    </c:forEach>
                 </select>
             </label>
             <label class="label">
                 <span class="form-span">Chapter:</span>
-                <select class="form-input-select" name="chapter_id" required>
+                <select class="form-input-select" name="chapter_id" required autocomplete="off">
                     <!-- Chapters ophalen en in select zetten -->
                     <option value="0">None</option>
                     <option value="1">Chapter 1</option>
@@ -63,7 +70,7 @@
                 <input name="end_date" type="text" placeholder="dd-mm-yyy" value="${test.end_date}" class="form-input" required>
             </label>
             
-            <input type="submit" class="button" id="button">
+            <input type="submit" class="button" id="button" value="Save">
         </form>
     </div>
 </div>

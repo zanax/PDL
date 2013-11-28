@@ -27,6 +27,7 @@ public class editTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        this.errors.clear();
         //TODO: kijk of teacher
         
         //Haal id op van test, haal test op
@@ -44,6 +45,15 @@ public class editTest extends HttpServlet {
         }
         
         request.setAttribute("test", test);
+        if( ! this.errors.isEmpty()) request.setAttribute("errors", this.errors);
+        
+        //Courses ophalen voor form
+        ArrayList<Course> courses = DB.getInstance().getCourses();
+        request.setAttribute("courses", courses);
+        
+        for(Course course : courses){
+            System.out.println(course.getId() +" - "+ course.getName());
+        }
         
         String url = "/pages/editTest.jsp";
         if( ! errors.isEmpty()) url = "/pages/createTest.jsp";
@@ -55,96 +65,90 @@ public class editTest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String title = request.getParameter("title").trim();
-//        String description = request.getParameter("description").trim();
-//        String time = request.getParameter("time").trim();
-//        String start_date = request.getParameter("start_date").trim();
-//        String end_date = request.getParameter("end_date").trim();
-//        String course_id = request.getParameter("course_id").trim();
-//        String chapter_id = request.getParameter("chapter_id").trim();
-//        String amount_of_questions = request.getParameter("question_amount").trim();
-//        this.errors.clear();
-//        this.success = false;
-//        int int_time;
-//        int int_amount_of_questions;
-//        
-//        //TODO: check if start/end dates are correct (Date object?)
-//        
-//        if(title.equals(""))                                                this.errors.add("\"Title\" is a required field.");
-//        if(description.equals(""))                                          this.errors.add("\"Description\" is a required field.");
-//        if(time.equals(""))                                                 this.errors.add("\"Time\" is a required field.");
-//        if((int_time = isInt(time)) == -1)                                  this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
-//        if(start_date.equals(""))                                           this.errors.add("\"Start date\" is a required field.");
-//        if(end_date.equals(""))                                             this.errors.add("\"End date\" is a required field.");
-//        if(course_id.equals(""))                                            this.errors.add("\"Course\" is a required field.");
-//        if(amount_of_questions.equals(""))                                  this.errors.add("\"Amount of questions\" is a required field.");
-//        if((int_amount_of_questions = isInt(amount_of_questions)) == -1)    this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
-//        
-//        Course course = null;
-//        int int_course_id = isInt(course_id);
-//        if(int_course_id > 0){
-//            course = DB.getInstance().getCourse(int_course_id);
-//            if(course == null) this.errors.add("Selected course does not exist");
-//        }
-//        else{
-//            this.errors.add("Selected course does not exist.");
-//        }
-//        
-//        Chapter chapter = null;
-//        int int_chapter_id = isInt(chapter_id);
-//        if(int_chapter_id == -1){ //non-correct id
-//            this.errors.add("The selected chapter does not exist.");
-//        }
-//        else if(int_chapter_id > 0){ //a chapter is selected (0 is default, a test doesnt have to have a chapter, can just be linked to a course (test for the whole course))
-//            chapter = DB.getInstance().getChapter(int_chapter_id);
-//            if(chapter == null){
-//                this.errors.add("The selected chapter does not exist.");
-//            }
-//            else if(chapter.getCourse_id() != int_course_id){
-//                this.errors.add("The selected chapter does not exist in this course.");
-//            }
-//        }
-//        
-//        if(errors.isEmpty()){
-//            Test test = new Test();
-//            test.setTitle(title);
-//            test.setDescription(description);
-//            test.setTime(int_time);
-//            test.setStart_date(start_date);
-//            test.setEnd_date(end_date);
-//            test.setCourse_id(int_course_id);
-//            test.setChapter_id(int_chapter_id);
-//            test.setAmount_of_questions(int_amount_of_questions);
-//            
-//            int test_id = DB.getInstance().insertTest(test);
-//            
-//            if(test_id > 0){
-//                this.success = true;
-//            }
-//            else{
-//                this.errors.add("Something went wrong creating the test, please try again.");
-//                request.setAttribute("errors", this.errors);
-//            }
-//        }
-//        else{
-//            request.setAttribute("errors", this.errors);
-//        }
-//        
-//        request.setAttribute("title", title);
-//        request.setAttribute("description", description);
-//        request.setAttribute("time", time);
-//        request.setAttribute("start_date", start_date);
-//        request.setAttribute("end_date", end_date);
-//        request.setAttribute("course_id", course_id);
-//        request.setAttribute("chapter_id", chapter_id);
-//        request.setAttribute("question_amount", amount_of_questions);
-//        request.setAttribute("success", this.success);
-//        
-//        String url = "/pages/editTest.jsp";
-////        if(success){
-////            url = "/pages/editTest.jsp";
-////        }
-//        RequestDispatcher rd = request.getRequestDispatcher(url);
-//        rd.forward(request, response);
+        String title = request.getParameter("title").trim();
+        String description = request.getParameter("description").trim();
+        String time = request.getParameter("time").trim();
+        String start_date = request.getParameter("start_date").trim();
+        String end_date = request.getParameter("end_date").trim();
+        String course_id = request.getParameter("course_id").trim();
+        String chapter_id = request.getParameter("chapter_id").trim();
+        String amount_of_questions = request.getParameter("question_amount").trim();
+        int id = Helper.isInt(request.getParameter("id"));
+        this.errors.clear();
+        this.success = false;
+        int int_time;
+        int int_amount_of_questions;
+        
+        //TODO: check if start/end dates are correct (Date object?)
+        
+        if(title.equals(""))                                                    this.errors.add("\"Title\" is a required field.");
+        if(description.equals(""))                                              this.errors.add("\"Description\" is a required field.");
+        if(time.equals(""))                                                     this.errors.add("\"Time\" is a required field.");
+        if((int_time = Helper.isInt(time)) == -1)                               this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
+        if(start_date.equals(""))                                               this.errors.add("\"Start date\" is a required field.");
+        if(end_date.equals(""))                                                 this.errors.add("\"End date\" is a required field.");
+        if(course_id.equals(""))                                                this.errors.add("\"Course\" is a required field.");
+        if(amount_of_questions.equals(""))                                      this.errors.add("\"Amount of questions\" is a required field.");
+        if((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
+        
+        Course course = null;
+        int int_course_id = Helper.isInt(course_id);
+        if(int_course_id > 0){
+            course = DB.getInstance().getCourse(int_course_id);
+            if(course == null) this.errors.add("Selected course does not exist");
+        }
+        else{
+            this.errors.add("Selected course does not exist.");
+        }
+        
+        Chapter chapter = null;
+        int int_chapter_id = Helper.isInt(chapter_id);
+        if(int_chapter_id == -1){ //non-correct id
+            this.errors.add("The selected chapter does not exist.");
+        }
+        else if(int_chapter_id > 0){ //a chapter is selected (0 is default, a test doesnt have to have a chapter, can just be linked to a course (test for the whole course))
+            chapter = DB.getInstance().getChapter(int_chapter_id);
+            if(chapter == null){
+                this.errors.add("The selected chapter does not exist.");
+            }
+            else if(chapter.getCourse_id() != int_course_id){
+                this.errors.add("The selected chapter does not exist in this course.");
+            }
+        }
+        
+        
+        String url = "/pages/editTest.jsp";
+        if( ! (id > 0)){
+            url = "createTest";
+        }
+        
+        if(errors.isEmpty()){
+            Test test = new Test(id);
+            test.setTitle(title);
+            test.setDescription(description);
+            test.setTime(int_time);
+            test.setStart_date(start_date);
+            test.setEnd_date(end_date);
+            test.setCourse_id(int_course_id);
+            test.setChapter_id(int_chapter_id);
+            test.setAmount_of_questions(int_amount_of_questions);
+            
+            int affected_rows = DB.getInstance().updateTest(test);
+            
+            if(affected_rows > 0){
+                this.success = true;                
+                request.setAttribute("test", test);
+            }
+            else{
+                this.errors.add("Something went wrong with saving the test. Please try again.");
+            }
+        }
+        
+        request.setAttribute("courses", DB.getInstance().getCourses());
+        request.setAttribute("success", this.success);
+        request.setAttribute("errors", this.errors);
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
 }
