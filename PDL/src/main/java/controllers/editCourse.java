@@ -7,6 +7,8 @@ package controllers;
 
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.Teacher;
 
 /**
  *
@@ -22,10 +25,10 @@ import models.Course;
 @WebServlet(name = "editCourse", urlPatterns = {"/editCourse"})
 public class editCourse extends HttpServlet {
 
-    private boolean databaseError = false;
+    private List<String> errors;
 
     public editCourse() {
-
+        this.errors = new ArrayList<String>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -40,24 +43,23 @@ public class editCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // IF-Statement als de User en Teacher is
-        //TODO: Kijken of id ook echt wel een int is, kan bijvoorbeeld ook een String zijn (als de gebruiker het zelf invoert)
-        
-        if (request.getParameter("id") != null) {
-            DB db = DB.getInstance();
-            Course course = db.getCourse(Integer.parseInt(request.getParameter("id")));
-            
-            if (course != null) { // Als database niet goedt werkte zal dit NULL zijn, of als de course niet bestaat(!)?
-                request.setAttribute("course", course);
+        if (request.getSession().getAttribute("user") instanceof Teacher) {
+            if (request.getParameter("id") != null) {
+                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+                if (course != null) {
+                    request.setAttribute("course", course);
+                    request.setAttribute("show", true);
+                } else {
+                    request.setAttribute("errors", "Something went wrong with the Database");
+                }
             } else {
-               this.databaseError = true;
+                request.setAttribute("errors", "We missed the ID");
             }
-            
-            request.setAttribute("databaseError", this.databaseError);
-            RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
-            rd.forward(request, response);
+        } else {
+            request.setAttribute("errors", "You have not the right permissions");
         }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -71,9 +73,73 @@ public class editCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        request.setAttribute("success", this.success);
-//        RequestDispatcher rd = request.getRequestDispatcher("/pages/register.jsp");
-//        rd.forward(request, response);
+        if (request.getSession().getAttribute("user") instanceof Teacher) {
+            if (request.getParameter("id") != null) {
+                // Course
+                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+                // Get parameters
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                String maximumStudents = request.getParameter("maximumStudents");
+                String startDate = request.getParameter("startDate");
+                String endDate = request.getParameter("endDate");
+                String category = request.getParameter("category");
+                this.errors.clear();
+                // Name
+                if (name.equals("")) {
+                    this.errors.add("\"Name\" is a required field.");
+                } else {
+                    course.setName(name);
+                }
+                // Maximm Students
+                if (!maximumStudents.equals("")) {
+                    try {
+                        course.setMaximumStudents(Integer.parseInt(maximumStudents));
+                    } catch (NumberFormatException e) {
+                        course.setMaximumStudents(0);
+                        this.errors.add("\"Maximum Students\" only accepts numbers.");
+                    }
+                }
+                // Description
+                if (description.equals("")) {
+                    this.errors.add("\"Description\" is a required field.");
+                } else {
+                    course.setDescription(description);
+                }
+                // Start Date
+                if (!startDate.equals("")) {
+                    course.setStartDate(null);
+                }
+                // End Date
+                if (!endDate.equals("")) {
+                    course.setEndDate(null);
+                }
+                // Category
+                if (category.equals("")) {
+                    this.errors.add("\"Category\" is a required field.");
+                } else {
+                    course.setCategory(category);
+                }
+                // Error Check
+                if (errors.isEmpty()) {
+                    if (DB.getInstance().updateCourse(course)) {
+                        request.setAttribute("editedCourse", name);
+                        request.setAttribute("success", true);
+                    } else {
+                        request.setAttribute("errors", "Something went wrong with the Database.");
+                    }
+                } else {
+                    request.setAttribute("errors", this.errors);
+                }
+                request.setAttribute("course", course);
+                request.setAttribute("show", true);
+            } else {
+                request.setAttribute("errors", "You have not the permission to Edit a Course.");
+            }
+        } else {
+            request.setAttribute("errors", "You have not selected a Course to Edit");
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
+        rd.forward(request, response);
     }
 }
