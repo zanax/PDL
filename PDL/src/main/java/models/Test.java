@@ -1,7 +1,8 @@
 package models;
 
-public class Test { 
-    private int id; 
+public class Test {
+
+    private int id;
     private int course_id;
     private int chapter_id;
     private int amount_of_questions;
@@ -10,6 +11,14 @@ public class Test {
     private String description;
     private String start_date;
     private String end_date;
+
+    public Test() {
+
+    }
+
+    public Test(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -78,4 +87,4 @@ public class Test {
     public void setEnd_date(String end_date) {
         this.end_date = end_date;
     }
-} 
+}

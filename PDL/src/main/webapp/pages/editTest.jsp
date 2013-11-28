@@ -1,19 +1,21 @@
 <%@include file="/includes/header.jsp" %> 
 
 <div class="content-header">
-    Create Test
+    Edit Test
 </div>
 
 <div class="course">
     <div id="course-content">
-<<<<<<< HEAD
         <c:if test="${success != null && success}">
             <div class="success_message">
-                U have successfully created a test      
+                The test has been successfully edited.
             </div>
         </c:if>
-=======
->>>>>>> bb792cfc7e9ef5cc29795913f2ae8c5208219d95
+        <c:if test="${create_success != null && create_success}">
+            <div class="success_message">
+                The test has been successfully created.
+            </div>
+        </c:if>
         <c:forEach var="error" items="${errors}">
             <div class="error_message">
                 ${error}
@@ -24,32 +26,28 @@
                 Something went wrong, Please try again.
             </div>
         </c:if>
-        <form method="post" action="createTest">
+        <form method="post" action="editTest">
+            <input type="hidden" value="${test.id}" name="id">
             <label class="label">
                 <span class="form-span">Title:</span>
-                <input name="title" type="text" placeholder="Title" value="${title}" class="form-input" required>
+                <input name="title" type="text" placeholder="Title" value="${test.title}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Description:</span>
-                <textarea name="description" placeholder="Description" class="form-input-textarea" required>${description}</textarea>
+                <textarea name="description" placeholder="Description" class="form-input-textarea" required>${test.description}</textarea>
             </label>
             <label class="label">
                 <span class="form-span">Course:</span>
-                <select class="form-input-select" name="course_id" required>
-                    <!-- Courses ophalen en in select zetten -->
+                <select class="form-input-select" name="course_id" required autocomplete="off">
                     <option value="">Select course...</option>
-<<<<<<< HEAD
-                    <option value="1">HTML 5</option>
-=======
                     <c:forEach items="${courses}" var="course">
-                        <option value="${course.id}" <c:if test="${course_id != null && course_id == course.id}">selected</c:if>>${course.name}</option>
+                        <option value="${course.id}" ${course.id == test.course_id ? 'selected' : ''}>${course.name}</option>
                     </c:forEach>
->>>>>>> bb792cfc7e9ef5cc29795913f2ae8c5208219d95
                 </select>
             </label>
             <label class="label">
                 <span class="form-span">Chapter:</span>
-                <select class="form-input-select" name="chapter_id" required>
+                <select class="form-input-select" name="chapter_id" required autocomplete="off">
                     <!-- Chapters ophalen en in select zetten -->
                     <option value="0">None</option>
                     <option value="1">Chapter 1</option>
@@ -57,26 +55,22 @@
             </label>
             <label class="label">
                 <span class="form-span">Amount of questions:</span>
-                <input name="question_amount" type="text" placeholder="10" value="${question_amount}" class="form-input" required>
+                <input name="question_amount" type="text" placeholder="10" value="${test.amount_of_questions}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Time (minutes):</span>
-                <input name="time" type="text" placeholder="45" value="${time}" class="form-input" required>
+                <input name="time" type="text" placeholder="45" value="${test.time}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Start date:</span>
-                <input name="start_date" type="text" placeholder="dd-mm-yyyy" value="${start_date}" class="form-input" required>
+                <input name="start_date" type="text" placeholder="dd-mm-yyyy" value="${test.start_date}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">End date:</span>
-                <input name="end_date" type="text" placeholder="dd-mm-yyy" value="${end_date}" class="form-input" required>
+                <input name="end_date" type="text" placeholder="dd-mm-yyy" value="${test.end_date}" class="form-input" required>
             </label>
             
-<<<<<<< HEAD
-            <input type="submit" class="button" id="button">
-=======
-            <input type="submit" class="button" id="button" value="Create">
->>>>>>> bb792cfc7e9ef5cc29795913f2ae8c5208219d95
+            <input type="submit" class="button" id="button" value="Save">
         </form>
     </div>
 </div>
