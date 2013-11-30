@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Chapter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import models.Course;
 import models.Student;
@@ -158,15 +159,16 @@ public class DB {
                     } else {
                         user = new Teacher(rs.getLong("user_id"));
                     }
-                    user.setFirstname(rs.getString("firstname"));
-                    user.setSurname(rs.getString("surname"));
-                    user.setAddress(rs.getString("address"));
-                    user.setZipcode(rs.getString("zipcode"));
-                    user.setGender(rs.getString("gender").charAt(0));
-                    user.setEmail(rs.getString("email"));
-                    user.setIsBanned(rs.getBoolean("banned"));
-                    user.setPassword(rs.getString("password"));
                 }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+
             }
             closeConnection();
         } catch (SQLException e) {
@@ -495,5 +497,13 @@ public class DB {
         }
 
         return affected_rows;
+    }
+
+    public boolean disenrollCourse(int id) {
+        return true;
+    }
+
+    public List<Course> getCourses(long id) {
+        return null;
     }
 }
