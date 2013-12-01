@@ -44,7 +44,7 @@
                             </li>
                             <% } } %>
                             <li>
-                                <a href="Contact">Contact</a>
+                                <a href="contact">Contact</a>
                             </li>
                             <% if(session.getAttribute("user") == null) { %>
                             <li>
