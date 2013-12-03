@@ -28,6 +28,10 @@
         <servlet-name>editTest</servlet-name>
         <servlet-class>controllers.editTest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>contact</servlet-name>
+        <servlet-class>controllers.Contact</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>editTest</servlet-name>
         <url-pattern>/editTest</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>contact</servlet-name>
+        <url-pattern>/contact</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
