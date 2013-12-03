@@ -9,9 +9,6 @@ import java.sql.Statement;
 import models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
-import models.Chapter;
-import java.util.ArrayList;
-import java.util.List;
 import models.Course;
 import models.Student;
 import models.Teacher;
@@ -27,7 +24,6 @@ public class DB {
     private ResultSet result = null;
     private int affectedRows = -1;
     Connection conn = null;
-
     private static DB db = null;
 
     private DB() {
@@ -126,6 +122,41 @@ public class DB {
 
         return id;
     }
+    
+    public int editUser(User user) {
+        
+        int affected_rows = 0;
+        
+        try {
+            startConnection();
+            
+            String sql = "  update User "
+                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setString(1, user.getFirstname());
+            prepared_statement.setString(2, user.getSurname());
+            prepared_statement.setString(3, user.getAddress());
+            prepared_statement.setString(4, user.getZipcode());
+            prepared_statement.setString(5, String.valueOf(user.getGender()));
+            prepared_statement.setString(6, user.getEmail());
+            prepared_statement.setBoolean(7, false);
+            prepared_statement.setString(8, user.getPassword());
+
+            prepared_statement.setLong(9, user.getId());
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
 
     public User getUser(String email) {
         User user = null;
@@ -158,15 +189,16 @@ public class DB {
                     } else {
                         user = new Teacher(rs.getLong("user_id"));
                     }
-                    user.setFirstname(rs.getString("firstname"));
-                    user.setSurname(rs.getString("surname"));
-                    user.setAddress(rs.getString("address"));
-                    user.setZipcode(rs.getString("zipcode"));
-                    user.setGender(rs.getString("gender").charAt(0));
-                    user.setEmail(rs.getString("email"));
-                    user.setIsBanned(rs.getBoolean("banned"));
-                    user.setPassword(rs.getString("password"));
                 }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+
             }
             closeConnection();
         } catch (SQLException e) {

@@ -35,6 +35,9 @@
                             <li>
                                 <a href="myCourses">My Courses</a>
                             </li>
+                            <li>
+                                <a href="editUser">Edit information</a>
+                            </li>
                             <% if(session.getAttribute("user") instanceof Teacher) { %>
                             <li>
                                 <a href="createCourse">Create course</a>
@@ -49,7 +52,7 @@
                             <% if(session.getAttribute("user") == null) { %>
                             <li>
                                 <a href="login">Log In</a>
-                            </li>
+                            </li>              
                             <li>
                                 <a href="register">Register</a>
                             </li>
