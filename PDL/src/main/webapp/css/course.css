@@ -31,10 +31,6 @@ div.course #course-content-image img{
 	max-height: 100%;
 }
 
-div.course #course-content-title{
-	
-}
-
 div.course #course-content-title h4{
 	margin: 0px;
 	font-style: normal;
@@ -47,7 +43,7 @@ div.course #course-content-description{
 }
 
 div.course-button{
-	bottom: 10px;
+    bottom: 10px;
     left: 727px;
     position: absolute;
     cursor: pointer;

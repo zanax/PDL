@@ -150,23 +150,19 @@ public class DB {
 
             while (rs.next()) {
                 if (rs.getBoolean("is_teacher") == false) {
-                    user = new Student();
+                    user = new Student(rs.getInt("user_id"));
                 } else {
-                    user = new Teacher();
-                    if (rs.getBoolean("is_teacher") == false) {
-                        user = new Student(rs.getLong("user_id"));
-                    } else {
-                        user = new Teacher(rs.getLong("user_id"));
-                    }
-                    user.setFirstname(rs.getString("firstname"));
-                    user.setSurname(rs.getString("surname"));
-                    user.setAddress(rs.getString("address"));
-                    user.setZipcode(rs.getString("zipcode"));
-                    user.setGender(rs.getString("gender").charAt(0));
-                    user.setEmail(rs.getString("email"));
-                    user.setIsBanned(rs.getBoolean("banned"));
-                    user.setPassword(rs.getString("password"));
+                    user = new Teacher(rs.getInt("user_id"));
                 }
+                
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
             }
             closeConnection();
         } catch (SQLException e) {
@@ -418,7 +414,46 @@ public class DB {
 
         return test;
     }
+    
+    public ArrayList<Test> getTests() {
+        ArrayList<Test> tests = new ArrayList<Test>();
 
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Test "
+                    + "     where is_active = 1 "
+                    + "     order by title asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Test test = new Test(rs.getInt("id"));
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+
+                tests.add(test);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tests;
+    }
+    
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
 

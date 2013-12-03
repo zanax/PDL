@@ -1,4 +1,5 @@
 <%@page import="models.Teacher"%>
+<%@page import="models.Student"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <%@ page session="true" %>
@@ -29,23 +30,21 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="Courses">Courses</a>
+                                <a href="index.jsp">Courses</a>
                             </li>
-                             <% if(session.getAttribute("user") != null) { %>
+                             <% if(session.getAttribute("user") instanceof Student) { %>
                             <li>
                                 <a href="myCourses">My Courses</a>
                             </li>
-                            <% if(session.getAttribute("user") instanceof Teacher) { %>
-                            <li>
-                                <a href="createCourse">Create course</a>
-                            </li>
-                            <li>
-                                <a href="createTest">Create test</a>
-                            </li>
-                            <% } } %>
+                            <% } %>
                             <li>
                                 <a href="contact">Contact</a>
                             </li>
+                            <% if(session.getAttribute("user") instanceof Teacher) { %>
+                            <li>
+                                <a href="teacherPanel">Teacher</a>
+                            </li>
+                            <% } %>
                             <% if(session.getAttribute("user") == null) { %>
                             <li>
                                 <a href="login">Log In</a>
