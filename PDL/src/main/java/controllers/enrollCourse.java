@@ -46,7 +46,7 @@ public class enrollCourse extends HttpServlet {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
             List<Course> courses = DB.getInstance().getCourses();
-            courses.removeAll(DB.getInstance().getCourses(user.getId()));
+            courses.removeAll(DB.getInstance().getUserCourses(user));
             if (!courses.isEmpty()) {
                 request.setAttribute("show", true);
                 request.setAttribute("courses", courses);
@@ -71,13 +71,13 @@ public class enrollCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/enrollCourse.jsp");
         if (request.getSession().getAttribute("user") != null) {
+            this.errors.clear();
 
             // ID
             int id = 0;
-            if (request.getParameter("id").equals("")) {
-                id = Integer.parseInt(request.getParameter("id"));;
+            if (!request.getParameter("id").equals("")) {
+                id = Integer.parseInt(request.getParameter("id"));
             } else {
                 this.errors.add("\"Course\" is a required field.");
             }
@@ -92,11 +92,13 @@ public class enrollCourse extends HttpServlet {
             if (this.errors.isEmpty()) {
                 request.setAttribute("id", id);
                 request.setAttribute("paymentMethod", method);
-                rd = request.getRequestDispatcher("Payment");
+                System.out.println("PAYMENT"); // Wordt wel aangeroepen
+                request.getRequestDispatcher("Payment").forward(request, response); // Verwijst door naar de doGet() van de Payment Servlet (TODO WKER/ Verwijst terug naar de page (WERKT NIET)
+                return;
             } else {
                 User user = (User) request.getSession().getAttribute("user");
                 List<Course> courses = DB.getInstance().getCourses();
-                courses.removeAll(DB.getInstance().getCourses(user.getId()));
+                courses.removeAll(DB.getInstance().getUserCourses(user));
                 request.setAttribute("courses", courses);
                 request.setAttribute("errors", this.errors);
             }
@@ -104,7 +106,7 @@ public class enrollCourse extends HttpServlet {
         } else {
             request.setAttribute("errors", "You have not the right permissions");
         }
-        rd.forward(request, response);
+        request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response); // Verwijst terug naar de page
     }
 
     /**

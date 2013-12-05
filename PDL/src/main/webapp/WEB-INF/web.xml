@@ -17,6 +17,14 @@
         <servlet-class>controllers.createCourse</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>enrollCourse</servlet-name>
+        <servlet-class>controllers.enrollCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>disenrollCourse</servlet-name>
+        <servlet-class>controllers.disenrollCourse</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>editCourse</servlet-name>
         <servlet-class>controllers.editCourse</servlet-class>
     </servlet>
@@ -36,6 +44,16 @@
         <servlet-name>teacherPanel</servlet-name>
         <servlet-class>controllers.teacherPanel</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Payment</servlet-name>
+        <servlet-class>controllers.Payment</servlet-class>
+    </servlet>
+    
+    
+    <servlet-mapping>
+        <servlet-name>Payment</servlet-name>
+        <url-pattern>/Payment</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -55,6 +73,14 @@
     <servlet-mapping>
         <servlet-name>editCourse</servlet-name>
         <url-pattern>/editCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>enrollCourse</servlet-name>
+        <url-pattern>/enrollCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>disenrollCourse</servlet-name>
+        <url-pattern>/disenrollCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>createTest</servlet-name>

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.User;
 
 /**
  *
@@ -67,8 +68,9 @@ public class disenrollCourse extends HttpServlet {
             if (!courses.isEmpty()) {
                 if (request.getParameter("id") != null) {
                     if (request.getParameter("agree") != null) {
-                        int id = Integer.parseInt(request.getParameter("id"));
-                        if (DB.getInstance().disenrollCourse(id)) {
+                        int course_id = Integer.parseInt(request.getParameter("id"));
+                        long user_id = ((User) request.getSession().getAttribute("user")).getId();
+                        if (DB.getInstance().disenrollCourse(user_id, course_id)) {
                             request.setAttribute("succes", true);
                         } else {
                             request.setAttribute("errors", "There were some problems with the Database");

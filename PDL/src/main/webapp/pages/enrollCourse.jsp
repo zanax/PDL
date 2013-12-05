@@ -1,7 +1,7 @@
 <%@include file="/includes/header.jsp" %> 
 
 <div class="content-header">
-    Create Course
+    Enroll Course
 </div>
 
 <div class="course">
@@ -26,6 +26,7 @@
                     <span class="form-span">Payment Method: *</span>
                     <select class="form-input-select" name="paymentMethod" required>
                         <option value="">Select Payment Method...</option>
+                         <option value="ideal">Ideal</option>
                         <option value="paypal">Paypal</option>
                         <option value="creditcard">Credit Card</option>
                     </select>
