@@ -561,4 +561,31 @@ public class DB {
 
         return affected_rows;
     }
+
+    public boolean disenrollCourse(long user_id, int course_id) {
+        boolean ressult = false;
+        
+        try {
+            startConnection();
+
+            String sql = "  delete "
+                    + "     from "
+                    + "         SubbedCourses"
+                    + "     where "
+                    + "         userID = ? and courseID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setLong(1, user_id);
+            prepared_statement.setInt(2, course_id);
+
+            ressult = prepared_statement.execute();
+            
+            closeConnection();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return ressult;
+    }
 }

@@ -16,8 +16,8 @@
     </head>
 
     <body>
-        
-        
+
+
         <div id="container">
             <div id="container-header"></div>
             <div id="container-middle">
@@ -32,9 +32,15 @@
                             <li>
                                 <a href="index.jsp">Courses</a>
                             </li>
-                             <% if(session.getAttribute("user") instanceof Student) { %>
+                            <% if (session.getAttribute("user") instanceof Student) { %>
                             <li>
                                 <a href="myCourses">My Courses</a>
+                            </li>
+                            <li>
+                                <a href="enrollCourse">Enroll Course</a>
+                            </li>
+                            <li>
+                                <a href="disenrollCourse">Disenroll Course</a>
                             </li>
                             <% } %>
                             <li>
@@ -43,12 +49,12 @@
                             <li>
                                 <a href="contact">Contact</a>
                             </li>
-                            <% if(session.getAttribute("user") instanceof Teacher) { %>
+                            <% if (session.getAttribute("user") instanceof Teacher) { %>
                             <li>
                                 <a href="teacherPanel">Teacher</a>
                             </li>
                             <% } %>
-                            <% if(session.getAttribute("user") == null) { %>
+                            <% if (session.getAttribute("user") == null) { %>
                             <li>
                                 <a href="login">Log In</a>
                             </li>              
