@@ -32,7 +32,7 @@
                             <li>
                                 <a href="index.jsp">Courses</a>
                             </li>
-                            <% if (session.getAttribute("user") instanceof Student) { %>
+                            <% if (session.getAttribute("user") instanceof Student) {%>
                             <li>
                                 <a href="myCourses">My Courses</a>
                             </li>
@@ -42,34 +42,36 @@
                             <li>
                                 <a href="disenrollCourse">Disenroll Course</a>
                             </li>
-                            <% } %>
+                            <% }%>
                             <li>
                                 <a href="editUser">Profile</a>
                             </li>
                             <li>
                                 <a href="contact">Contact</a>
                             </li>
-                            <% if (session.getAttribute("user") instanceof Teacher) { %>
+                            <% if (session.getAttribute("user") instanceof Teacher) {%>
                             <li>
                                 <a href="teacherPanel">Teacher</a>
                             </li>
-                            <% } %>
-                            <% if (session.getAttribute("user") == null) { %>
+                            <% }%>
+                            <% if (session.getAttribute("user") == null) {%>
                             <li>
                                 <a href="login">Log In</a>
                             </li>              
                             <li>
                                 <a href="register">Register</a>
                             </li>
-                            <% } else { %>
+                            <% } else {%>
                             <li>
                                 <a href="logout">Log Out</a>
                             </li>
                             <%}%>
                             <li>
-                                <div id="nav-search">
-                                    <a href="" style="vertical-align: middle; display: inline;"><img src="img/toolbar_find.png"></a><input type="text" placeholder="Search">
-                                </div>
+                                <form method="get" action="searchCourses">
+                                    <div id="nav-search">
+                                        <input type="image" value="search" style="vertical-align: middle; display: inline;" src="img/toolbar_find.png"><input type="text" name="keyword" placeholder="Search for courses">
+                                    </div>
+                                </form>
                             </li>
                         </ul>
                     </nav>
