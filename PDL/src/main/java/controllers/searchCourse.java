@@ -10,6 +10,7 @@ package controllers;
  */
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,17 +26,16 @@ import models.User;
  *
  * @author Zanax & Donna
  */
-@WebServlet(name = "myCourses", urlPatterns = {"/myCourses"})
-public class myCourses extends HttpServlet {
-
-
-    public myCourses() {
+@WebServlet(name = "searchCourse", urlPatterns = {"/searchCourses"})
+public class searchCourse extends HttpServlet {
+    
+    public searchCourse() {
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -45,29 +45,25 @@ public class myCourses extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        String criteria = request.getParameter("keyword");
+        
 
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            
-        } else {
-
-            List<Course> courses = DB.getInstance().getUserCourses(user);
-            
-            if(courses.isEmpty()){
-            request.setAttribute("errors", "You are not subscribed to any courses");
-        }
-           
-            request.setAttribute("courses", courses);
+        List<Course> courses = DB.getInstance().searchCourse(criteria);
+        
+        if(courses.isEmpty()){
+            request.setAttribute("errors", "There are no courses matching your keyword(s)");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/myCourses.jsp");
+        request.setAttribute("courses", courses);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/searchCourse.jsp");
         rd.forward(request, response);
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -79,3 +75,4 @@ public class myCourses extends HttpServlet {
             throws ServletException, IOException {
     }
 }
+
