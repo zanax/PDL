@@ -15,7 +15,7 @@
             <c:if test="${success != null && success}">
                 <a href="myCourses" >
                     <div class="success_message">
-                        U have successfully edited the Course '${editCourse}'. Go to My Courses      
+                        The course has been successfully edited.     
                     </div>
                 </a>
             </c:if>
