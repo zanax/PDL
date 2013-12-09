@@ -67,11 +67,12 @@
                             </li>
                             <%}%>
                             <li>
-                                <form method="get" action="searchCourses">
-                                    <div id="nav-search">
-                                        <input type="image" value="search" style="vertical-align: middle; display: inline;" src="img/toolbar_find.png"><input type="text" name="keyword" placeholder="Search for courses">
-                                    </div>
-                                </form>
+                                <div id="nav-search">
+                                    <form method="get" action="searchCourses">
+                                    <input type="image" value="search" src="img/toolbar_find.png">
+                                    <input type="text" name="keyword" placeholder="Search for courses">
+                                    </form>
+                                </div>
                             </li>
                         </ul>
                     </nav>
