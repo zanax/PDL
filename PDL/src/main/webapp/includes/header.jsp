@@ -44,9 +44,6 @@
                             </li>
                             <% }%>
                             <li>
-                                <a href="editUser">Profile</a>
-                            </li>
-                            <li>
                                 <a href="contact">Contact</a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Teacher) {%>
@@ -62,6 +59,9 @@
                                 <a href="register">Register</a>
                             </li>
                             <% } else {%>
+                            <li>
+                                <a href="editUser">Profile</a>
+                            </li>
                             <li>
                                 <a href="logout">Log Out</a>
                             </li>

@@ -608,6 +608,26 @@ public class DB {
         return affected_rows;
     }
     
+           //delete test
+    public void deleteTest(int test_id) {
+
+        try {
+            startConnection();
+
+            String sql = "DELETE "
+                    + " FROM Test"
+                    + " WHERE id = ?";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean disenrollCourse(long user_id, int course_id) {
         boolean ressult = false;
         

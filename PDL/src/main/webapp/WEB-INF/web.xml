@@ -37,6 +37,10 @@
         <servlet-class>controllers.editTest</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>deleteTest</servlet-name>
+        <servlet-class>controllers.deleteTest</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>contact</servlet-name>
         <servlet-class>controllers.Contact</servlet-class>
     </servlet>
@@ -89,6 +93,10 @@
     <servlet-mapping>
         <servlet-name>editTest</servlet-name>
         <url-pattern>/editTest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteTest</servlet-name>
+        <url-pattern>/deleteTest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>contact</servlet-name>
