@@ -102,8 +102,12 @@ div.content-header {
     text-align: center;
 }
 
-.button.full-width.middle{
+.button.middle{
     margin-top: 10px;
+}
+
+.button.right{
+    float: right;
 }
 
 #button{

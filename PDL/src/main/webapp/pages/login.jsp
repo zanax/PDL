@@ -26,9 +26,8 @@
                 <h4>Password</h4>
                 <input name="password" type="password" placeholder="Password" required class="form-input" style="text-align: center;">
             </div>
-            <div class="course-button info" style="left: 745px;">
-                <input type="submit" value="Log in" class="button">
-            </div> <br/>
+            
+            <input class="button middle right" type="submit" value="Log in" class="button">
         </form>
     </div>
 </div>
