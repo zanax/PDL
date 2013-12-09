@@ -93,8 +93,8 @@ public class DB {
             startConnection();
             
             String sql = "insert "
-                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password)"
-                    + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
+                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password, city, country)"
+                    + "   values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
             
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, user.getFirstname());
@@ -105,6 +105,8 @@ public class DB {
             prepared_statement.setString(6, user.getEmail());
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
+            prepared_statement.setString(9, user.getCity());
+            prepared_statement.setString(10, user.getCountry());
             
             prepared_statement.execute();
             
@@ -131,7 +133,7 @@ public class DB {
             startConnection();
             
             String sql = "  update User "
-                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?"
+                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?, city = ?, country = ?"
                     + "     where "
                     + "     user_id = ?";
             
@@ -144,8 +146,10 @@ public class DB {
             prepared_statement.setString(6, user.getEmail());
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
+            prepared_statement.setString(9, user.getCity());
+            prepared_statement.setString(10, user.getCountry());
             
-            prepared_statement.setLong(9, user.getId());
+            prepared_statement.setLong(11, user.getId());
             
             affected_rows = prepared_statement.executeUpdate();
             
@@ -193,6 +197,9 @@ public class DB {
                 user.setEmail(rs.getString("email"));
                 user.setIsBanned(rs.getBoolean("banned"));
                 user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
             }
             closeConnection();
         } catch (SQLException e) {

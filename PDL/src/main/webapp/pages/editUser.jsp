@@ -25,8 +25,8 @@
                 </label>
                 <div class="form-input-radio">
                     <span class="form-span">Gender:</span>
-                    Male<input name="gender" type="radio" value="f" required <c:if test="${gender == 'f'}">selected</c:if>>
-                    Female<input name="gender" type="radio" value="m" required <c:if test="${gender == 'm'}">selected</c:if>>
+                    Male<input name="gender" type="radio" value="m" required <c:if test="${user.gender == 'm'.charAt(0)}">checked</c:if>>
+                    Female<input name="gender" type="radio" value="f" required <c:if test="${user.gender == 'f'.charAt(0)}">checked</c:if>>
                         <input type="hidden" name="gender" value="empty">
                     </div>
                     <label class="label">
@@ -38,25 +38,13 @@
                     <input name="surname" type="text" value="${user.surname}" class="form-input" required>
                 </label>
                 <label class="label">
-                    <span class="form-span">Country:</span>
-                    <select class="form-input-select" name="country" required>
-                        <option value="">Select country...</option>
-                        <option value="1">United Kindom</option>
-                        <option value="2">Nederland</option>
-                        <!-- doet niks omdat t een object is -->
-                        <!--<option value="${user.country}" selected>${user.country}</option>-->
-                    </select>
-                </label>
-                <label class="label">
-                    <span class="form-span">City:</span>
-                    <select class="form-input-select" name="city" required>
-                        <option value="">Select city...</option>
-                        <option value="1">Winkel</option>
-                        <option value="2">Amsterdam</option>
-                        <!-- doet niks omdat t een object is -->
-                        <!--<option value="${user.city}" selected>${user.city}</option>-->
-                    </select>
-                </label>
+                <span class="form-span">City:</span>
+                <input type="text" name="city" placeholder="City" class="form-input" required value="${user.city}">
+            </label>
+            <label class="label">
+                <span class="form-span">Country:</span>
+                <input type="text" name="country" placeholder="Country" class="form-input" required value="${user.country}">
+            </label>
                 <label class="label">
                     <span class="form-span">Zipcode:</span>
                     <input name="zipcode" type="text" value="${user.zipcode}" class="form-input" required>
