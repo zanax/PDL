@@ -537,6 +537,56 @@ public class DB {
         return tests;
     }
     
+        public List<Test> getUserTests(User user) {
+        
+        List<Test> tests = new ArrayList<Test>();
+        List<Course> courses = getUserCourses(user);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for (int i = 0; i < courses.size(); i++) {
+            sb.append(courses.get(i).getId());
+            if(i != courses.size() - 1) {
+                sb.append(", ");
+            }
+        } sb.append(")");
+        
+        try {
+            startConnection();
+            
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Test "
+                    + "     where course_id"
+                    + "     in "
+                    + sb.toString();
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while (rs.next()) {
+                Test test = new Test(rs.getInt("id"));
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+                
+                tests.add(test);
+            }
+            
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return tests;
+    }
+    
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
         
