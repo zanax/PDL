@@ -12,13 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Teacher;
 
 /**
  *
  * @author Zanax
  */
-@WebServlet(name = "Payment", urlPatterns = {"/Payment"})
-public class Payment extends HttpServlet {
+@WebServlet(name = "editGrade", urlPatterns = {"/editGrade"})
+public class editGrade extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,14 +42,12 @@ public class Payment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("PAYMENT - DOGET");
-        if (request.getSession().getAttribute("user") != null) {
-            request.setAttribute("id", request.getParameter("id"));
-            request.setAttribute("paymentMethod", request.getParameter("paymentMethod"));
+        if (request.getSession().getAttribute("user") instanceof Teacher) {
+            request.setAttribute("show", true);
         } else {
             request.setAttribute("errors", "You have not the right permissions");
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/Payment.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/editGrade.jsp");
         rd.forward(request, response);
     }
 

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -92,8 +93,10 @@ public class enrollCourse extends HttpServlet {
             if (this.errors.isEmpty()) {
                 request.setAttribute("id", id);
                 request.setAttribute("paymentMethod", method);
-                System.out.println("PAYMENT"); // Wordt wel aangeroepen
-                request.getRequestDispatcher("Payment").forward(request, response); // Verwijst door naar de doGet() van de Payment Servlet (TODO WKER/ Verwijst terug naar de page (WERKT NIET)
+                System.out.println("PAYMENT - REQUESTDISPATCHER");
+                ServletContext context = getServletContext();
+                context.getNamedDispatcher("Payment").forward(request, response);
+                //request.getRequestDispatcher("Payment").forward(request, response); // Verwijst terug naar de page
                 return;
             } else {
                 User user = (User) request.getSession().getAttribute("user");
