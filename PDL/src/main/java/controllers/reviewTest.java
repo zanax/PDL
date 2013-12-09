@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package controllers;
 
 import connection.DB;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -15,15 +17,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Course;
+import models.Test;
 import models.User;
 
 /**
  *
  * @author Zanax
  */
-@WebServlet(name = "disenrollCourse", urlPatterns = {"/disenrollCourse"})
-public class disenrollCourse extends HttpServlet {
+@WebServlet(name = "reviewTest", urlPatterns = {"/reviewTest"})
+public class reviewTest extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -39,17 +41,17 @@ public class disenrollCourse extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
-            List<Course> courses = DB.getInstance().getUserCourses(user);
-            if (!courses.isEmpty()) {
+            List<Test> tests = DB.getInstance().getUserTests(user);
+            if(!tests.isEmpty()) {
+                request.setAttribute("tests", tests);
                 request.setAttribute("show", true);
-                request.setAttribute("courses", courses);
             } else {
-                request.setAttribute("errors", "You have no Courses to disenroll to");
+                request.setAttribute("errors", "You have no Tests to review");
             }
         } else {
             request.setAttribute("errors", "You have not the right permissions");
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/reviewTest.jsp");
         rd.forward(request, response);
     }
 
@@ -64,34 +66,7 @@ public class disenrollCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") != null) {
-            List<Course> courses = DB.getInstance().getCourses();
-            if (!courses.isEmpty()) {
-                if (request.getParameter("id") != null) {
-                    if (request.getParameter("agree") != null) {
-                        int course_id = Integer.parseInt(request.getParameter("id"));
-                        long user_id = ((User) request.getSession().getAttribute("user")).getId();
-                        if (DB.getInstance().disenrollCourse(user_id, course_id)) {
-                            request.setAttribute("succes", true);
-                        } else {
-                            request.setAttribute("errors", "There were some problems with the Database");
-                        }
-                    } else {
-                        request.setAttribute("errors", "You did not agree to disenroll from the Course");
-                    }
-                } else {
-                    request.setAttribute("errors", "You did not choose a Course to disenroll from");
-                }
-                request.setAttribute("courses", courses);
-                request.setAttribute("show", true);
-            } else {
-                request.setAttribute("errors", "You have no Courses to disenroll to");
-            }
-        } else {
-            request.setAttribute("errors", "You have not the right permissions");
-        }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp");
-        rd.forward(request, response);
+        
     }
 
     /**
