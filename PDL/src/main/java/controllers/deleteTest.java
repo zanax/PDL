@@ -6,47 +6,44 @@ package controllers;
 
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Helper;
 import models.Test;
 
 @WebServlet(name = "deleteTest", urlPatterns = {"/deleteTest"})
 public class deleteTest extends HttpServlet {
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private List<String> errors;
+    
+    public deleteTest(){
+        this.errors = new ArrayList<String>();
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        Test test = DB.getInstance().getTest(Integer.parseInt(request.getParameter("id")));
-
-        request.setAttribute("test", test);
+        this.errors.clear();
+        String url = "/pages/deleteTest.jsp";
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
+        }
+        else{
+            Test test = DB.getInstance().getTest(Integer.parseInt(request.getParameter("id")));
+            request.setAttribute("test", test);
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/pages/deleteTest.jsp");
         rd.forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

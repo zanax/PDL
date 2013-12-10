@@ -40,12 +40,19 @@ public class createTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //TODO: kijk of teacher
-
-        //courses ophalen en doorgeven aan jsp
-        ArrayList<Course> courses = DB.getInstance().getCourses();
-        request.setAttribute("courses", courses);
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createTest.jsp");
+        this.errors.clear();
+        String url = "pages/createTest.jsp";
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
+        }
+        else{
+            ArrayList<Course> courses = DB.getInstance().getCourses();
+            request.setAttribute("courses", courses);
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

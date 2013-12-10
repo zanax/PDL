@@ -32,7 +32,6 @@ import models.User;
  */
 @WebServlet(name = "editUser", urlPatterns = {"/editUser"})
 public class editUser extends HttpServlet {
-
     private List<String> errors;
     private boolean success = false;
 
@@ -40,21 +39,11 @@ public class editUser extends HttpServlet {
         this.errors = new ArrayList<String>();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         this.errors.clear();
+        String url = "/pages/editUser.jsp";
 
         if (request.getSession().getAttribute("user") != null) {
 
@@ -69,8 +58,9 @@ public class editUser extends HttpServlet {
 
         } else {
             request.setAttribute("errors", "You are not logged in");
+            url = "/pages/404.jsp";
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/editUser.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

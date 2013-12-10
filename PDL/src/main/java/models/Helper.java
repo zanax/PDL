@@ -32,4 +32,18 @@ public class Helper {
         
         return outcome;
     }
+    
+    public static boolean isTeacher(Object user){        
+        if(user instanceof Teacher){
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isStudent(Object user){
+        if(user instanceof Student){
+            return true;
+        }
+        return false;
+    }
 }

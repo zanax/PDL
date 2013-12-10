@@ -10,6 +10,7 @@ package controllers;
  */
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Course;
+import models.Helper;
 import models.User;
 
 /**
@@ -27,41 +29,35 @@ import models.User;
  */
 @WebServlet(name = "myCourses", urlPatterns = {"/myCourses"})
 public class myCourses extends HttpServlet {
-
+    private List<String> errors;
 
     public myCourses() {
+        this.errors = new ArrayList<String>();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            
+        this.errors.clear();
+        String url = "/pages/myCourses.jsp";
+        
+        if ( ! Helper.isStudent(request.getSession().getAttribute("user"))) {
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
         } else {
 
-            List<Course> courses = DB.getInstance().getUserCourses(user);
+            List<Course> courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
             
             if(courses.isEmpty()){
-            request.setAttribute("errors", "You are not subscribed to any courses");
-        }
+                //TODO: Toevoegen aan errors arraylist i.p.v. request attribute!
+                request.setAttribute("errors", "You are not subscribed to any courses");
+            }
            
             request.setAttribute("courses", courses);
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/myCourses.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

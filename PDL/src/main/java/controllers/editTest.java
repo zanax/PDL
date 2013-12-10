@@ -28,35 +28,36 @@ public class editTest extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.errors.clear();
-        //TODO: kijk of teacher
-        
-        //Haal id op van test, haal test op
-        int test_id = Helper.isInt(request.getParameter("id"));
-        Test test = null;
-        if(test_id > -1){
-            test = DB.getInstance().getTest(test_id);
-            
-            if(test == null){
-                this.errors.add("The requested test does not exist.");
-            }
+        String url = "/pages/createTest.jsp";
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
         }
         else{
-            this.errors.add("The requested test does not exist.");
+            int test_id = Helper.isInt(request.getParameter("id"));
+            Test test = null;
+            if(test_id > -1){
+                test = DB.getInstance().getTest(test_id);
+
+                if(test == null){
+                    this.errors.add("The requested test does not exist.");
+                }
+            }
+            else{
+                this.errors.add("The requested test does not exist.");
+            }
+
+            request.setAttribute("test", test);
+            if( ! this.errors.isEmpty()) request.setAttribute("errors", this.errors);
+
+            //Courses ophalen voor form
+            ArrayList<Course> courses = DB.getInstance().getCourses();
+            request.setAttribute("courses", courses);
+
+            url = "/pages/editTest.jsp";
+            if( ! errors.isEmpty()) url = "/pages/createTest.jsp";
         }
-        
-        request.setAttribute("test", test);
-        if( ! this.errors.isEmpty()) request.setAttribute("errors", this.errors);
-        
-        //Courses ophalen voor form
-        ArrayList<Course> courses = DB.getInstance().getCourses();
-        request.setAttribute("courses", courses);
-        
-        for(Course course : courses){
-            System.out.println(course.getId() +" - "+ course.getName());
-        }
-        
-        String url = "/pages/editTest.jsp";
-        if( ! errors.isEmpty()) url = "/pages/createTest.jsp";
         
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
