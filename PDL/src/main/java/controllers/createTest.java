@@ -150,6 +150,7 @@ public class createTest extends HttpServlet {
             }
         } else {
             request.setAttribute("errors", this.errors);
+            request.setAttribute("courses", DB.getInstance().getCourses());
         }
 
         request.setAttribute("title", title);
@@ -162,9 +163,6 @@ public class createTest extends HttpServlet {
         request.setAttribute("question_amount", amount_of_questions);
         request.setAttribute("success", this.success);
 
-//        if(success){
-//            url = "/pages/editTest.jsp";
-//        }
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
