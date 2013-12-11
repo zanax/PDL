@@ -40,12 +40,19 @@ public class createTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //TODO: kijk of teacher
-
-        //courses ophalen en doorgeven aan jsp
-        ArrayList<Course> courses = DB.getInstance().getCourses();
-        request.setAttribute("courses", courses);
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createTest.jsp");
+        this.errors.clear();
+        String url = "pages/createTest.jsp";
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
+        }
+        else{
+            ArrayList<Course> courses = DB.getInstance().getCourses();
+            request.setAttribute("courses", courses);
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 
@@ -75,7 +82,7 @@ public class createTest extends HttpServlet {
         if (time.equals("")) {
             this.errors.add("\"Time\" is a required field.");
         }
-        if ((int_time = isInt(time)) == -1) {
+        if ((int_time = Helper.isInt(time)) == -1) {
             this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
         }
         if ((int_time = Helper.isInt(time)) == -1) {
@@ -93,12 +100,12 @@ public class createTest extends HttpServlet {
         if (amount_of_questions.equals("")) {
             this.errors.add("\"Amount of questions\" is a required field.");
         }
-        if ((int_amount_of_questions = isInt(amount_of_questions)) == -1) {
+        if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) {
             this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
         }
 
         Course course = null;
-        int int_course_id = isInt(course_id);
+        int int_course_id = Helper.isInt(course_id);
         if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) {
             this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
         }
@@ -150,6 +157,7 @@ public class createTest extends HttpServlet {
             }
         } else {
             request.setAttribute("errors", this.errors);
+            request.setAttribute("courses", DB.getInstance().getCourses());
         }
 
         request.setAttribute("title", title);
@@ -162,23 +170,8 @@ public class createTest extends HttpServlet {
         request.setAttribute("question_amount", amount_of_questions);
         request.setAttribute("success", this.success);
 
-//        if(success){
-//            url = "/pages/editTest.jsp";
-//        }
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-    }
-
-    private int isInt(String string) {
-        int outcome = -1;
-
-        try {
-            outcome = Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            return outcome;
-        }
-
-        return outcome;
     }
 }
 
