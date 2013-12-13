@@ -1,6 +1,6 @@
 package connection;
 
-import controllers.Question;
+import models.Question;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,7 @@ import java.sql.Statement;
 import models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import models.Course;
 import models.Student;
 import models.Teacher;
@@ -695,6 +696,14 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         } return resultt;
+    }
+    
+    public List<Question> getQuestions(int test_id) {
+        return null;
+    }
+    
+    public boolean submitAnswers(int user_id, Map<Integer,String> answers) {
+        return false;
     }
     
     public int updateTest(Test test) {
