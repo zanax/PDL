@@ -1,5 +1,6 @@
 package connection;
 
+import controllers.Question;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -497,6 +498,47 @@ public class DB {
         return test;
     }
     
+    public List<Test> getTestsByCouseID(List<Integer> ids) {
+        List<Test> tests = new ArrayList<Test>();
+        
+        try {
+            startConnection();
+            for(int id : ids) {
+                String sql = "  select "
+                        + "         *"
+                        + "     from"
+                        + "         Test"
+                        + "     where"
+                        + "         course_id = ?"
+                        + "     limit 1";
+
+                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, id);
+
+                ResultSet rs = prepared_statement.executeQuery();
+
+                while (rs.next()) {
+                    Test test = new Test(id);
+                    test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                    test.setChapter_id(rs.getInt("chapter_id"));
+                    test.setCourse_id(rs.getInt("course_id"));
+                    test.setDescription(rs.getString("description"));
+                    test.setEnd_date(rs.getString("end_date"));
+                    test.setStart_date(rs.getString("start_date"));
+                    test.setTime(rs.getInt("time"));
+                    test.setTitle(rs.getString("title"));
+                    tests.add(test);
+                }
+            }
+            
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return tests;
+    }
+    
     public ArrayList<Test> getTests() {
         
         ArrayList<Test> tests = new ArrayList<Test>();
@@ -565,8 +607,10 @@ public class DB {
             
             ResultSet rs = prepared_statement.executeQuery();
             
+            Test test;
+            
             while (rs.next()) {
-                Test test = new Test(rs.getInt("id"));
+                test = new Test(rs.getInt("id"));
                 test.setAmount_of_questions(rs.getInt("amount_of_questions"));
                 test.setChapter_id(rs.getInt("chapter_id"));
                 test.setCourse_id(rs.getInt("course_id"));
@@ -575,7 +619,6 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
-                
                 tests.add(test);
             }
             
@@ -627,6 +670,33 @@ public class DB {
         }
         
         return courses;
+    }
+    
+    public boolean addQuestion(Question question) {
+        boolean resultt = false;
+        
+        try {
+            startConnection();
+            
+            String sql = "inser"
+                    + "into Question(test_id, question, correctAnswer, answer1, answer2, answer3)"
+                    + "values (?, ?, ?, ?, ?, ?)";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, question.getTestId());
+            prepared_statement.setString(2, question.getQuestion());
+            prepared_statement.setString(3, question.getCorrectAnswer());
+            prepared_statement.setString(4, question.getAnswer1());
+            prepared_statement.setString(5, question.getAnswer2());
+            prepared_statement.setString(6, question.getAnswer3());
+            
+            resultt = prepared_statement.execute();
+            
+            closeConnection();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } return resultt;
     }
     
     public int updateTest(Test test) {
