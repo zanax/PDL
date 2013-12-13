@@ -31,7 +31,7 @@
                     <td>${course.description}</td>
                     <td>
                         <a href="editCourse?id=${course.id}"><img src="img/edit.png"></a>
-                        <a href="deleteCourse?id=${course.id}"><img src="img/delete.png"></a>
+                        <a href="disableCourse?id=${course.id}"><img src="img/delete.png"></a>
                     </td>
                 </tr>
             </c:forEach>

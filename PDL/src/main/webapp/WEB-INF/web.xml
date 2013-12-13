@@ -52,8 +52,10 @@
         <servlet-name>Payment</servlet-name>
         <servlet-class>controllers.Payment</servlet-class>
     </servlet>
-    
-    
+    <servlet>
+        <servlet-name>deleteCourse</servlet-name>
+        <servlet-class>controllers.disableCourse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Payment</servlet-name>
         <url-pattern>/Payment</url-pattern>
@@ -105,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>teacherPanel</servlet-name>
         <url-pattern>/teacherPanel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteCourse</servlet-name>
+        <url-pattern>/deleteCourse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
