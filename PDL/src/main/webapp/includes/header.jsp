@@ -30,7 +30,10 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="index.jsp">Courses</a>
+                                <a href="index.jsp">Home</a>
+                            </li>
+                            <li>
+                                <a href="courseCatalog">Courses</a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Student) {%>
                             <li>
