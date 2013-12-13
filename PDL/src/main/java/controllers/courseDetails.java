@@ -10,6 +10,7 @@ package controllers;
  */
 import connection.DB;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,18 +18,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import models.Course;
-import models.User;
+import models.Teacher;
 
 /**
  *
- * @author Zanax & Donna
+ * @author Zanax
  */
-@WebServlet(name = "courseCatalog", urlPatterns = {"/courseCatalog"})
-public class courseCatalog extends HttpServlet {
+@WebServlet(name = "courseDetails", urlPatterns = {"/courseDetails"})
+public class courseDetails extends HttpServlet {
 
-    public courseCatalog() {
+    private List<String> errors;
+
+    public courseDetails() {
+        this.errors = new ArrayList<String>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -43,12 +46,19 @@ public class courseCatalog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        List<Course> courses = DB.getInstance().getCourses();
-
-        request.setAttribute("courses", courses);
-
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/courseCatalog.jsp");
+            if (request.getParameter("id") != null) {
+                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+                if (course != null) {
+                    request.setAttribute("course", course);
+                    request.setAttribute("show", true);
+                } else {
+                    request.setAttribute("errors", "Something went wrong with the Database");
+                }
+            } else {
+                request.setAttribute("errors", "We missed the ID");
+            
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/courseDetails.jsp");
         rd.forward(request, response);
     }
 
@@ -63,5 +73,6 @@ public class courseCatalog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    
     }
 }
