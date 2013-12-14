@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 
-package controllers;
+package models;
 
 /**
  *
  * @author Maarten
  */
 public class Question {
+    private int id;
     private int testId;
     private String question;
     private String correctAnswer;
@@ -21,7 +22,8 @@ public class Question {
     public Question() {
     }
     
-    public Question(int test_id, String question, String correctAnswer, String answer1, String answer2, String answer3) {
+    public Question(int id, int test_id, String question, String correctAnswer, String answer1, String answer2, String answer3) {
+        this.id = id;
         this.testId = test_id;
         this.question = question;
         this.correctAnswer = correctAnswer;
@@ -30,6 +32,14 @@ public class Question {
         this.answer3 = answer3;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getTestId() {
         return testId;
     }
@@ -54,7 +64,7 @@ public class Question {
         return answer3;
     }
 
-    void setQuestion(String question) {
+    public void setQuestion(String question) {
         this.question = question;
     }
 

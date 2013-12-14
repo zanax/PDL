@@ -1,7 +1,6 @@
 package models;
 
 public class Test {
-
     private int id;
     private int course_id;
     private int chapter_id;
