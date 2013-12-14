@@ -1,3 +1,4 @@
+<%@page import="models.Helper"%>
 <%@page import="models.Teacher"%>
 <%@page import="models.Student"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,7 +34,7 @@
                                 <a href="index.jsp">Home</a>
                             </li>
                             <li>
-                                <a href="courseCatalog">Courses</a>
+                                <a href="index.jsp"><% out.println(Helper.translateWord(1, "courses")); %></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Student) {%>
                             <li>
@@ -56,7 +57,7 @@
                             <% }%>
                             <% if (session.getAttribute("user") == null) {%>
                             <li>
-                                <a href="login">Log In</a>
+                                <a href="login"><% Helper.translateWord(0, "log in"); %></a>
                             </li>              
                             <li>
                                 <a href="register">Register</a>

@@ -10,6 +10,24 @@ package models;
  */
 public class Helper {
     private static Helper helper = null;
+    public static int LANGUAGE_UK = 0, LANGUAGE_DUTCH = 1;
+    private static String[][] translations = {
+        //Words
+        {"my", "mijn"},
+        {"courses", "cursussen"},
+        {"log in", "inloggen"},
+        {"contact", "contact"},
+        {"teacher", "leraar"},
+        {"register", "registreren"},
+        {"profile", "profiel"},
+        {"log out", "uitloggen"},
+        {"search", "zoeken"},
+        {"for", "naar"},
+        {"more", "meer"},
+        {"info", "info"},
+        {"back", "terug"},
+        {"", ""},
+    };
     
     public static Helper getInstance(){
         if(helper == null){
@@ -45,5 +63,15 @@ public class Helper {
             return true;
         }
         return false;
+    }
+        
+    public static String translateWord(int language, String word){
+        for(String[] trans_words : translations){
+            if(trans_words[0].equals(word)){
+                word = trans_words[language];
+            }
+        }
+        
+        return word;
     }
 }
