@@ -38,7 +38,7 @@ public class User {
     
     private String country;
     
-    private Language language;
+    private int language;
     
     private char gender;
     
@@ -173,14 +173,14 @@ public class User {
     /**
      * @return the language
      */
-    public Language getLanguage() {
+    public int getLanguage() {
         return language;
     }
 
     /**
      * @param language the language to set
      */
-    public void setLanguage(Language language) {
+    public void setLanguage(int language) {
         this.language = language;
     }
 

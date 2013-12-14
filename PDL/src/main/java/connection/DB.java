@@ -95,8 +95,8 @@ public class DB {
             startConnection();
 
             String sql = "insert "
-                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password, city, country)"
-                    + "   values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
+                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password, city, country, language_id)"
+                    + "   values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, user.getFirstname());
             prepared_statement.setString(2, user.getSurname());
@@ -108,6 +108,7 @@ public class DB {
             prepared_statement.setString(8, user.getPassword());
             prepared_statement.setString(9, user.getCity());
             prepared_statement.setString(10, user.getCountry());
+            prepared_statement.setInt(11, user.getLanguage());
 
             prepared_statement.execute();
 
@@ -134,7 +135,7 @@ public class DB {
             startConnection();
 
             String sql = "  update User "
-                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?, city = ?, country = ?"
+                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?, city = ?, country = ?, language_id = ?"
                     + "     where "
                     + "     user_id = ?";
 
@@ -149,7 +150,8 @@ public class DB {
             prepared_statement.setString(8, user.getPassword());
             prepared_statement.setString(9, user.getCity());
             prepared_statement.setString(10, user.getCountry());
-            prepared_statement.setLong(11, user.getId());
+            prepared_statement.setInt(11, user.getLanguage());
+            prepared_statement.setLong(12, user.getId());
             
             affected_rows = prepared_statement.executeUpdate();
 
@@ -200,6 +202,7 @@ public class DB {
                 user.setCity(rs.getString("city"));
                 user.setCountry(rs.getString("country"));
                 user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
             }
             closeConnection();
         } catch (SQLException e) {

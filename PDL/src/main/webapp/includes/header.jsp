@@ -1,9 +1,11 @@
+<%@page import="models.User"%>
 <%@page import="models.Helper"%>
 <%@page import="models.Teacher"%>
 <%@page import="models.Student"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <%@ page session="true" %>
+<% int language = Helper.getLanguage(session);%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -34,11 +36,11 @@
                                 <a href="index.jsp">Home</a>
                             </li>
                             <li>
-                                <a href="index.jsp"><% out.println(Helper.translateWord(1, "courses")); %></a>
+                                <a href="index.jsp"><% out.println(Helper.translateWord(language, "Courses")); %></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Student) {%>
                             <li>
-                                <a href="myCourses">My Courses</a>
+                                <a href="myCourses"><% out.println(Helper.translateWord(language, "My Courses")); %></a>
                             </li>
                             <li>
                                 <a href="enrollCourse">Enroll Course</a>
@@ -48,33 +50,33 @@
                             </li>
                             <% }%>
                             <li>
-                                <a href="contact">Contact</a>
+                                <a href="contact"><% out.println(Helper.translateWord(language, "Contact")); %></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Teacher) {%>
                             <li>
-                                <a href="teacherPanel">Teacher</a>
+                                <a href="teacherPanel"><% out.println(Helper.translateWord(language, "Teacher")); %></a>
                             </li>
                             <% }%>
                             <% if (session.getAttribute("user") == null) {%>
                             <li>
-                                <a href="login"><% Helper.translateWord(0, "log in"); %></a>
+                                <a href="login"><% out.println(Helper.translateWord(language, "Log In")); %></a>
                             </li>              
                             <li>
-                                <a href="register">Register</a>
+                                <a href="register"><% out.println(Helper.translateWord(language, "Register")); %></a>
                             </li>
                             <% } else {%>
                             <li>
-                                <a href="editUser">Profile</a>
+                                <a href="editUser"><% out.println(Helper.translateWord(language, "Profile")); %></a>
                             </li>
                             <li>
-                                <a href="logout">Log Out</a>
+                                <a href="logout"><% out.println(Helper.translateWord(language, "Log Out")); %></a>
                             </li>
                             <%}%>
                             <li>
                                 <div id="nav-search">
                                     <form method="get" action="searchCourses">
                                     <input type="image" value="search" src="img/toolbar_find.png">
-                                    <input type="text" name="keyword" placeholder="Search for courses">
+                                    <input type="text" name="keyword" placeholder="<% out.println(Helper.translateWord(language, "Search for courses")); %>">
                                     </form>
                                 </div>
                             </li>

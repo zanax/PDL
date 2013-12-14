@@ -46,20 +46,13 @@ public class editUser extends HttpServlet {
         String url = "/pages/editUser.jsp";
 
         if (request.getSession().getAttribute("user") != null) {
-
             User user = (User) request.getSession().getAttribute("user");
-
-            if (user != null) {
-                request.setAttribute("user", user);
-                request.setAttribute("show", true);
-            } else {
-                request.setAttribute("errors", "Something went wrong with the Database");
-            }
-
+            request.setAttribute("user", user);
         } else {
-            request.setAttribute("errors", "You are not logged in");
+            request.setAttribute("errors", "You are not logged in.");
             url = "/pages/404.jsp";
         }
+        
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -151,7 +144,7 @@ public class editUser extends HttpServlet {
         if (country.equals("")) {
             this.errors.add("\"Country\" is a required field.");
         }
-        if (language_id.equals("") || ! (Helper.isInt(language_id) > 0)) {
+        if (language_id.equals("") || ! (Helper.isInt(language_id) > -1)) {
             this.errors.add("\"Language\" is a required field.");
         }
 
@@ -163,6 +156,7 @@ public class editUser extends HttpServlet {
         }
 
         if (errors.isEmpty()) {
+            int int_language_id = Helper.isInt(language_id);
             password = md5(password);
 
             user = (User) request.getSession().getAttribute("user");
@@ -174,7 +168,7 @@ public class editUser extends HttpServlet {
             user.setPassword(password);
             user.setCity(city);
             user.setCountry(country);
-//            user.setLanguage(request.getParameter("language"));
+            user.setLanguage(int_language_id);
             user.setGender(gender.charAt(0));
 
 
@@ -182,6 +176,7 @@ public class editUser extends HttpServlet {
 
             if (affected_rows > 0) {
                 this.success = true;
+                request.setAttribute("user", user);
             } else {
                 this.errors.add("Something went wrong when editing the user, please try again.");
                 request.setAttribute("errors", this.errors);
