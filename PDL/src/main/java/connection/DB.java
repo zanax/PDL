@@ -417,7 +417,7 @@ public class DB {
             while (rs.next()) {
                 chapter = new Chapter(id);
                 chapter.setCourse_id(rs.getInt("courseID"));
-                chapter.setTitle(rs.getString("title"));
+                chapter.setTitle(rs.getString("chapterName"));
             }
             
             closeConnection();
@@ -426,6 +426,68 @@ public class DB {
         }
         
         return chapter;
+    }
+    
+    public List<Chapter> getCourseChapters(int id) {
+        
+         List<Chapter> chapters = new ArrayList<Chapter>();
+        
+        try {
+            startConnection();
+            
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Chapter"
+                    + "     where"
+                    + "         courseID = ?";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while (rs.next()) {
+                chapters.add(getChapter(rs.getInt("id")));
+            }
+            
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return chapters;
+    }
+    
+    public List<Test> getCourseTests(int id) {
+        
+         List<Test> tests = new ArrayList<Test>();
+        
+        try {
+            startConnection();
+            
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Test"
+                    + "     where"
+                    + "         course_id = ?";
+            
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+            
+            while (rs.next()) {
+                tests.add(getTest(rs.getInt("id")));
+            }
+            
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return tests;
     }
     
     public List<Course> getUserCourses(User user) {

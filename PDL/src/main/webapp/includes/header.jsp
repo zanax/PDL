@@ -39,12 +39,6 @@
                             <li>
                                 <a href="myCourses">My Courses</a>
                             </li>
-                            <li>
-                                <a href="enrollCourse">Enroll Course</a>
-                            </li>
-                            <li>
-                                <a href="disenrollCourse">Disenroll Course</a>
-                            </li>
                             <% }%>
                             <li>
                                 <a href="contact">Contact</a>
