@@ -14,7 +14,7 @@
         <div id="course-content">
 
             <div id="course-content-image">
-                <img src="http://blog.ecollegefinder.org/wp-content/uploads/2012/01/101474454.jpg"></a>
+                <img src="http://blog.ecollegefinder.org/wp-content/uploads/2012/01/101474454.jpg">
             </div>
             <div id="course-content-title">
                 <h4>${course.name}</h4>

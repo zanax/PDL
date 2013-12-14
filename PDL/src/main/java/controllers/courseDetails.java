@@ -18,8 +18,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Chapter;
 import models.Course;
 import models.Teacher;
+import models.Test;
 
 /**
  *
@@ -48,8 +50,13 @@ public class courseDetails extends HttpServlet {
             throws ServletException, IOException {
             if (request.getParameter("id") != null) {
                 Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+                List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
+                List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")));
+                
                 if (course != null) {
                     request.setAttribute("course", course);
+                    request.setAttribute("chapters", chapters);
+                    request.setAttribute("tests", tests);
                     request.setAttribute("show", true);
                 } else {
                     request.setAttribute("errors", "Something went wrong with the Database");

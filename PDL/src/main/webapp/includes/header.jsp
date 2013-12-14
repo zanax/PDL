@@ -42,12 +42,6 @@
                             <li>
                                 <a href="myCourses"><% out.println(Helper.translateWord(language, "My Courses")); %></a>
                             </li>
-                            <li>
-                                <a href="enrollCourse">Enroll Course</a>
-                            </li>
-                            <li>
-                                <a href="disenrollCourse">Disenroll Course</a>
-                            </li>
                             <% }%>
                             <li>
                                 <a href="contact"><% out.println(Helper.translateWord(language, "Contact")); %></a>
