@@ -40,22 +40,35 @@ public class makeTest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Question> questions = new ArrayList<Question>();
-        // HardCoded
-        Test test = new Test();
-        test.setTitle("BonoNielsKunde");
-        test.setTime(30);
+        if (request.getSession().getAttribute("user") instanceof User) {
+            if (request.getParameter("id") != null) {
+                try {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    Test test = DB.getInstance().getTest(id);
+                    if (test != null) {
+                        List<Question> questions = DB.getInstance().getQuestions(id);
+                        if (!questions.isEmpty()) {
+                            request.setAttribute("test", test);
+                            request.setAttribute("questions", questions);
+                            request.setAttribute("show", true);
+                        } else {
+                            request.setAttribute("errors", "Test didn't contain any questions");
+                        }
+                    } else {
+                        request.setAttribute("errors", "Test was not found");
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                request.setAttribute("errors", "The ID of the Test is not known");
+            }
+        } else {
+            request.setAttribute("errors", "You have no permission");
+        }
 
-        Question question1 = new Question(0, 1, "Wat is BonoKunde", "Bono", null, null, null);
-        Question question2 = new Question(1, 1, "Wat is NielsKunde", "Niels", "Gijs", "Bono", "Maarten");
-
-        questions.add(question1);
-        questions.add(question2);
-
-        request.setAttribute("test", test);
-        request.setAttribute("questions", questions);
-        //
-        request.setAttribute("show", true);
         RequestDispatcher rd = request.getRequestDispatcher("/pages/makeTest.jsp");
         rd.forward(request, response);
     }
@@ -71,13 +84,47 @@ public class makeTest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO: submit test to Database
-        
-        String test_id = request.getParameter("test_id");
-        List<Question> questions = new ArrayList<Question>();
-        Map<Integer, String> answers = new HashMap<Integer, String>();
-        //DB.getInstance().submitAnswers(user_id, answers);
-        
+        if (request.getSession().getAttribute("user") != null) {
+            if (request.getAttribute("id") != null) {
+                try {
+                    int id = (Integer) request.getAttribute("id");
+                    Test test = DB.getInstance().getTest(id);
+                    if (test != null) {
+                        List<Question> questions = DB.getInstance().getQuestions(id);
+                        if (questions != null) {
+                            User user = (User) request.getSession().getAttribute("user");
+                            Map<Integer, String> answers = new HashMap<Integer, String>();
+                            
+                            for(Question question : questions) {
+                                answers.put(question.getId(), (String) request.getAttribute(Integer.toString(question.getId())));
+                            }
+                            
+                            //Debug
+                            for(String answer : answers.values()) {
+                                System.out.println(answer);
+                            }
+                            
+//                            if (DB.getInstance().submitAnswers((int) user.getId(), answers)) {
+//
+//                            } else {
+//
+//                            }
+                        } else {
+
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+            }
+        } else {
+
+        }
+
         request.setAttribute("success", true);
         RequestDispatcher rd = request.getRequestDispatcher("/pages/makeTest.jsp");
         rd.forward(request, response);

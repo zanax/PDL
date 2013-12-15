@@ -818,6 +818,47 @@ public class DB {
 
         return questions;
     }
+    
+    public List<Question> getQuestions(int test_id) {
+
+        List<Question> questions = new ArrayList<Question>();
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + " * "
+                    + " FROM "
+                    + " Question "
+                    + " WHERE test_id = ? ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+
+
+            while (rs.next()) {
+                Question question = new Question(rs.getInt("id"));
+                question.setQuestion(rs.getString("question"));
+                question.setCorrectAnswer(rs.getString("answer"));
+                question.setAnswer1(rs.getString("answer1"));
+                question.setAnswer2(rs.getString("answer2"));
+                question.setAnswer3(rs.getString("answer3"));
+                question.setDescription(rs.getString("description"));
+                question.setTestId(rs.getInt("test_id"));
+
+                questions.add(question);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+    
     public boolean submitAnswers(int user_id, Map<Integer, String> answers) {
         return false;
     }
