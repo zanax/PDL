@@ -56,8 +56,8 @@ public class teacherPanel extends HttpServlet {
             request.setAttribute("tests", tests);
 
             //questions ophalen
-//            ArrayList<Question> questions = DB.getInstance().getQuestions();
-//            request.setAttribute("questions", questions);
+            ArrayList<Question> questions = DB.getInstance().getQuestions();
+            request.setAttribute("questions", questions);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
