@@ -22,25 +22,23 @@ import models.Chapter;
 import models.Course;
 import models.Teacher;
 import models.Test;
-import models.User;
 
 /**
  *
  * @author Zanax
  */
-@WebServlet(name = "courseDetails", urlPatterns = {"/courseDetails"})
-public class courseDetails extends HttpServlet {
+@WebServlet(name = "viewChapter", urlPatterns = {"/viewChapter"})
+public class viewChapter extends HttpServlet {
 
     private List<String> errors;
 
-    public courseDetails() {
+    public viewChapter() {
         this.errors = new ArrayList<String>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -50,43 +48,26 @@ public class courseDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        if (request.getParameter("id") != null) {
-
-            //List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
-            
-            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
-            List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
-            List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")));
-
-            if (course != null) {
-                request.setAttribute("course", course);
-                request.setAttribute("chapters", chapters);
-                request.setAttribute("tests", tests);
-                request.setAttribute("show", true);
-
-//                for (int i = 0; i < subbed_courses.size(); i++) {
-//                    if(subbed_courses.get(i) == course){
-//                        System.out.println("enrolled");
-//                    }else{
-//                        System.out.println("disenrolled");
-//                    }
-//                }
+            if (request.getParameter("id") != null) {
+       
+                Chapter chapter = DB.getInstance().getChapter(Integer.parseInt(request.getParameter("id")));
                 
+                if (chapter != null) {
+                    request.setAttribute("chapter", chapter);
+                    request.setAttribute("show", true);
+                } else {
+                    request.setAttribute("errors", "Something went wrong with the Database");
+                }
             } else {
-                request.setAttribute("errors", "Something went wrong with the Database");
-            }
-        } else {
-            request.setAttribute("errors", "We missed the ID");
-
+                request.setAttribute("errors", "We missed the ID");
+            
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/courseDetails.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/viewChapter.jsp");
         rd.forward(request, response);
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -96,5 +77,6 @@ public class courseDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    
     }
 }
