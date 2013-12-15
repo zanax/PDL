@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package models;
 
 /**
@@ -11,17 +10,42 @@ package models;
  * @author Maarten
  */
 public class Question {
+
     private int id;
     private int testId;
     private String question;
     private String correctAnswer;
+    private String description;
     private String answer1;
     private String answer2;
     private String answer3;
+    private char type;
+
+    public char getType() {
+        return type;
+    }
+
+    public void setType(char type) {
+        this.type = type;
+    }
+
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Question() {
     }
-    
+
+    public Question(int id) {
+        this.id = id;
+    }
+
     public Question(int id, int test_id, String question, String correctAnswer, String answer1, String answer2, String answer3) {
         this.id = id;
         this.testId = test_id;
@@ -39,11 +63,11 @@ public class Question {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getTestId() {
         return testId;
     }
-    
+
     public String getQuestion() {
         return question;
     }
@@ -87,9 +111,4 @@ public class Question {
     public void setTestId(int testId) {
         this.testId = testId;
     }
-    
-    
-    
-    
-    
 }
