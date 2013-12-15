@@ -27,22 +27,21 @@
                 <b>Course description:</b><br>
                 ${course.description}
             </div>
-        </div>
-    </div>
-    <div class="course">
-        <div id="course-content">
-
-            <a href="enrollCourse">
-                <div class="button full-width">
-                    Enroll in this course
+            <c:if test="${logged_in == false}">
+                <div class="course-button info">
+                    <a href="login" class="button" id="button">Log in to enroll</a>
                 </div>
-            </a>
-            <br>
-            <a href="disenrollCourse">
-                <div class="button full-width">
-                    Disenroll from this course
+            </c:if>
+            <c:if test="${not_enrolled == true}">
+                <div class="course-button info">
+                    <a href="enrollCourse" class="button" id="button">Enroll in this course</a>
                 </div>
-            </a>
+            </c:if>
+            <c:if test="${enrolled == true}">
+                <div class="course-button info">
+                    <a href="disenrollCourse" class="button" id="button">Disenroll from this course</a>
+                </div>
+            </c:if>
 
         </div>
     </div>

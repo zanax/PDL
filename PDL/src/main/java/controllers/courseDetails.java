@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
 import models.Course;
-import models.Teacher;
 import models.Test;
 import models.User;
 
@@ -51,10 +50,9 @@ public class courseDetails extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
         if (request.getParameter("id") != null) {
 
-            //List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
-            
             Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
             List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
             List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")));
@@ -65,14 +63,27 @@ public class courseDetails extends HttpServlet {
                 request.setAttribute("tests", tests);
                 request.setAttribute("show", true);
 
-//                for (int i = 0; i < subbed_courses.size(); i++) {
-//                    if(subbed_courses.get(i) == course){
-//                        System.out.println("enrolled");
-//                    }else{
-//                        System.out.println("disenrolled");
-//                    }
-//                }
-                
+                int course_id = course.getId();
+
+                if (request.getSession().getAttribute("user") != null) {
+                    
+                    request.setAttribute("logged_in", true);
+
+                    List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
+                    
+                    for (int i = 0; i < subbed_courses.size(); i++) {
+                        int subcourse_id = subbed_courses.get(i).getId();
+                        if (subcourse_id == course_id) {
+                            request.setAttribute("enrolled", true);
+                            break;
+                        }else{
+                            request.setAttribute("not_enrolled", true);
+                        }
+                    }
+                } else {                   
+                    request.setAttribute("logged_in", false);
+                }
+
             } else {
                 request.setAttribute("errors", "Something went wrong with the Database");
             }
