@@ -36,7 +36,7 @@
                                 <a href="index.jsp">Home</a>
                             </li>
                             <li>
-                                <a href="index.jsp"><% out.println(Helper.translateWord(language, "Courses")); %></a>
+                                <a href="courseCatalog"><% out.println(Helper.translateWord(language, "Courses")); %></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Student) {%>
                             <li>
