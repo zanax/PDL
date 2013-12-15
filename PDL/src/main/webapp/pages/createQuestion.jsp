@@ -23,7 +23,7 @@
                     <select class="form-input-select" name="test" required>
                         <option value="">Select Test...</option>
                         <c:forEach items="${tests}" var="test">
-                            <option value="${test.id}">${test.title}</option>
+                            <option value="${test.id}" <c:if test="${test_id != null && test_id == test.id}">selected</c:if>>${test.title}</option>
                         </c:forEach>
                     </select>
                 </label>

@@ -46,7 +46,8 @@ public class createQuestion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
-            List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
+//            List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
+            List<Test> tests = DB.getInstance().getTests();
             if (!tests.isEmpty()) {
                 request.setAttribute("tests", tests);
                 request.setAttribute("show", true);
@@ -74,25 +75,14 @@ public class createQuestion extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
             errors.clear();
-            Question questionObj = new Question();
-
-            String test = request.getParameter("test");
-            System.out.println("Dit is het testnr: " + test);
-
-            String question = request.getParameter("question");
-            System.out.println("Dit is het vraagnr: " + question);
-
-            String correctAnswer = request.getParameter("correctAnswer");
-            System.out.println("Dit is het correcte antwoord: " + correctAnswer);
-
-            String answer1 = request.getParameter("answer1");
-            System.out.println("Dit is het answer1: " + answer1);
-
-            String answer2 = request.getParameter("answer2");
-            System.out.println("Dit is het answer2: " + answer2);
             
+            Question questionObj = new Question();
+            String test = request.getParameter("test");
+            String question = request.getParameter("question");
+            String correctAnswer = request.getParameter("correctAnswer");
+            String answer1 = request.getParameter("answer1");
+            String answer2 = request.getParameter("answer2");
             String answer3 = request.getParameter("answer3");
-            System.out.println("Dit is het answer3: " + answer3);
 
             if (!test.equals("")) {
                 try {
@@ -134,11 +124,6 @@ public class createQuestion extends HttpServlet {
                 questionObj.setAnswer3("");
             }
 
-//            if (errors.isEmpty()) {
-//                if (DB.getInstance().addQuestion(questionObj)) {
-//                    errors.add("Database Problem");
-//                }
-//            }
             
                DB.getInstance().insertQuestion(questionObj);
 
