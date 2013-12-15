@@ -25,18 +25,17 @@ import models.Test;
  */
 @WebServlet(name = "createQuestion", urlPatterns = {"/createQuestion"})
 public class createQuestion extends HttpServlet {
-private final List<String> errors;
-    
-    
+
+    private final List<String> errors;
+
     public createQuestion() {
         errors = new ArrayList<String>();
     }
 
-    
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -62,7 +61,8 @@ private final List<String> errors;
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -75,59 +75,81 @@ private final List<String> errors;
         if (request.getSession().getAttribute("user") instanceof Teacher) {
             errors.clear();
             Question questionObj = new Question();
-            
+
             String test = request.getParameter("test");
+            System.out.println("Dit is het testnr: " + test);
+
             String question = request.getParameter("question");
+            System.out.println("Dit is het vraagnr: " + question);
+
             String correctAnswer = request.getParameter("correctAnswer");
+            System.out.println("Dit is het correcte antwoord: " + correctAnswer);
+
             String answer1 = request.getParameter("answer1");
+            System.out.println("Dit is het answer1: " + answer1);
+
             String answer2 = request.getParameter("answer2");
-            String answer3 = request.getParameter("answer3");
+            System.out.println("Dit is het answer2: " + answer2);
             
-            if(!test.equals("")) {
+            String answer3 = request.getParameter("answer3");
+            System.out.println("Dit is het answer3: " + answer3);
+
+            if (!test.equals("")) {
                 try {
                     questionObj.setTestId(Integer.parseInt(test));
-                } catch(NumberFormatException e) { e.printStackTrace(); }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             } else {
                 errors.add("Test not filled in");
             }
-            
-            if(!question.equals("")) {
+
+            if (!question.equals("")) {
                 questionObj.setQuestion(question);
             } else {
                 errors.add("Question not filled in");
             }
-            
-            if(!correctAnswer.equals("")) {
+
+            if (!correctAnswer.equals("")) {
                 questionObj.setCorrectAnswer(correctAnswer);
             } else {
                 errors.add("Correct Answer not filled in");
             }
-            
-            if(!answer1.equals("")) {
+
+            if (!answer1.equals("")) {
                 questionObj.setAnswer1(answer1);
+            } else{
+                questionObj.setAnswer1("");
             }
-            
-            if(!answer2.equals("")) {
+
+            if (!answer2.equals("")) {
                 questionObj.setAnswer2(answer2);
+            } else{
+                questionObj.setAnswer2("");
             }
-            
-            if(!answer3.equals("")) {
+
+            if (!answer3.equals("")) {
                 questionObj.setAnswer3(answer3);
+            } else{
+                questionObj.setAnswer3("");
             }
+
+//            if (errors.isEmpty()) {
+//                if (DB.getInstance().addQuestion(questionObj)) {
+//                    errors.add("Database Problem");
+//                }
+//            }
             
-            if(errors.isEmpty()) {
-                if(DB.getInstance().addQuestion(questionObj)) {
-                    errors.add("Database Problem");
-                }
-            }
-            
-            if(errors.isEmpty()) {
+               DB.getInstance().insertQuestion(questionObj);
+
+
+            if (errors.isEmpty()) {
                 request.setAttribute("success", true);
             } else {
                 request.setAttribute("questionObj", questionObj);
                 request.setAttribute("errors", errors);
             }
-            
+
 
             request.setAttribute("show", true);
             RequestDispatcher rd = request.getRequestDispatcher("/pages/createQuestion.jsp");
@@ -144,7 +166,6 @@ private final List<String> errors;
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 // optie 2
 //            if (request.getSession().getAttribute("user") instanceof Teacher) {
 //            List<Course> courses = DB.getInstance().getUserCourses((Teacher) request.getSession().getAttribute("user"));
