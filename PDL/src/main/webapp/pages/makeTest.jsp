@@ -4,15 +4,17 @@
     make Test
 </div>
 
-<c:forEach var="error" items="${errors}">
+<c:if test="${not empty errors}">
     <div class="course">
         <div id="course-content">
-            <div class="error_message">
-                ${error}
-            </div>
+            <c:forEach var="error" items="${errors}">
+                <div class="error_message">
+                    ${error}
+                </div>
+            </c:forEach>
         </div>
     </div>
-</c:forEach>
+</c:if>
 <c:if test="${success != null && success}">
     <div class="course">
         <div id="course-content">
@@ -34,19 +36,19 @@
                 <br>
                 <label class="label">
                     <span class="form-span">Time:</span>
-                    ${test.time} minuten
+                    ${test.time} minutes
                 </label>
                 <input type="submit" value="Submit Test" class="button" id="button">
             </div>
         </div>
 
-        <input name="test_id" type="hidden" value="${test.id}">
-                
+        <input name="id" type="hidden" value="${test.id}">
+
         <c:forEach var="question" items="${questions}">
             <div class="course">
                 <div id="course-content">
                     <label class="label">
-                        <span class="form-span">Question</span>
+                        <span class="form-span">Question ${question.id}</span>
                         ${question.question}
                     </label>
                     <c:choose>
