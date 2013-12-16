@@ -1,5 +1,6 @@
 package connection;
 
+import models.Question;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +10,9 @@ import java.sql.Statement;
 import models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import models.Course;
+import models.Grade;
 import models.Student;
 import models.Teacher;
 import models.Test;
@@ -93,9 +96,8 @@ public class DB {
             startConnection();
 
             String sql = "insert "
-                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password)"
-                    + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
-
+                    + "   into User(firstname, surname, address, zipcode, gender, email, banned, password, city, country, language_id)"
+                    + "   values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  ";
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, user.getFirstname());
             prepared_statement.setString(2, user.getSurname());
@@ -105,6 +107,9 @@ public class DB {
             prepared_statement.setString(6, user.getEmail());
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
+            prepared_statement.setString(9, user.getCity());
+            prepared_statement.setString(10, user.getCountry());
+            prepared_statement.setInt(11, user.getLanguage());
 
             prepared_statement.execute();
 
@@ -122,16 +127,16 @@ public class DB {
 
         return id;
     }
-    
+
     public int editUser(User user) {
-        
+
         int affected_rows = 0;
-        
+
         try {
             startConnection();
-            
+
             String sql = "  update User "
-                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?"
+                    + "     set firstname = ?, surname = ?, address = ?, zipcode = ?, gender = ?, email = ?, banned = ?, password = ?, city = ?, country = ?, language_id = ?"
                     + "     where "
                     + "     user_id = ?";
 
@@ -144,8 +149,10 @@ public class DB {
             prepared_statement.setString(6, user.getEmail());
             prepared_statement.setBoolean(7, false);
             prepared_statement.setString(8, user.getPassword());
-
-            prepared_statement.setLong(9, user.getId());
+            prepared_statement.setString(9, user.getCity());
+            prepared_statement.setString(10, user.getCountry());
+            prepared_statement.setInt(11, user.getLanguage());
+            prepared_statement.setLong(12, user.getId());
 
             affected_rows = prepared_statement.executeUpdate();
 
@@ -193,6 +200,10 @@ public class DB {
                 user.setEmail(rs.getString("email"));
                 user.setIsBanned(rs.getBoolean("banned"));
                 user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
             }
             closeConnection();
         } catch (SQLException e) {
@@ -217,6 +228,53 @@ public class DB {
             prepared_statement.setString(1, course.getName());
             prepared_statement.setString(2, course.getDescription());
             prepared_statement.setString(3, course.getCategory());
+
+            prepared_statement.execute();
+
+            ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = (int) generatedKeys.getLong(1);
+            }
+            generatedKeys.close();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    // Question
+    public int insertQuestion(Question question) {
+        int id = -1;
+
+        try {
+            startConnection();
+
+            String sql = "INSERT  "
+                    + "   INTO Question(test_id, question, answer, answer1, answer2, answer3, type, description)"
+                    + "   VALUES (?, ?, ?, ?, ?, ?, ?, ?)  ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            prepared_statement.setInt(1, question.getTestId());
+            prepared_statement.setString(2, question.getQuestion());
+            prepared_statement.setString(3, question.getCorrectAnswer());
+            prepared_statement.setString(4, question.getAnswer1());
+            prepared_statement.setString(5, question.getAnswer2());
+            prepared_statement.setString(6, question.getAnswer3());
+
+            if (("").equals(question.getAnswer1()) && ("").equals(question.getAnswer2()) && ("").equals(question.getAnswer3())) {
+                prepared_statement.setString(7, "s");
+            } else {
+                prepared_statement.setString(7, "m");
+            }
+
+            //Dit vult de description met de vraag en de mogelijke antwoorden.
+            prepared_statement.setString(8, question.getQuestion() + " " + question.getCorrectAnswer()
+                    + " " + question.getAnswer1() + " " + question.getAnswer2() + " " + question.getAnswer3());
 
             prepared_statement.execute();
 
@@ -312,6 +370,51 @@ public class DB {
         return course;
     }
 
+    public List<Course> searchCourse(String criteria) {
+
+        Course course = null;
+
+        List<Course> courses = new ArrayList<Course>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         Course"
+                    + "     where "
+                    + "         name LIKE ?"
+                    + "     OR  description LIKE ?"
+                    + "     OR  category LIKE ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setString(1, "%" + criteria + "%");
+            prepared_statement.setString(2, "%" + criteria + "%");
+            prepared_statement.setString(3, "%" + criteria + "%");
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+
+                course = new Course(rs.getInt("courseID"));
+                course.setName(rs.getString("name"));
+                course.setDescription(rs.getString("description"));
+                course.setCategory(rs.getString("category"));
+                course.setMaximumStudents(rs.getInt("maximumStudents"));
+
+                courses.add(course);
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
+
     public boolean updateCourse(Course course) {
         try {
             startConnection();
@@ -364,7 +467,8 @@ public class DB {
             while (rs.next()) {
                 chapter = new Chapter(id);
                 chapter.setCourse_id(rs.getInt("courseID"));
-                chapter.setTitle(rs.getString("title"));
+                chapter.setTitle(rs.getString("chapterName"));
+                chapter.setDescription(rs.getString("description"));
             }
 
             closeConnection();
@@ -373,6 +477,37 @@ public class DB {
         }
 
         return chapter;
+    }
+
+    public List<Chapter> getCourseChapters(int id) {
+
+        List<Chapter> chapters = new ArrayList<Chapter>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from"
+                    + "         Chapter"
+                    + "     where"
+                    + "         courseID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                chapters.add(getChapter(rs.getInt("id")));
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return chapters;
     }
 
     public List<Course> getUserCourses(User user) {
@@ -444,19 +579,60 @@ public class DB {
 
         return test;
     }
-    
+
+    public List<Test> getTestsByCouseID(List<Integer> ids) {
+        List<Test> tests = new ArrayList<Test>();
+
+        try {
+            startConnection();
+            for (int id : ids) {
+                String sql = "  select "
+                        + "         *"
+                        + "     from"
+                        + "         Test"
+                        + "     where"
+                        + "         course_id = ?"
+                        + "     limit 1";
+
+                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, id);
+
+                ResultSet rs = prepared_statement.executeQuery();
+
+                while (rs.next()) {
+                    Test test = new Test(id);
+                    test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                    test.setChapter_id(rs.getInt("chapter_id"));
+                    test.setCourse_id(rs.getInt("course_id"));
+                    test.setDescription(rs.getString("description"));
+                    test.setEnd_date(rs.getString("end_date"));
+                    test.setStart_date(rs.getString("start_date"));
+                    test.setTime(rs.getInt("time"));
+                    test.setTitle(rs.getString("title"));
+                    tests.add(test);
+                }
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tests;
+    }
+
     public ArrayList<Test> getTests() {
+
         ArrayList<Test> tests = new ArrayList<Test>();
 
         try {
             startConnection();
 
-            String sql = "  select "
+            String sql = "  SELECT "
                     + "         * "
-                    + "     from "
+                    + "     FROM "
                     + "         Test "
-                    + "     where is_active = 1 "
-                    + "     order by title asc";
+                    + "     WHERE isActive = 1 ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
 
@@ -483,7 +659,59 @@ public class DB {
 
         return tests;
     }
-    
+
+    public List<Test> getUserTests(User user) {
+
+        List<Test> tests = new ArrayList<Test>();
+        List<Course> courses = getUserCourses(user);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for (int i = 0; i < courses.size(); i++) {
+            sb.append(courses.get(i).getId());
+            if (i != courses.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Test "
+                    + "     where course_id"
+                    + "     in "
+                    + sb.toString();
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            Test test;
+
+            while (rs.next()) {
+                test = new Test(rs.getInt("id"));
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+                tests.add(test);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tests;
+    }
+
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -526,6 +754,136 @@ public class DB {
         return courses;
     }
 
+//    public boolean addQuestion(Question question) {
+//        boolean resultt = false;
+//
+//        try {
+//            startConnection();
+//
+//            String sql = "INSERT "
+//                    + " INTO Question(test_id, question, correctAnswer, answer1, answer2, answer3)"
+//                    + " VALUES (?, ?, ?, ?, ?, ?)";
+//
+//            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+//
+//            prepared_statement.setInt(1, question.getTestId());
+//            prepared_statement.setString(2, question.getQuestion());
+//            prepared_statement.setString(3, question.getCorrectAnswer());
+//            prepared_statement.setString(4, question.getAnswer1());
+//            prepared_statement.setString(5, question.getAnswer2());
+//            prepared_statement.setString(6, question.getAnswer3());
+//
+//            resultt = prepared_statement.execute();
+//
+//            closeConnection();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return resultt;
+//    }
+    
+     public Question getQuestion(int id) {
+       Question question = null;
+
+       try {
+           startConnection();
+
+           String sql = "  SELECT "
+                   + "     * "
+                   + "     FROM "
+                   + "         Question"
+                   + "     WHERE "
+                   + "         id = ?"
+                   + "     limit 1";
+
+           PreparedStatement prepared_statement = conn.prepareStatement(sql);
+           prepared_statement.setInt(1, id);
+
+           ResultSet rs = prepared_statement.executeQuery();
+
+           while (rs.next()) {
+               question = new Question(id);
+               question.setQuestion("question");
+               question.setCorrectAnswer("correctAnswer");
+               question.setAnswer1("answer1");
+               question.setAnswer2("answer2");
+               question.setAnswer3("answer3");
+           }
+
+           closeConnection();
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+
+       return question;
+   }
+    
+    public ArrayList<Question> getQuestions() {
+
+        ArrayList<Question> questions = new ArrayList<Question>();
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + " * "
+                    + " FROM "
+                    + " Question "
+                    + " WHERE isActive = 1 ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Question question = new Question(rs.getInt("id"));
+                question.setQuestion(rs.getString("question"));
+                question.setCorrectAnswer(rs.getString("answer"));
+                question.setAnswer1(rs.getString("answer1"));
+                question.setAnswer2(rs.getString("answer2"));
+                question.setAnswer3(rs.getString("answer3"));
+                question.setDescription(rs.getString("description"));
+                question.setTestId(rs.getInt("test_id"));
+
+                questions.add(question);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public void disableQuestion(int question_id) {
+        String sql = "";
+
+        try {
+            startConnection();
+
+            sql = "UPDATE Question "
+                    + " SET isActive = 0"
+                    + " WHERE questionID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, question_id);
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean submitAnswers(int user_id, Map<Integer, String> answers) {
+        return false;
+    }
+
     public int updateTest(Test test) {
         int affected_rows = 0;
 
@@ -560,5 +918,242 @@ public class DB {
         }
 
         return affected_rows;
+    }
+
+    //delete test
+    public void deleteTest(int test_id) {
+
+        try {
+            startConnection();
+
+            String sql = "DELETE "
+                    + " FROM Test"
+                    + " WHERE id = ?";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean disenrollCourse(long user_id, int course_id) {
+        boolean ressult = false;
+
+        try {
+            startConnection();
+
+            String sql = "  delete "
+                    + "     from "
+                    + "         SubbedCourses"
+                    + "     where "
+                    + "         userID = ? and courseID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setLong(1, user_id);
+            prepared_statement.setInt(2, course_id);
+
+            ressult = prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ressult;
+    }
+
+    //delete course
+//    public void deleteCourse(int course_id) {
+//
+//        try {
+//            startConnection();
+//
+//            String sql = "DELETE "
+//                    + " FROM Course"
+//                    + " WHERE courseID = ?";
+//            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+//            prepared_statement.setInt(1, course_id);
+//            prepared_statement.execute();
+//
+//            closeConnection();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+    public ArrayList<Test> getCourseTests(int course_id) {
+
+        ArrayList<Test> tests = new ArrayList<Test>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Test "
+                    + "     where course_id = ? "
+                    + "     order by title asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, course_id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Test test = new Test(rs.getInt("id"));
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setDescription(rs.getString("description"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setTitle(rs.getString("title"));
+
+                tests.add(test);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tests;
+    }
+
+    public void disableTest(int test_id) {
+        try {
+            startConnection();
+
+            String sql = "UPDATE Test  "
+                    + " set isActive = 0"
+                    + " WHERE id = ?";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void disableCourse(int course_id) {
+        ArrayList<Test> tests = getCourseTests(course_id);
+        String sql = "";
+
+        try {
+            startConnection();
+
+            //Als de course geen bijbehorende testen heeft
+            if (tests.isEmpty()) {
+                sql = "UPDATE Course "
+                        + " SET isActive = 0"
+                        + " WHERE courseID = ?";
+
+                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, course_id);
+                prepared_statement.execute();
+            }
+
+            //Als de course 1 of meerdere bijhorende testen heeft
+            if (tests.size() > 0) {
+                sql = " UPDATE Course, Test"
+                        + " SET Course.isActive = 0, Test.isActive = 0 "
+                        + " WHERE Course.courseID = ?  "
+                        + " AND Test.course_id = ?";
+
+                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, course_id);
+                prepared_statement.setInt(2, course_id);
+                prepared_statement.execute();
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public List<Grade> getGrades(User user) {
+
+        long user_id = user.getId();
+
+        List<Grade> grades = new ArrayList<Grade>();
+
+        try {
+            startConnection();
+
+            String sql = "SELECT grade . * , test.title "
+                    + "FROM Grade AS grade "
+                    + "INNER JOIN Test AS test ON test.id = grade.test_id "
+                    + "WHERE user_id = ? ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, (int) user_id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Grade grade = new Grade(rs.getInt("id"));
+                grade.setUserId(rs.getInt("user_id"));
+                grade.setTestId(rs.getInt("test_id"));
+                grade.setGrade(rs.getInt("grade"));
+                grade.setTestTitle(rs.getString("title"));
+
+                grades.add(grade);
+
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return grades;
+    }
+
+    public Grade getGrade() {
+        Grade grade = null;
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         Grade "
+                    + "     where id = ? ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                grade = new Grade(rs.getInt("id"));
+                grade.setId(rs.getInt("id"));
+                grade.setUserId(rs.getInt("user_id"));
+                grade.setTestId(rs.getInt("test_id"));
+                grade.setGrade(rs.getInt("grade"));
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return grade;
     }
 }

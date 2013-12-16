@@ -31,7 +31,7 @@
                     <td>${course.description}</td>
                     <td>
                         <a href="editCourse?id=${course.id}"><img src="img/edit.png"></a>
-                        <a href="deleteCourse?id=${course.id}"><img src="img/delete.png"></a>
+                        <a href="disableCourse?id=${course.id}"><img src="img/delete.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -78,6 +78,49 @@
         <a href="createTest">
             <div class="button full-width middle">
                 Create test
+            </div>
+        </a>
+    </div>
+    
+</div>
+
+<div class="content-inner">
+    <div id="content-inner-block">
+        <div class="content-inner title">
+            Questions
+        </div>
+        
+        <table class="table">
+            <tr>
+                <th style="width: 25px; ">
+                    #ID
+                </th>
+                <th style="width: 120px;">
+                    Test ID
+                </th>
+                <th style="width: auto;">
+                    Description
+                </th>
+                <th style="width: 30px;">
+                    Actions
+                </th>
+            </tr>
+            <c:forEach items="${questions}" var="question">
+                <tr>
+                    <td>${question.id}</td>
+                    <td>${question.testId}</td>
+                    <td>${question.description}</td>
+                    <td>
+                        <a href="editQuestion?id=${question.id}"><img src="img/edit.png"></a>
+                        <a href="disableCourse?id=${question.id}"><img src="img/delete.png"></a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        
+        <a href="createQuestion">
+            <div class="button full-width middle">
+                Create question
             </div>
         </a>
     </div>

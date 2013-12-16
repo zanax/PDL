@@ -13,5 +13,6 @@ public class Teacher extends User {
     
     public Teacher(long id){
         super(id);
+        
     }
 }

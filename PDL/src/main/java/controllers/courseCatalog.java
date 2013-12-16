@@ -44,9 +44,6 @@ public class courseCatalog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-
         List<Course> courses = DB.getInstance().getCourses();
 
         request.setAttribute("courses", courses);

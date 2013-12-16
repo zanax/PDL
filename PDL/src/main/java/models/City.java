@@ -22,6 +22,8 @@ import javax.persistence.Table;
 @Table(name="City")
 public class City {
     
+    
+    
     @Id
     @GeneratedValue
     @Column(name="id")

@@ -34,11 +34,11 @@ public class User {
     
     private String email;
     
-    private City city;
+    private String  city;
     
-    private Country country;
+    private String country;
     
-    private Language language;
+    private int language;
     
     private char gender;
     
@@ -145,42 +145,42 @@ public class User {
     /**
      * @return the city
      */
-    public City getCity() {
+    public String getCity() {
         return city;
     }
 
     /**
      * @param city the city to set
      */
-    public void setCity(City city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
     /**
      * @return the country
      */
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
     /**
      * @param country the country to set
      */
-    public void setCountry(Country country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
     /**
      * @return the language
      */
-    public Language getLanguage() {
+    public int getLanguage() {
         return language;
     }
 
     /**
      * @param language the language to set
      */
-    public void setLanguage(Language language) {
+    public void setLanguage(int language) {
         this.language = language;
     }
 

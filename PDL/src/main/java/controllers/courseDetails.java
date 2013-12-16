@@ -1,0 +1,111 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controllers;
+
+/**
+ *
+ * @author Niels
+ */
+import connection.DB;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import models.Chapter;
+import models.Course;
+import models.Test;
+import models.User;
+
+/**
+ *
+ * @author Zanax
+ */
+@WebServlet(name = "courseDetails", urlPatterns = {"/courseDetails"})
+public class courseDetails extends HttpServlet {
+
+    private List<String> errors;
+
+    public courseDetails() {
+        this.errors = new ArrayList<String>();
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+
+        if (request.getParameter("id") != null) {
+
+            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+            List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
+            List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")));
+
+            if (course != null) {
+                request.setAttribute("course", course);
+                request.setAttribute("chapters", chapters);
+                request.setAttribute("tests", tests);
+                request.setAttribute("show", true);
+
+                int course_id = course.getId();
+
+                if (request.getSession().getAttribute("user") != null) {
+                    
+                    request.setAttribute("logged_in", true);
+
+                    List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
+                    
+                    for (int i = 0; i < subbed_courses.size(); i++) {
+                        int subcourse_id = subbed_courses.get(i).getId();
+                        if (subcourse_id == course_id) {
+                            request.setAttribute("enrolled", true);
+                            break;
+                        }else{
+                            request.setAttribute("not_enrolled", true);
+                        }
+                    }
+                } else {                   
+                    request.setAttribute("logged_in", false);
+                }
+
+            } else {
+                request.setAttribute("errors", "Something went wrong with the Database");
+            }
+        } else {
+            request.setAttribute("errors", "We missed the ID");
+
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/courseDetails.jsp");
+        rd.forward(request, response);
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    }
+}

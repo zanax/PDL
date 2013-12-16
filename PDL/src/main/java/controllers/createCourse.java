@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.Helper;
 import models.Teacher;
 
 /**
@@ -43,12 +44,15 @@ public class createCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
-            request.setAttribute("show", true);
-        } else {
-            request.setAttribute("errors", "You have not the right permissions");
+        this.errors.clear();
+        String url = "/pages/createCourse.jsp";
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

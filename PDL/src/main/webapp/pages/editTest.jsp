@@ -8,12 +8,12 @@
     <div id="course-content">
         <c:if test="${success != null && success}">
             <div class="success_message">
-                The test has been successfully edited.
+                The test '${test.title}' has been successfully edited.
             </div>
         </c:if>
         <c:if test="${create_success != null && create_success}">
             <div class="success_message">
-                The test has been successfully created.
+                The test '${test.title}' has been successfully created.
             </div>
         </c:if>
         <c:forEach var="error" items="${errors}">
