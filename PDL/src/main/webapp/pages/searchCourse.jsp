@@ -23,7 +23,7 @@
                 ${course.description}
             </div>
             <div class="course-button info">
-                <a href="course_economics.html" class="button" id="button">Go to course</a>
+                <a href="courseDetails?id=${course.id}" class="button" id="button">Go to course</a>
             </div>
 
         </div>

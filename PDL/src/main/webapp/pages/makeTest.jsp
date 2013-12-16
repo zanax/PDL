@@ -42,13 +42,13 @@
             </div>
         </div>
 
-        <input name="test_id" type="hidden" value="${test.id}">
+        <input name="id" type="hidden" value="${test.id}">
 
         <c:forEach var="question" items="${questions}">
             <div class="course">
                 <div id="course-content">
                     <label class="label">
-                        <span class="form-span">Question</span>
+                        <span class="form-span">Question ${question.id}</span>
                         ${question.question}
                     </label>
                     <c:choose>

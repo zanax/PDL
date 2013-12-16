@@ -85,33 +85,36 @@ public class makeTest extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            if (request.getAttribute("id") != null) {
+            if (request.getParameter("id") != null) {
                 try {
-                    int id = (Integer) request.getAttribute("id");
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Test test = DB.getInstance().getTest(id);
                     if (test != null) {
                         List<Question> questions = DB.getInstance().getQuestions(id);
                         if (questions != null) {
-                            User user = (User) request.getSession().getAttribute("user");
                             Map<Integer, String> answers = new HashMap<Integer, String>();
-                            
-                            for(Question question : questions) {
-                                answers.put(question.getId(), (String) request.getAttribute(Integer.toString(question.getId())));
-                            }
-                            
-                            //Debug
-                            for(String answer : answers.values()) {
-                                System.out.println(answer);
-                            }
-                            
-//                            if (DB.getInstance().submitAnswers((int) user.getId(), answers)) {
-//
-//                            } else {
-//
-//                            }
-                        } else {
 
+                            for (Question question : questions) {
+                                String answer = request.getParameter(Integer.toString(question.getId()));
+                                if (answer != null && !answer.equalsIgnoreCase("")) {
+                                    answers.put(question.getId(), answer);
+                                }
+                            }
+                            if (!answers.isEmpty()) {
+                                User user = (User) request.getSession().getAttribute("user");
+                                if (DB.getInstance().submitAnswers((int) user.getId(), id, answers)) {
+                                    request.setAttribute("success", true);
+                                } else {
+                                    request.setAttribute("errors", "Failed to submit the test");
+                                }
+                            } else {
+                                request.setAttribute("errors", "No question are answerd at all");
+                            }
+                        } else {
+                            request.setAttribute("errors", "Test didn't contain any questions");
                         }
+                    } else {
+                        request.setAttribute("errors", "Test was not found");
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -119,13 +122,11 @@ public class makeTest extends HttpServlet {
                     e.printStackTrace();
                 }
             } else {
-
+                request.setAttribute("errors", "The ID of the Test is not known");
             }
         } else {
-
+            request.setAttribute("errors", "You have no permission");
         }
-
-        request.setAttribute("success", true);
         RequestDispatcher rd = request.getRequestDispatcher("/pages/makeTest.jsp");
         rd.forward(request, response);
     }
