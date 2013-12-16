@@ -468,6 +468,7 @@ public class DB {
                 chapter = new Chapter(id);
                 chapter.setCourse_id(rs.getInt("courseID"));
                 chapter.setTitle(rs.getString("chapterName"));
+                chapter.setDescription(rs.getString("description"));
             }
 
             closeConnection();
