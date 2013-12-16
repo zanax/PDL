@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %> 
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Enroll Course
@@ -13,7 +13,7 @@
         </c:forEach>
         <c:if test="${success != null && success}">
             <div class="success_message">
-                U have successfully enrolled to the Course.   
+                U have successfully enrolled to the Course.
             </div>
         </c:if>
         <c:if test="${show != null && show}">

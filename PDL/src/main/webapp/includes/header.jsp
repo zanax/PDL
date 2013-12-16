@@ -42,6 +42,9 @@
                             <li>
                                 <a href="myCourses"><% out.println(Helper.translateWord(language, "My Courses")); %></a>
                             </li>
+                            <li>
+                                <a href="myGrades"><% out.println(Helper.translateWord(language, "My Grades")); %></a>
+                            </li>
                             <% }%>
                             <li>
                                 <a href="contact"><% out.println(Helper.translateWord(language, "Contact")); %></a>

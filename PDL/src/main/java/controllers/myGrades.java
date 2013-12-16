@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import connection.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,32 +15,60 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Course;
+import models.Grade;
 import models.Helper;
-import models.Teacher;
+import models.Test;
+import models.User;
 
 /**
  *
- * @author Zanax
+ * @author Gijs
  */
-@WebServlet(name = "editGrade", urlPatterns = {"/editGrade"})
-public class editGrade extends HttpServlet {
+@WebServlet(name = "myGrades", urlPatterns = {"/myGrades"})
+public class myGrades extends HttpServlet {
+
     private List<String> errors;
-    
-    public editGrade(){
+
+    public myGrades() {
         this.errors = new ArrayList<String>();
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //TODO: Check if teacher
         this.errors.clear();
-        String url = "/pages/editGrade.jsp";
-        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+        String url = "/pages/myGrades.jsp";
+
+        if (!Helper.isStudent(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
+
             url = "/pages/404.jsp";
+        } else {
+
+            //cijfers ophalen
+            
+            List<Grade> grades = DB.getInstance().getGrades((User) request.getSession().getAttribute("user"));
+            request.setAttribute("grades", grades);
+
+            //courses ophalen
+            
+            //ArrayList<Course> courses = DB.getInstance().getCourses();    //All courses
+            //request.setAttribute("courses", courses);
+
+            //tests ophalen
+            
+            ArrayList<Test> tests = DB.getInstance().getTests();          //All tests
+            request.setAttribute("tests", tests);
+
+            //System.out.println(grades);
+            //System.out.println(courses);
+            //System.out.println(tests);
+
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -49,8 +78,4 @@ public class editGrade extends HttpServlet {
             throws ServletException, IOException {
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405

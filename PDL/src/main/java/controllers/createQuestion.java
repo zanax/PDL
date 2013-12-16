@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package controllers;
 
 import connection.DB;
@@ -20,9 +20,9 @@ import models.Teacher;
 import models.Test;
 
 /**
- *
- * @author Maarten
- */
+*
+* @author Maarten
+*/
 @WebServlet(name = "createQuestion", urlPatterns = {"/createQuestion"})
 public class createQuestion extends HttpServlet {
 
@@ -34,19 +34,19 @@ public class createQuestion extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+* Handles the HTTP
+* <code>GET</code> method.
+*
+* @param request servlet request
+* @param response servlet response
+* @throws ServletException if a servlet-specific error occurs
+* @throws IOException if an I/O error occurs
+*/
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
-//            List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
+// List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
             List<Test> tests = DB.getInstance().getTests();
             if (!tests.isEmpty()) {
                 request.setAttribute("tests", tests);
@@ -62,14 +62,14 @@ public class createQuestion extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+* Handles the HTTP
+* <code>POST</code> method.
+*
+* @param request servlet request
+* @param response servlet response
+* @throws ServletException if a servlet-specific error occurs
+* @throws IOException if an I/O error occurs
+*/
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -143,32 +143,32 @@ public class createQuestion extends HttpServlet {
     }
 
     /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+* Returns a short description of the servlet.
+*
+* @return a String containing servlet description
+*/
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 // optie 2
-//            if (request.getSession().getAttribute("user") instanceof Teacher) {
-//            List<Course> courses = DB.getInstance().getUserCourses((Teacher) request.getSession().getAttribute("user"));
-//            if (courses.isEmpty()) {
-//                List<Integer> course_ids = new ArrayList<Integer>();
-//                for (Course course : courses) { course_ids.add(course.getId()); }
-//                List<Test> tests = DB.getInstance().getTestsByCouseID(course_ids);
-//                if (!tests.isEmpty()) {
-//                    request.setAttribute("courses", courses);
-//                    request.setAttribute("tests", tests);
-//                    request.setAttribute("show", true);
-//                } else {
-//                    request.setAttribute("errors", "You have no Tests to create a Question for.");
-//                }
-//            } else {
-//                request.setAttribute("errors", "You have no Courses to create a Question for.");
-//            }
-//        } else {
-//            request.setAttribute("errors", "You have not the right permission.");
-//        }
+// if (request.getSession().getAttribute("user") instanceof Teacher) {
+// List<Course> courses = DB.getInstance().getUserCourses((Teacher) request.getSession().getAttribute("user"));
+// if (courses.isEmpty()) {
+// List<Integer> course_ids = new ArrayList<Integer>();
+// for (Course course : courses) { course_ids.add(course.getId()); }
+// List<Test> tests = DB.getInstance().getTestsByCouseID(course_ids);
+// if (!tests.isEmpty()) {
+// request.setAttribute("courses", courses);
+// request.setAttribute("tests", tests);
+// request.setAttribute("show", true);
+// } else {
+// request.setAttribute("errors", "You have no Tests to create a Question for.");
+// }
+// } else {
+// request.setAttribute("errors", "You have no Courses to create a Question for.");
+// }
+// } else {
+// request.setAttribute("errors", "You have not the right permission.");
+// }
 }

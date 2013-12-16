@@ -60,6 +60,19 @@
         <servlet-name>makeTest</servlet-name>
         <servlet-class>controllers.makeTest</servlet-class>
     </servlet>
+<<<<<<< HEAD
+=======
+    <servlet>
+        <servlet-name>diableQuestion</servlet-name>
+        <servlet-class>controllers.diableQuestion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>myGrades</servlet-name>
+        <servlet-class>controllers.myGrades</servlet-class>
+    </servlet>
+    
+    
+>>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
     
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
@@ -121,6 +134,20 @@
         <servlet-name>deleteCourse</servlet-name>
         <url-pattern>/deleteCourse</url-pattern>
     </servlet-mapping>
+<<<<<<< HEAD
+=======
+    <servlet-mapping>
+        <servlet-name>disableQuestion</servlet-name>
+        <url-pattern>/disableQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myGrades</servlet-name>
+        <url-pattern>/myGrades</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+>>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
     <session-config>
         <session-timeout>
             30

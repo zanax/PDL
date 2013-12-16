@@ -15,7 +15,7 @@
             <c:if test="${success != null && success}">
 
                 <div class="success_message">
-                    U have successfully edited your information!    
+                    U have successfully edited your information!
                 </div>
 
             </c:if>
@@ -84,7 +84,7 @@
             <label class="label">
                 <span class="form-span">Confirm password:</span>
                 <input name="confirm_new_password" type="password" placeholder="This is optional" value="" class="form-input">
-            </label>       
+            </label>
 
         </div>
     </div>
@@ -99,4 +99,3 @@
 
 
 <%@include file="/includes/footer.jsp" %>
-

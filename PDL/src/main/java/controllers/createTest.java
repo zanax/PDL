@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package controllers;
 
 import connection.DB;
@@ -24,9 +24,9 @@ import models.Helper;
 import models.Test;
 
 /**
- *
- * @author Bono
- */
+*
+* @author Bono
+*/
 @WebServlet(name = "createTest", urlPatterns = {"/createTest"})
 public class createTest extends HttpServlet {
 
@@ -174,4 +174,3 @@ public class createTest extends HttpServlet {
         rd.forward(request, response);
     }
 }
-

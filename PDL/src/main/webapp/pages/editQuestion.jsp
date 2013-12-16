@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %> 
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Edit Question
@@ -13,7 +13,7 @@
         </c:forEach>
         <c:if test="${success != null && success}">
             <div class="success_message">
-                U have successfully added a Question.   
+                U have successfully added a Question.
             </div>
         </c:if>
 

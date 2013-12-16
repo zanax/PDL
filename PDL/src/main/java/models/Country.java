@@ -18,6 +18,7 @@ import javax.persistence.Table;
  * @author Bono
  */
 
+
 @Entity
 @Table(name="Country")
 public class Country {
