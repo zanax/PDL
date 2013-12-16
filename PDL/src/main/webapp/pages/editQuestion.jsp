@@ -1,7 +1,7 @@
 <%@include file="/includes/header.jsp" %> 
 
 <div class="content-header">
-    Create Question
+    Edit Question
 </div>
 
 <div class="course">
@@ -16,14 +16,14 @@
                 U have successfully added a Question.   
             </div>
         </c:if>
-        <c:if test="${show != null && show}">
+
             <form method="post" action="editQuestion">
                 <label class="label">
                     <span class="form-span">Test: *</span>
                     <select class="form-input-select" name="test" required>
                         <option value="">Select Test...</option>
                         <c:forEach items="${tests}" var="test">
-                            <option value="${test.id}">${test.title}</option>
+                            <option value="${test.id}" <c:if test="${test_id != null && test_id == test.id}">selected</c:if>>${test.title}</option>
                         </c:forEach>
                     </select>
                 </label>
@@ -45,9 +45,8 @@
                 <label class="label">
                     <input name="answer3" type="text" class="form-input" value="${questionObj.answer3}">
                 </label>
-                <input type="submit" value="Add Question" class="button" id="button">
+                <input type="submit" value="Save Question" class="button" id="button">
             </form>
-        </c:if>
     </div>
 </div>
 

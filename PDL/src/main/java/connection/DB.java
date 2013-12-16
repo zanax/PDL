@@ -152,7 +152,7 @@ public class DB {
             prepared_statement.setString(10, user.getCountry());
             prepared_statement.setInt(11, user.getLanguage());
             prepared_statement.setLong(12, user.getId());
-            
+
             affected_rows = prepared_statement.executeUpdate();
 
             closeConnection();
@@ -272,9 +272,9 @@ public class DB {
             }
 
             //Dit vult de description met de vraag en de mogelijke antwoorden.
-            prepared_statement.setString(8, question.getQuestion() +" " + question.getCorrectAnswer()
-                   +" " + question.getAnswer1() +" " + question.getAnswer2() +" " + question.getAnswer3());
-            
+            prepared_statement.setString(8, question.getQuestion() + " " + question.getCorrectAnswer()
+                    + " " + question.getAnswer1() + " " + question.getAnswer2() + " " + question.getAnswer3());
+
             prepared_statement.execute();
 
             ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
@@ -367,6 +367,43 @@ public class DB {
         }
 
         return course;
+    }
+
+    public Question getQuestion(int id) {
+        Question question = null;
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + "     * "
+                    + "     FROM "
+                    + "         Question"
+                    + "     WHERE "
+                    + "         id = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                question = new Question(id);
+                question.setQuestion("question");
+                question.setCorrectAnswer("correctAnswer");
+                question.setAnswer1("answer1");
+                question.setAnswer2("answer2");
+                question.setAnswer3("answer3");
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return question;
     }
 
     public List<Course> searchCourse(String criteria) {
@@ -476,38 +513,38 @@ public class DB {
 
         return chapter;
     }
-    
+
     public List<Chapter> getCourseChapters(int id) {
-        
-         List<Chapter> chapters = new ArrayList<Chapter>();
-        
+
+        List<Chapter> chapters = new ArrayList<Chapter>();
+
         try {
             startConnection();
-            
+
             String sql = "  select "
                     + "         *"
                     + "     from"
                     + "         Chapter"
                     + "     where"
                     + "         courseID = ?";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, id);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
-            
+
             while (rs.next()) {
                 chapters.add(getChapter(rs.getInt("id")));
             }
-            
+
             closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return chapters;
     }
-    
+
     public List<Course> getUserCourses(User user) {
 
         long user_id = user.getId();
@@ -752,34 +789,6 @@ public class DB {
         return courses;
     }
 
-//    public boolean addQuestion(Question question) {
-//        boolean resultt = false;
-//
-//        try {
-//            startConnection();
-//
-//            String sql = "INSERT "
-//                    + " INTO Question(test_id, question, correctAnswer, answer1, answer2, answer3)"
-//                    + " VALUES (?, ?, ?, ?, ?, ?)";
-//
-//            PreparedStatement prepared_statement = conn.prepareStatement(sql);
-//
-//            prepared_statement.setInt(1, question.getTestId());
-//            prepared_statement.setString(2, question.getQuestion());
-//            prepared_statement.setString(3, question.getCorrectAnswer());
-//            prepared_statement.setString(4, question.getAnswer1());
-//            prepared_statement.setString(5, question.getAnswer2());
-//            prepared_statement.setString(6, question.getAnswer3());
-//
-//            resultt = prepared_statement.execute();
-//
-//            closeConnection();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return resultt;
-//    }
 
     public ArrayList<Question> getQuestions() {
 
@@ -788,11 +797,13 @@ public class DB {
         try {
             startConnection();
 
-            String sql = "  SELECT "
-                    + " * "
-                    + " FROM "
-                    + " Question "
-                    + " WHERE isActive = 1 ";
+            String sql = " SELECT question.id, question.description,question.type, question.answer, question.question, "
+                    + " question.answer1, question.answer2, question.answer3, question.test_id, question.isActive"
+                    + "  , test.title "
+                    + " FROM Question AS question "
+                    + " INNER JOIN Test AS test ON test.id = question.test_id "
+                    + " WHERE question.isActive = 1 ";
+
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
 
@@ -800,6 +811,7 @@ public class DB {
 
             while (rs.next()) {
                 Question question = new Question(rs.getInt("id"));
+                question.setTestTitle(rs.getString("title"));
                 question.setQuestion(rs.getString("question"));
                 question.setCorrectAnswer(rs.getString("answer"));
                 question.setAnswer1(rs.getString("answer1"));
@@ -818,6 +830,7 @@ public class DB {
 
         return questions;
     }
+
     public boolean submitAnswers(int user_id, Map<Integer, String> answers) {
         return false;
     }
