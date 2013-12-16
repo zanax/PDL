@@ -4,6 +4,15 @@ public class Chapter {
     private int id;
     private int course_id; 
     private String title;
+     private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
       
     public Chapter(int id) { 
         this.id = id;
