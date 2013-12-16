@@ -11,21 +11,19 @@
                 ${error}
             </div>
         </c:forEach>
+        <c:if test="${success != null && success}">
+            <div class="success_message">
+                U have successfully disenrolled from the Course.
+            </div>
+        </c:if>
         <c:if test="${show != null && show}">
-            <c:if test="${success != null && success}">
-                <a href="myCourses" >
-                    <div class="success_message">
-                        U have successfully disenrolled from the Course. Go to My Courses      
-                    </div>
-                </a>
-            </c:if>
             <form method="post" action="disenrollCourse">
                 <label class="label">
                     <span class="form-span">Course: *</span>
                     <select class="form-input-select" name="id" required>
                         <option value="">Select Course...</option>
                         <c:forEach var="course" items="${courses}">
-                            <option value="${course.id}">${course.name}t</option>
+                            <option value="${course.id}">${course.name}</option>
                         </c:forEach>
                     </select>
                 </label>

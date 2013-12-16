@@ -976,7 +976,9 @@ public class DB {
             prepared_statement.setLong(1, user_id);
             prepared_statement.setInt(2, course_id);
 
-            ressult = prepared_statement.execute();
+            prepared_statement.execute();
+            
+            ressult = true;
 
             closeConnection();
 
@@ -1104,5 +1106,27 @@ public class DB {
             e.printStackTrace();
         }
 
+    }
+
+    public void enrollCourse(int course_id, long user_id) {
+        
+         try {
+            startConnection();
+
+            String sql = "insert "
+                    + "   into SubbedCourses(courseID, userID)"
+                    + "   values (?, ?)  ";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, course_id);
+            prepared_statement.setLong(2, user_id);
+
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
     }
 }

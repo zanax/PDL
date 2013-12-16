@@ -11,6 +11,11 @@
                 ${error}
             </div>
         </c:forEach>
+        <c:if test="${success != null && success}">
+            <div class="success_message">
+                U have successfully enrolled to the Course.   
+            </div>
+        </c:if>
         <c:if test="${show != null && show}">
             <form method="post" action="enrollCourse">
                 <label class="label">
@@ -18,7 +23,7 @@
                     <select class="form-input-select" name="id" required>
                         <option value="">Select Course...</option>
                         <c:forEach var="course" items="${courses}">
-                            <option value="${course.id}">${course.name}t</option>
+                            <option value="${course.id}">${course.name}</option>
                         </c:forEach>
                     </select>
                 </label>
@@ -26,7 +31,7 @@
                     <span class="form-span">Payment Method: *</span>
                     <select class="form-input-select" name="paymentMethod" required>
                         <option value="">Select Payment Method...</option>
-                         <option value="ideal">Ideal</option>
+                        <option value="ideal">Ideal</option>
                         <option value="paypal">Paypal</option>
                         <option value="creditcard">Credit Card</option>
                     </select>
