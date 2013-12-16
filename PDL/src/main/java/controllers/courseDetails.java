@@ -38,8 +38,7 @@ public class courseDetails extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -49,7 +48,6 @@ public class courseDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
 
         if (request.getParameter("id") != null) {
 
@@ -66,21 +64,25 @@ public class courseDetails extends HttpServlet {
                 int course_id = course.getId();
 
                 if (request.getSession().getAttribute("user") != null) {
-                    
+
                     request.setAttribute("logged_in", true);
 
                     List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
-                    
-                    for (int i = 0; i < subbed_courses.size(); i++) {
-                        int subcourse_id = subbed_courses.get(i).getId();
-                        if (subcourse_id == course_id) {
-                            request.setAttribute("enrolled", true);
-                            break;
-                        }else{
-                            request.setAttribute("not_enrolled", true);
+
+                    if (!subbed_courses.isEmpty()) {
+                        for (int i = 0; i < subbed_courses.size(); i++) {
+                            int subcourse_id = subbed_courses.get(i).getId();
+                            if (subcourse_id == course_id) {
+                                request.setAttribute("enrolled", true);
+                                break;
+                            } else {
+                                request.setAttribute("not_enrolled", true);
+                            }
                         }
+                    } else {
+                        request.setAttribute("not_enrolled", true);
                     }
-                } else {                   
+                } else {
                     request.setAttribute("logged_in", false);
                 }
 
@@ -96,8 +98,7 @@ public class courseDetails extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

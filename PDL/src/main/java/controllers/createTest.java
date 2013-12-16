@@ -48,7 +48,7 @@ public class createTest extends HttpServlet {
             url = "/pages/404.jsp";
         }
         else{
-            ArrayList<Course> courses = DB.getInstance().getCourses();
+            List<Course> courses = DB.getInstance().getCourses();
             request.setAttribute("courses", courses);
         }
         

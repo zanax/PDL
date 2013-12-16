@@ -72,7 +72,12 @@ public class disenrollCourse extends HttpServlet {
                         int course_id = Integer.parseInt(request.getParameter("id"));
                         long user_id = ((User) request.getSession().getAttribute("user")).getId();
                         if (DB.getInstance().disenrollCourse(user_id, course_id)) {
-                            request.setAttribute("succes", true);
+                            request.setAttribute("success", true);
+
+                            RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp"); // TEMP
+                            rd.forward(request, response);
+                            return;
+
                         } else {
                             request.setAttribute("errors", "There were some problems with the Database");
                         }

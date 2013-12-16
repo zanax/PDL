@@ -93,9 +93,12 @@ public class enrollCourse extends HttpServlet {
             if (this.errors.isEmpty()) {
                 request.setAttribute("id", id);
                 request.setAttribute("paymentMethod", method);
-                System.out.println("PAYMENT - REQUESTDISPATCHER");
-                ServletContext context = getServletContext();
-                context.getNamedDispatcher("Payment").forward(request, response);
+                DB.getInstance().enrollCourse(id, ((User) request.getSession().getAttribute("user")).getId());
+                
+                request.setAttribute("success", true); // TEMP
+                
+                request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response); // Verwijst terug naar de page
+                
                 //request.getRequestDispatcher("Payment").forward(request, response); // Verwijst terug naar de page
                 return;
             } else {
