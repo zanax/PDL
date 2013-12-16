@@ -20,24 +20,7 @@ public class Question {
     private String answer2;
     private String answer3;
     private char type;
-
-    public char getType() {
-        return type;
-    }
-
-    public void setType(char type) {
-        this.type = type;
-    }
-
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String testTitle;
 
     public Question() {
     }
@@ -54,6 +37,30 @@ public class Question {
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
+    }
+
+    public String getTestTitle() {
+        return testTitle;
+    }
+
+    public void setTestTitle(String testTitle) {
+        this.testTitle = testTitle;
+    }
+
+    public char getType() {
+        return type;
+    }
+
+    public void setType(char type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {

@@ -370,6 +370,43 @@ public class DB {
         return course;
     }
 
+    public Question getQuestion(int id) {
+        Question question = null;
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + "     * "
+                    + "     FROM "
+                    + "         Question"
+                    + "     WHERE "
+                    + "         id = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                question = new Question(id);
+                question.setQuestion("question");
+                question.setCorrectAnswer("correctAnswer");
+                question.setAnswer1("answer1");
+                question.setAnswer2("answer2");
+                question.setAnswer3("answer3");
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return question;
+    }
+
     public List<Course> searchCourse(String criteria) {
 
         Course course = null;
@@ -761,11 +798,13 @@ public class DB {
         try {
             startConnection();
 
-            String sql = "  SELECT "
-                    + " * "
-                    + " FROM "
-                    + " Question "
-                    + " WHERE isActive = 1 ";
+            String sql = " SELECT question.id, question.description,question.type, question.answer, question.question, "
+                    + " question.answer1, question.answer2, question.answer3, question.test_id, question.isActive"
+                    + "  , test.title "
+                    + " FROM Question AS question "
+                    + " INNER JOIN Test AS test ON test.id = question.test_id "
+                    + " WHERE question.isActive = 1 ";
+
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
 
@@ -773,6 +812,7 @@ public class DB {
 
             while (rs.next()) {
                 Question question = new Question(rs.getInt("id"));
+                question.setTestTitle(rs.getString("title"));
                 question.setQuestion(rs.getString("question"));
                 question.setCorrectAnswer(rs.getString("answer"));
                 question.setAnswer1(rs.getString("answer1"));
