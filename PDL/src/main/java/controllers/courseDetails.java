@@ -69,19 +69,20 @@ public class courseDetails extends HttpServlet {
 
                     List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
 
+                    boolean enrolled = false;
+
                     if (!subbed_courses.isEmpty()) {
                         for (int i = 0; i < subbed_courses.size(); i++) {
                             int subcourse_id = subbed_courses.get(i).getId();
                             if (subcourse_id == course_id) {
-                                request.setAttribute("enrolled", true);
+                                enrolled = true;
                                 break;
-                            } else {
-                                request.setAttribute("not_enrolled", true);
                             }
                         }
-                    } else {
-                        request.setAttribute("not_enrolled", true);
                     }
+
+                    request.setAttribute("enrolled", enrolled);
+
                 } else {
                     request.setAttribute("logged_in", false);
                 }

@@ -32,7 +32,7 @@
                     <a href="login" class="button" id="button">Log in to enroll</a>
                 </div>
             </c:if>
-            <c:if test="${not_enrolled == true}">
+            <c:if test="${enrolled == false}">
                 <div class="course-button info">
                     <a href="enrollCourse" class="button" id="button">Enroll in this course</a>
                 </div>
