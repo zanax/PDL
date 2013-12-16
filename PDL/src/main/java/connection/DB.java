@@ -989,26 +989,6 @@ public class DB {
         return ressult;
     }
 
-    //delete course
-//    public void deleteCourse(int course_id) {
-//
-//        try {
-//            startConnection();
-//
-//            String sql = "DELETE "
-//                    + " FROM Course"
-//                    + " WHERE courseID = ?";
-//            PreparedStatement prepared_statement = conn.prepareStatement(sql);
-//            prepared_statement.setInt(1, course_id);
-//            prepared_statement.execute();
-//
-//            closeConnection();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
     public ArrayList<Test> getCourseTests(int course_id) {
 
         ArrayList<Test> tests = new ArrayList<Test>();
