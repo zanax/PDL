@@ -11,6 +11,7 @@ import models.Chapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.crypto.Data;
 import models.Course;
 import models.Student;
 import models.Teacher;
@@ -152,7 +153,7 @@ public class DB {
             prepared_statement.setString(10, user.getCountry());
             prepared_statement.setInt(11, user.getLanguage());
             prepared_statement.setLong(12, user.getId());
-            
+
             affected_rows = prepared_statement.executeUpdate();
 
             closeConnection();
@@ -272,9 +273,9 @@ public class DB {
             }
 
             //Dit vult de description met de vraag en de mogelijke antwoorden.
-            prepared_statement.setString(8, question.getQuestion() +" " + question.getCorrectAnswer()
-                   +" " + question.getAnswer1() +" " + question.getAnswer2() +" " + question.getAnswer3());
-            
+            prepared_statement.setString(8, question.getQuestion() + " " + question.getCorrectAnswer()
+                    + " " + question.getAnswer1() + " " + question.getAnswer2() + " " + question.getAnswer3());
+
             prepared_statement.execute();
 
             ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
@@ -477,38 +478,38 @@ public class DB {
 
         return chapter;
     }
-    
+
     public List<Chapter> getCourseChapters(int id) {
-        
-         List<Chapter> chapters = new ArrayList<Chapter>();
-        
+
+        List<Chapter> chapters = new ArrayList<Chapter>();
+
         try {
             startConnection();
-            
+
             String sql = "  select "
                     + "         *"
                     + "     from"
                     + "         Chapter"
                     + "     where"
                     + "         courseID = ?";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, id);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
-            
+
             while (rs.next()) {
                 chapters.add(getChapter(rs.getInt("id")));
             }
-            
+
             closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return chapters;
     }
-    
+
     public List<Course> getUserCourses(User user) {
 
         long user_id = user.getId();
@@ -753,35 +754,6 @@ public class DB {
         return courses;
     }
 
-//    public boolean addQuestion(Question question) {
-//        boolean resultt = false;
-//
-//        try {
-//            startConnection();
-//
-//            String sql = "INSERT "
-//                    + " INTO Question(test_id, question, correctAnswer, answer1, answer2, answer3)"
-//                    + " VALUES (?, ?, ?, ?, ?, ?)";
-//
-//            PreparedStatement prepared_statement = conn.prepareStatement(sql);
-//
-//            prepared_statement.setInt(1, question.getTestId());
-//            prepared_statement.setString(2, question.getQuestion());
-//            prepared_statement.setString(3, question.getCorrectAnswer());
-//            prepared_statement.setString(4, question.getAnswer1());
-//            prepared_statement.setString(5, question.getAnswer2());
-//            prepared_statement.setString(6, question.getAnswer3());
-//
-//            resultt = prepared_statement.execute();
-//
-//            closeConnection();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return resultt;
-//    }
-
     public ArrayList<Question> getQuestions() {
 
         ArrayList<Question> questions = new ArrayList<Question>();
@@ -819,8 +791,77 @@ public class DB {
 
         return questions;
     }
-    public boolean submitAnswers(int user_id, Map<Integer, String> answers) {
-        return false;
+
+    public List<Question> getQuestions(int test_id) {
+
+        List<Question> questions = new ArrayList<Question>();
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + " * "
+                    + " FROM "
+                    + " Question "
+                    + " WHERE test_id = ? ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Question question = new Question(rs.getInt("id"));
+                question.setQuestion(rs.getString("question"));
+                question.setCorrectAnswer(rs.getString("answer"));
+                question.setAnswer1(rs.getString("answer1"));
+                question.setAnswer2(rs.getString("answer2"));
+                question.setAnswer3(rs.getString("answer3"));
+                question.setDescription(rs.getString("description"));
+                question.setTestId(rs.getInt("test_id"));
+
+                questions.add(question);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public boolean submitAnswers(int user_id, int test_id, Map<Integer, String> answers) {
+        boolean resullt = false;
+
+        try {
+            startConnection();
+
+            for (Map.Entry<Integer, String> entry : answers.entrySet()) {
+                Integer question_id = entry.getKey();
+                String answer = entry.getValue();
+
+                String sql = "insert "
+                        + "   into UserAnswer(user_id, test_id, question_id, answer)"
+                        + "   values (?, ?, ?, ?)  ";
+                
+                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, user_id);
+                prepared_statement.setInt(2, test_id);
+                prepared_statement.setInt(3, question_id);
+                prepared_statement.setString(4, answer);
+                prepared_statement.execute();
+            }
+
+            closeConnection();
+            
+            resullt = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resullt;
     }
 
     public int updateTest(Test test) {
