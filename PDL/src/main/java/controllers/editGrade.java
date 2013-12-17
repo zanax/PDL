@@ -49,8 +49,4 @@ public class editGrade extends HttpServlet {
             throws ServletException, IOException {
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
