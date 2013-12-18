@@ -22,6 +22,9 @@ public class Course {
     private String name;
     private String description;
     private String category;
+    private int numberOfStudents;
+    private int popularity;
+    private String imgSrc;
 
     
     public Course() {
@@ -131,4 +134,30 @@ public class Course {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public int getNumberOfStudents() {
+        return numberOfStudents;
+    }
+
+    public void setNumberOfStudents(int numberOfStudents) {
+        this.numberOfStudents = numberOfStudents;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
+    
+    
 }

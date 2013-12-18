@@ -20,28 +20,7 @@ public class Question {
     private String answer2;
     private String answer3;
     private char type;
-<<<<<<< HEAD
     private String testTitle;
-=======
-
-    public char getType() {
-        return type;
-    }
-
-    public void setType(char type) {
-        this.type = type;
-    }
-
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
->>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
 
     public Question() {
     }
@@ -60,7 +39,6 @@ public class Question {
         this.answer3 = answer3;
     }
 
-<<<<<<< HEAD
     public String getTestTitle() {
         return testTitle;
     }
@@ -85,8 +63,6 @@ public class Question {
         this.description = description;
     }
 
-=======
->>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
     public int getId() {
         return id;
     }
@@ -142,9 +118,6 @@ public class Question {
     public void setTestId(int testId) {
         this.testId = testId;
     }
-<<<<<<< HEAD
-}
-=======
     
 }
->>>>>>> 690130a54fcd5d57e0576a6ce88e0bcf85e82405
+

@@ -20,8 +20,8 @@
 
     <div class="course">
         <div id="course-content">
-            <div id="course-content-image">
-                <img src="http://blog.ecollegefinder.org/wp-content/uploads/2012/01/101474454.jpg">
+            <div ALIGN="center" id="course-content-image">
+                <img src="img/${course.imgSrc}"  height="200">
             </div>
             <div id="course-content-description">
                 <b>Course description:</b><br>

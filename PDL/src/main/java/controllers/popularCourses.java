@@ -6,7 +6,7 @@ package controllers;
 
 /**
  *
- * @author Niels
+ * @author Gijs
  */
 import connection.DB;
 import java.io.IOException;
@@ -23,10 +23,10 @@ import models.Course;
  *
  * @author Zanax & Donna
  */
-@WebServlet(name = "courseCatalog", urlPatterns = {"/courseCatalog"})
-public class courseCatalog extends HttpServlet {
+@WebServlet(name = "popularCourses", urlPatterns = {"/popularCourses"})
+public class popularCourses extends HttpServlet {
 
-    public courseCatalog() {
+    public popularCourses() {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -42,10 +42,11 @@ public class courseCatalog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Course> courses = DB.getInstance().getCourses();
+        List<Course> courses = DB.getInstance().getPopularCourses();
         request.setAttribute("courses", courses);
+        System.out.print(courses);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/courseCatalog.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/popularCourses.jsp");
         rd.forward(request, response);
     }
 

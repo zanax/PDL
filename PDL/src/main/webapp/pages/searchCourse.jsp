@@ -13,8 +13,8 @@
     <div class="course">
         <div id="course-content">
 
-            <div id="course-content-image">
-                <a href="course_economics.html"><img src="http://images.ctrustnetwork.com/static_pages/business_investment/stock_market/market_analysis/Stock.Line.chart.jpg"></a>
+            <div ALIGN="center" id="course-content-image">
+                <img src="img/${course.imgSrc}" height="200">
             </div>
             <div id="course-content-title">
                 <h4><a href="course_economics.html">${course.name}</a></h4>

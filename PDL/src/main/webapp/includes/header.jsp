@@ -33,7 +33,7 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="index.jsp">Home</a>
+                                <a href="popularCourses">Home</a>
                             </li>
                             <li>
                                 <a href="courseCatalog"><% out.println(Helper.translateWord(language, "Courses")); %></a>
