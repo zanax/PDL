@@ -958,7 +958,7 @@ public class DB {
 
         try {
             startConnection();
-
+        
             String sql = "  select"
                     + "   *"
                     + "   from UserAnswer"
@@ -1177,7 +1177,9 @@ public class DB {
             prepared_statement.setLong(1, user_id);
             prepared_statement.setInt(2, course_id);
 
-            ressult = prepared_statement.execute();
+            prepared_statement.execute();
+            
+            ressult = true;
 
             closeConnection();
 
