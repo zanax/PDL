@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %> 
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Make Test
@@ -19,7 +19,7 @@
     <div class="course">
         <div id="course-content">
             <div class="success_message">
-                U have successfully submitted the Test.   
+                U have successfully submitted the Test.
             </div>
         </div>
     </div>

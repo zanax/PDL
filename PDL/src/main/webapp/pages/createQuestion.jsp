@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %> 
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Create Question
@@ -13,7 +13,7 @@
         </c:forEach>
         <c:if test="${success != null && success}">
             <div class="success_message">
-                U have successfully added a Question.   
+                U have successfully added a Question.
             </div>
         </c:if>
         <c:if test="${show != null && show}">
@@ -53,12 +53,12 @@
 
 <%@include file="/includes/footer.jsp" %>
 
-<!--                <label class="label">
-                    <span class="form-span">Course *</span>
-                    <select class="form-input-select" name="test" required onchange="">
-                    <option value="">Select Course...</option>
-                        <C:forEach items="S{courses}" var="course">
-                            <option value="S{course.id}">S{course.name}</option>
-                        </C:forEach>
-                    </select>
-                </label> -->
+<!-- <label class="label">
+<span class="form-span">Course *</span>
+<select class="form-input-select" name="test" required onchange="">
+<option value="">Select Course...</option>
+<C:forEach items="S{courses}" var="course">
+<option value="S{course.id}">S{course.name}</option>
+</C:forEach>
+</select>
+</label> -->

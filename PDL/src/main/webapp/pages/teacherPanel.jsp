@@ -1,4 +1,4 @@
-<%@include file="/includes/header.jsp" %>       
+<%@include file="/includes/header.jsp" %>
 
 <div class="content-header">
     Teacher
@@ -96,7 +96,7 @@
                     #ID
                 </th>
                 <th style="width: 120px;">
-                    Test ID
+                    Test
                 </th>
                 <th style="width: auto;">
                     Description
@@ -108,7 +108,7 @@
             <c:forEach items="${questions}" var="question">
                 <tr>
                     <td>${question.id}</td>
-                    <td>${question.testId}</td>
+                    <td>${question.testTitle}</td>
                     <td>${question.description}</td>
                     <td>
                         <a href="editQuestion?id=${question.id}"><img src="img/edit.png"></a>

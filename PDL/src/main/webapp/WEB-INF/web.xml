@@ -60,7 +60,14 @@
         <servlet-name>makeTest</servlet-name>
         <servlet-class>controllers.makeTest</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>diableQuestion</servlet-name>
+        <servlet-class>controllers.diableQuestion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>myGrades</servlet-name>
+        <servlet-class>controllers.myGrades</servlet-class>
+    </servlet>    
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -120,6 +127,14 @@
     <servlet-mapping>
         <servlet-name>deleteCourse</servlet-name>
         <url-pattern>/deleteCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>disableQuestion</servlet-name>
+        <url-pattern>/disableQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myGrades</servlet-name>
+        <url-pattern>/myGrades</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
