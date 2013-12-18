@@ -955,10 +955,10 @@ public class DB {
 
     public Map<Integer,String> getAnswers(int user_id, int test_id) {
         Map<Integer,String> answers = new HashMap<Integer,String>();
-
+        
         try {
             startConnection();
-        
+
             String sql = "  select"
                     + "   *"
                     + "   from UserAnswer"
@@ -1177,9 +1177,7 @@ public class DB {
             prepared_statement.setLong(1, user_id);
             prepared_statement.setInt(2, course_id);
 
-            prepared_statement.execute();
-            
-            ressult = true;
+            ressult = prepared_statement.execute();
 
             closeConnection();
 
