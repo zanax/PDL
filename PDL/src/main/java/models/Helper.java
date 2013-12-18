@@ -60,6 +60,13 @@ public class Helper {
         return false;
     }
     
+    public static boolean isAdmin(Object user){        
+        if(user instanceof Admin){
+            return true;
+        }
+        return false;
+    }
+    
     public static boolean isStudent(Object user){
         if(user instanceof Student){
             return true;

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.crypto.Data;
+import models.Admin;
 import models.Course;
 import models.Grade;
 import models.Student;
@@ -188,10 +189,12 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                if (rs.getBoolean("is_teacher") == false) {
-                    user = new Student(rs.getInt("user_id"));
-                } else {
+                if (rs.getBoolean("is_teacher") == true) {
                     user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
+                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                    user = new Student(rs.getInt("user_id"));
                 }
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
@@ -713,6 +716,49 @@ public class DB {
         return tests;
     }
 
+    public ArrayList<User> getUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         User "
+                    + "     order by user_id asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("user_id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setLanguage(rs.getInt("language_id"));
+                user.setIsTeacher(rs.getBoolean("is_teacher"));
+                user.setIsAdmin(rs.getBoolean("is_admin"));
+
+                users.add(user);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+    
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -783,7 +829,6 @@ public class DB {
 //        }
 //        return resultt;
 //    }
-    
     public Question getQuestion(int id) {
         Question question = null;
 
@@ -820,7 +865,7 @@ public class DB {
 
         return question;
     }
-    
+
     public ArrayList<Question> getQuestions() {
 
         ArrayList<Question> questions = new ArrayList<Question>();
@@ -861,6 +906,8 @@ public class DB {
 
         return questions;
     }
+    
+    
 
     public List<Question> getQuestions(int test_id) {
 
@@ -904,7 +951,7 @@ public class DB {
 
     public boolean submitAnswers(int user_id, int test_id, Map<Integer, String> answers) {
         boolean result = false;
-        
+
         try {
             startConnection();
             for (Map.Entry<Integer, String> entry : answers.entrySet()) {
@@ -914,7 +961,7 @@ public class DB {
                 String sql = "insert "
                         + "   into UserAnswer(user_id, test_id, question_id, answer)"
                         + "   values (?, ?, ?, ?)  ";
-                
+
                 PreparedStatement prepared_statement = conn.prepareStatement(sql);
                 prepared_statement.setInt(1, user_id);
                 prepared_statement.setInt(2, test_id);
@@ -924,28 +971,28 @@ public class DB {
             }
 
             closeConnection();
-            
+
             result = true;
         } catch (SQLException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
-        
+
         return result;
     }
 
     public void disableQuestion(int question_id) {
-    String sql = "";
-    try {
-        startConnection();
-        sql = "UPDATE Question "
-                + " SET isActive = 0"
-                + " WHERE questionID = ?";
+        String sql = "";
+        try {
+            startConnection();
+            sql = "UPDATE Question "
+                    + " SET isActive = 0"
+                    + " WHERE questionID = ?";
 
-        PreparedStatement prepared_statement = conn.prepareStatement(sql);
-        prepared_statement.setInt(1, question_id);
-        prepared_statement.execute();
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, question_id);
+            prepared_statement.execute();
 
-        closeConnection();
+            closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1059,7 +1106,6 @@ public class DB {
 //        }
 //
 //    }
-
     public ArrayList<Test> getCourseTests(int course_id) {
 
         ArrayList<Test> tests = new ArrayList<Test>();
@@ -1159,9 +1205,9 @@ public class DB {
 
     }
 
-        public void enrollCourse(int course_id, long user_id) {
-        
-         try {
+    public void enrollCourse(int course_id, long user_id) {
+
+        try {
             startConnection();
 
             String sql = "insert "
@@ -1178,7 +1224,7 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public List<Grade> getGrades(User user) {
@@ -1216,7 +1262,7 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return grades;
     }
 
