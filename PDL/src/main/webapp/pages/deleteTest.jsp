@@ -23,7 +23,7 @@
                         Are you sure you want to delete this test: '${test.title}'?      
                     </div>
                 
-                <input type="hidden" name="test_id" placeholder="test id here..." value="${test.id}" required class="form-input" style="text-align: center;">
+                <input type="hidden" name="test_id" value="${test.id}" class="form-input" style="text-align: center;">
             </div>
             <div class="course-button info" style="left: 725px;">
 

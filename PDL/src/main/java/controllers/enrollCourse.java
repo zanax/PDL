@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controllers;
 
 import connection.DB;
@@ -20,9 +20,9 @@ import models.Course;
 import models.User;
 
 /**
-*
-* @author Zanax
-*/
+ *
+ * @author Zanax
+ */
 @WebServlet(name = "enrollCourse", urlPatterns = {"/enrollCourse"})
 public class enrollCourse extends HttpServlet {
 
@@ -34,13 +34,13 @@ public class enrollCourse extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-* Handles the HTTP <code>GET</code> method.
-*
+     * Handles the HTTP <code>GET</code> method.
+     *     
 * @param request servlet request
-* @param response servlet response
-* @throws ServletException if a servlet-specific error occurs
-* @throws IOException if an I/O error occurs
-*/
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,13 +62,13 @@ public class enrollCourse extends HttpServlet {
     }
 
     /**
-* Handles the HTTP <code>POST</code> method.
-*
+     * Handles the HTTP <code>POST</code> method.
+     *     
 * @param request servlet request
-* @param response servlet response
-* @throws ServletException if a servlet-specific error occurs
-* @throws IOException if an I/O error occurs
-*/
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -94,11 +94,12 @@ public class enrollCourse extends HttpServlet {
                 request.setAttribute("id", id);
                 request.setAttribute("paymentMethod", method);
                 DB.getInstance().enrollCourse(id, ((User) request.getSession().getAttribute("user")).getId());
-                
+                DB.getInstance().amountPlusOne(id);
+
                 request.setAttribute("success", true); // TEMP
-                
+
                 request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response); // Verwijst terug naar de page
-                
+
                 //request.getRequestDispatcher("Payment").forward(request, response); // Verwijst terug naar de page
                 return;
             } else {
@@ -116,10 +117,10 @@ public class enrollCourse extends HttpServlet {
     }
 
     /**
-* Returns a short description of the servlet.
-*
+     * Returns a short description of the servlet.
+     *     
 * @return a String containing servlet description
-*/
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

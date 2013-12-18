@@ -414,6 +414,8 @@ public class DB {
                 course.setDescription(rs.getString("description"));
                 course.setCategory(rs.getString("category"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
+                course.setImgSrc(rs.getString("img_src"));
+
             }
 
             closeConnection();
@@ -457,6 +459,7 @@ public class DB {
                 course.setDescription(rs.getString("description"));
                 course.setCategory(rs.getString("category"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
+                course.setImgSrc(rs.getString("img_src"));
 
                 courses.add(course);
             }
@@ -837,10 +840,61 @@ public class DB {
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
                 course.setName(rs.getString("name"));
                 course.setStartDate(rs.getDate("startDate"));
+                course.setNumberOfStudents(rs.getInt("numberOfStudents"));
+                course.setImgSrc(rs.getString("img_src"));
+
+                //course.setPopularity(rs.getInt("popularity"));
 //                course.setStudents(null);
 //                course.setTests(null);
 //                course.setChapters(null);
+                courses.add(course);
+            }
 
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
+
+    public ArrayList<Course> getPopularCourses() {
+        ArrayList<Course> courses = new ArrayList<Course>();
+
+        try {
+            startConnection();
+
+            String sql = "  SELECT "
+                    + "         * "
+                    + "     FROM "
+                    + "         Course "
+                    + "     WHERE isActive = 1 "
+                    + "     ORDER BY numberOfStudents DESC, name"
+                    + "     LIMIT 3";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course(rs.getInt("courseID"));
+                course.setCategory(rs.getString("category"));
+                course.setDescription(rs.getString("description"));
+                course.setEndDate(rs.getDate("endDate"));
+//                course.setHeadTeacher(this.getTeacher());
+                course.setIsActive(rs.getBoolean("isActive"));
+                course.setMaximumStudents(rs.getInt("maximumStudents"));
+                course.setName(rs.getString("name"));
+                course.setStartDate(rs.getDate("startDate"));
+                course.setNumberOfStudents(rs.getInt("numberOfStudents"));
+                course.setImgSrc(rs.getString("img_src"));
+
+                System.out.print(rs.getString("img_src"));
+
+                //course.setPopularity(rs.getInt("popularity"));
+//                course.setStudents(null);
+//                course.setTests(null);
+//                course.setChapters(null);
                 courses.add(course);
             }
 
@@ -930,7 +984,6 @@ public class DB {
                     + " FROM Question AS question "
                     + " INNER JOIN Test AS test ON test.id = question.test_id "
                     + " WHERE question.isActive = 1 ";
-
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
 
@@ -1372,7 +1425,45 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void amountPlusOne(int course_id) {
+
+        try {
+            startConnection();
+
+            String sql = " UPDATE Course SET numberOfStudents = numberOfStudents + 1 WHERE courseID = ? ;";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, course_id);
+            prepared_statement.execute();
+
+            System.out.println("amount +1 DB method");
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void amountMinusOne(int course_id) {
+
+        try {
+            startConnection();
+
+            String sql = " UPDATE Course SET numberOfStudents = numberOfStudents - 1 WHERE courseID = ? ;";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, course_id);
+            prepared_statement.execute();
+
+            System.out.println("amount -1 DB method");
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Grade> getGrades(User user) {

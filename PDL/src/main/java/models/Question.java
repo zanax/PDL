@@ -61,8 +61,8 @@ public class Question {
 
     public void setTestTitle(String testTitle) {
         this.testTitle = testTitle;
-    }
-
+    }  
+    
     public int getId() {
         return id;
     }

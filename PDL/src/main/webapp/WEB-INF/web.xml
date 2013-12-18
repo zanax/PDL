@@ -13,6 +13,14 @@
         <servlet-class>controllers.logout</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>courseCatalog</servlet-name>
+        <servlet-class>controllers.courseCatalog</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>popularCourses</servlet-name>
+        <servlet-class>controllers.popularCourses</servlet-class>
+    </servlet> 
+    <servlet>
         <servlet-name>createCourse</servlet-name>
         <servlet-class>controllers.createCourse</servlet-class>
     </servlet>
@@ -67,7 +75,7 @@
     <servlet>
         <servlet-name>myGrades</servlet-name>
         <servlet-class>controllers.myGrades</servlet-class>
-    </servlet>    
+    </servlet>
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -88,6 +96,14 @@
         <servlet-name>logout</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>courseCatalog</servlet-name>
+        <url-pattern>/courseCatalog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>popularCourses</servlet-name>
+        <url-pattern>/popularCourses</url-pattern>
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>createCourse</servlet-name>
         <url-pattern>/createCourse</url-pattern>
