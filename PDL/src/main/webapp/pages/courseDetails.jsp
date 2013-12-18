@@ -70,7 +70,7 @@
     <div class="course">
         <div id="course-content">
             <c:forEach var="test" items="${tests}">
-                <a href=makeTest?id=${test.id}">
+                <a href="makeTest?id=${test.id}">
                     <div class="button full-width">
                         ${test.title}
                     </div>

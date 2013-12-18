@@ -1,7 +1,7 @@
 <%@include file="/includes/header.jsp" %> 
 
 <div class="content-header">
-    make Test
+    Make Test
 </div>
 
 <c:if test="${not empty errors}">
@@ -48,7 +48,7 @@
             <div class="course">
                 <div id="course-content">
                     <label class="label">
-                        <span class="form-span">Question ${question.id}</span>
+                        <span class="form-span">Question</span>
                         ${question.question}
                     </label>
                     <c:choose>

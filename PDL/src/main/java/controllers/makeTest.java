@@ -8,7 +8,6 @@ package controllers;
 import connection.DB;
 import models.Question;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +42,26 @@ public class makeTest extends HttpServlet {
         if (request.getSession().getAttribute("user") instanceof User) {
             if (request.getParameter("id") != null) {
                 try {
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    Test test = DB.getInstance().getTest(id);
+                    int test_id = Integer.parseInt(request.getParameter("id"));
+                    Test test = DB.getInstance().getTest(test_id);
                     if (test != null) {
-                        List<Question> questions = DB.getInstance().getQuestions(id);
-                        if (!questions.isEmpty()) {
-                            request.setAttribute("test", test);
-                            request.setAttribute("questions", questions);
-                            request.setAttribute("show", true);
+                        if(DB.getInstance().isTestActive(test_id)) {
+                            User user = (User) request.getSession().getAttribute("user");
+                            int user_id = (int) user.getId();
+                            if(DB.getInstance().areadyMadeTest(user_id, test_id)) {
+                                List<Question> questions = DB.getInstance().getQuestions(test_id);
+                                if (!questions.isEmpty()) {
+                                    request.setAttribute("test", test);
+                                    request.setAttribute("questions", questions);
+                                    request.setAttribute("show", true);
+                                } else {
+                                    request.setAttribute("errors", "Test didn't contain any questions");
+                                }
+                            } else {
+                                request.setAttribute("errors", "The Test is already made");
+                            }
                         } else {
-                            request.setAttribute("errors", "Test didn't contain any questions");
+                            request.setAttribute("errors", "The Test is not open");
                         }
                     } else {
                         request.setAttribute("errors", "Test was not found");
