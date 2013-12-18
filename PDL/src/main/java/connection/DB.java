@@ -9,9 +9,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import models.Chapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.crypto.Data;
+import models.Admin;
 import models.Course;
 import models.Grade;
 import models.Student;
@@ -188,6 +190,56 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
+                if (rs.getBoolean("is_teacher") == true) {
+                    user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
+                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                    user = new Student(rs.getInt("user_id"));
+                }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
+            }
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+
+    }
+
+    public User getUser(int userID) {
+        User user = null;
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         User"
+                    + "     where "
+                    + "         user_id = ?"
+                    + "         and"
+                    + "         banned = 0"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, userID);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
                 if (rs.getBoolean("is_teacher") == false) {
                     user = new Student(rs.getInt("user_id"));
                 } else {
@@ -206,7 +258,9 @@ public class DB {
                 user.setGender(rs.getString("gender").charAt(0));
                 user.setLanguage(rs.getInt("language_id"));
             }
+
             closeConnection();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -716,6 +770,49 @@ public class DB {
         return tests;
     }
 
+    public ArrayList<User> getUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         * "
+                    + "     from "
+                    + "         User "
+                    + "     order by user_id asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("user_id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setLanguage(rs.getInt("language_id"));
+                user.setIsTeacher(rs.getBoolean("is_teacher"));
+                user.setIsAdmin(rs.getBoolean("is_admin"));
+
+                users.add(user);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+    
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -913,6 +1010,8 @@ public class DB {
 
         return questions;
     }
+    
+    
 
     public List<Question> getQuestions(int test_id) {
 
@@ -952,6 +1051,104 @@ public class DB {
         }
 
         return questions;
+    }
+
+    public Map<Integer,String> getAnswers(int user_id, int test_id) {
+        Map<Integer,String> answers = new HashMap<Integer,String>();
+        
+        try {
+            startConnection();
+
+            String sql = "  select"
+                    + "   *"
+                    + "   from UserAnswer"
+                    + "   where"
+                    + "   user_id = ?"
+                    + "   and "
+                    + "   test_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, user_id);
+            prepared_statement.setInt(2, test_id);
+
+            ResultSet resultSet = prepared_statement.executeQuery();
+
+            while (resultSet.next()) {
+                answers.put(resultSet.getInt("question_id"), resultSet.getString("answer"));
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return answers;
+
+    }
+
+    public boolean areadyMadeTest(int user_id, int test_id) {
+        boolean resultt = false;
+        try {
+            startConnection();
+            
+            String sql = "select "
+                    + "   1 "
+                    + "   from"
+                    + "   UserAnswer"
+                    + "   where"
+                    + "   user_id = ?"
+                    + "   and"
+                    + "   test_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, user_id);
+            prepared_statement.setInt(2, test_id);
+            ResultSet rs = prepared_statement.executeQuery();
+
+            if (!rs.next()) {
+                resultt = true;
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultt;
+    }
+
+    public boolean isTestActive(int test_id) {
+        boolean resultt = false;
+
+        try {
+            startConnection();
+
+            String sql = "select "
+                    + "   isActive"
+                    + "   from"
+                    + "   Test"
+                    + "   where"
+                    + "   id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            ResultSet rs = prepared_statement.executeQuery();
+
+            if (rs.next()) {
+                if(rs.getBoolean("isActive")) {
+                    resultt = true;
+                }
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultt;
     }
 
     public boolean submitAnswers(int user_id, int test_id, Map<Integer, String> answers) {
@@ -1269,7 +1466,6 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public List<Grade> getGrades(User user) {

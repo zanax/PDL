@@ -77,8 +77,6 @@
         <servlet-name>myGrades</servlet-name>
         <servlet-class>controllers.myGrades</servlet-class>
     </servlet>
-    
-    
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -147,7 +145,6 @@
         <servlet-name>deleteCourse</servlet-name>
         <url-pattern>/deleteCourse</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>disableQuestion</servlet-name>
         <url-pattern>/disableQuestion</url-pattern>
@@ -156,7 +153,6 @@
         <servlet-name>myGrades</servlet-name>
         <url-pattern>/myGrades</url-pattern>
     </servlet-mapping>
-    
     <session-config>
         <session-timeout>
             30

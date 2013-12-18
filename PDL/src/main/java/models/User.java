@@ -3,14 +3,6 @@
  * and open the template in the editor.
  */
 package models;
-
-import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 /**
  *
  * @author Bono
@@ -18,8 +10,9 @@ import javax.persistence.ManyToOne;
 
 public class User {
     
-    @Id
-    @GeneratedValue
+    //om de admin te laten zien wat voor user het is
+    private String kindOfUser = "Student";
+    
     private Long id;
     
     private String firstname;
@@ -43,8 +36,8 @@ public class User {
     private char gender;
     
     private boolean isBanned;
-    private boolean is_student;
-    private boolean is_teacher;
+    private boolean isTeacher;
+    private boolean isAdmin;
     private int[] subscribed_course_ids;
 
     
@@ -70,6 +63,10 @@ public class User {
      */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getKindOfUser() {
+        return kindOfUser;
     }
 
     /**
@@ -196,6 +193,28 @@ public class User {
      */
     public void setGender(char gender) {
         this.gender = gender;
+    }
+
+    public boolean isIsTeacher() {
+        return isTeacher;
+    }
+
+    public void setIsTeacher(boolean isTeacher) {
+        this.isTeacher = isTeacher;
+        if(isTeacher){
+            kindOfUser = "Teacher";
+        }
+    }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+        if(isAdmin){
+            kindOfUser = "Administrator";
+        }
     }
 
     /**

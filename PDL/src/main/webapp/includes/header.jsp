@@ -1,3 +1,4 @@
+<%@page import="models.Admin"%>
 <%@page import="models.User"%>
 <%@page import="models.Helper"%>
 <%@page import="models.Teacher"%>
@@ -52,6 +53,11 @@
                             <% if (session.getAttribute("user") instanceof Teacher) {%>
                             <li>
                                 <a href="teacherPanel"><% out.println(Helper.translateWord(language, "Teacher")); %></a>
+                            </li>
+                            <% }%>
+                            <% if (session.getAttribute("user") instanceof Admin) {%>
+                            <li>
+                                <a href="adminPanel"><% out.println(Helper.translateWord(language, "Administrator")); %></a>
                             </li>
                             <% }%>
                             <% if (session.getAttribute("user") == null) {%>
