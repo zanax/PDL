@@ -30,7 +30,7 @@
                     <td>${grade.testTitle}</td>
                     <td>${grade.grade}</td>
                     <td style="text-align: center;">
-                        <a href="reviewTest?id=${grade.id}">Review Test</a>                    
+                        <a href="reviewTest?id=${grade.testId}">Review Test</a>                    
                     </td>
                 </tr>
             </c:forEach>

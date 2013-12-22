@@ -27,7 +27,7 @@
                 <input name="password" type="password" placeholder="Password" required class="form-input" style="text-align: center;">
             </div>
             
-            <input class="button middle right" type="submit" value="Log in" class="button">
+            <input class="button right" type="submit" value="Log in" id="button">
         </form>
     </div>
 </div>

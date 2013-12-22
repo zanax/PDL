@@ -1,24 +1,27 @@
 <%@include file="/includes/header.jsp" %> 
 
-<div class="content-header">
-    Create Course
-</div>
 
-<div class="course">
-    <div id="course-content">
-        <c:forEach var="error" items="${errors}">
-            <div class="error_message">
-                ${error}
-            </div>
-        </c:forEach>
-        <c:if test="${success != null && success}">
-            <a href="myCourses" >
-                <div class="success_message">
-                    U have successfully created the Course '${createdCourse}'. Go to My Courses      
+<form method="post" action="createCourse">
+
+
+    <div class="content-header">
+        Create Course
+    </div>
+
+    <div class="course">
+        <div id="course-content">
+            <c:forEach var="error" items="${errors}">
+                <div class="error_message">
+                    ${error}
                 </div>
-            </a>
-        </c:if>
-        <form method="post" action="createCourse">
+            </c:forEach>
+            <c:if test="${success != null && success}">
+                <a href="myCourses" >
+                    <div class="success_message">
+                        U have successfully created the Course '${createdCourse}'. Go to My Courses      
+                    </div>
+                </a>
+            </c:if>
             <label class="label">
                 <span class="form-span">Name: *</span>
                 <input name="name" type="text" placeholder="Name" value="${course.name}" class="form-input" required>
@@ -57,10 +60,19 @@
             </label>
             <!-- <label class="label">
                 <input type="file" name="file" id="file">
-            </label> -->
-            <input type="submit" value="Submit" class="button" id="button">
-        </form>
+            </label> -->       
+
+        </div>
+
     </div>
-</div>
+
+    <div class="course">
+        <div id="course-content">
+            <input type="submit" class="button" id="button" value="Submit">
+            <a href="teacherPanel" class="button" id="button">Cancel</a>
+        </div>        
+    </div>
+</form>
+
 
 <%@include file="/includes/footer.jsp" %>
