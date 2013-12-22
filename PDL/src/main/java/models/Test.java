@@ -1,6 +1,7 @@
 package models;
 
 public class Test {
+
     private int id;
     private int course_id;
     private int chapter_id;
@@ -21,6 +22,10 @@ public class Test {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCourse_id() {

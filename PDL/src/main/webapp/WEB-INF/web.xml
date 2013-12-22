@@ -57,6 +57,10 @@
         <servlet-class>controllers.teacherPanel</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>studentPanel</servlet-name>
+        <servlet-class>controllers.studentPanel</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Payment</servlet-name>
         <servlet-class>controllers.Payment</servlet-class>
     </servlet>
@@ -139,6 +143,10 @@
     <servlet-mapping>
         <servlet-name>teacherPanel</servlet-name>
         <url-pattern>/teacherPanel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>studentPanel</servlet-name>
+        <url-pattern>/studentPanel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>deleteCourse</servlet-name>
