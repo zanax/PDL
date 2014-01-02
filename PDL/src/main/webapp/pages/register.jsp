@@ -45,7 +45,7 @@
             </label>
             <label class="label">
                 <span class="form-span">Language:</span>
-                <select class="form-input-select" name="language" required>
+                <select class="select form-input" name="language" required>
                     <option value="">Select language...</option>
                     <option value="0" <c:if test="${language_id == 0}">checked</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${language_id == 1}">checked</c:if>>Nederlands</option>

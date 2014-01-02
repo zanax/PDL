@@ -4,6 +4,7 @@
  */
 package models;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -30,6 +31,7 @@ public class Helper {
         {"Back", "Terug"},
         {"Search for courses", "Zoeken naar cursussen"},
     };
+    private static final int[] allowed_languages = {0, 1};
     
     public static Helper getInstance(){
         if(helper == null){
@@ -74,17 +76,34 @@ public class Helper {
         return false;
     }
         
+    public static void setLanguage(int language, HttpServletRequest request){
+        boolean existing_language = false;
+        
+        for(int allowed_language : allowed_languages){
+            if(allowed_language == language){
+                existing_language = true;
+                break;
+            }
+        }
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("language", existing_language ? language : 0);
+    }
+    
     public static int getLanguage(HttpSession session){
         int language = 0;
         
-        if(session.getAttribute("user") != null){
-            User user = (User) session.getAttribute("user");
-            language =  user.getLanguage();
-        }
-        else{ //Haal language op uit geselecteerde language in header - TODO
+        if(session.getAttribute("language") != null){
+            Object session_language = session.getAttribute("language");
             
+            if(session_language instanceof Integer){
+                language = (Integer) session_language;
+            }
+            else if(session_language instanceof String){
+                language = Helper.isInt((String) session_language);
+            }
         }
-        
+        System.out.println(language);
         return language;
     }
     

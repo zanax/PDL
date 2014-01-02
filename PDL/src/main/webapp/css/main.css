@@ -78,7 +78,13 @@ div.content-header {
     margin: 5px 0;
 }
 
-.form-input-select {
+.select {
+    color: #575757;
+    font-family: Arial;
+    font-size: 15px;
+}
+
+.select.form-input {
     width: 217px;
     height: 30px;
     border: 1px solid #E3E3E3;

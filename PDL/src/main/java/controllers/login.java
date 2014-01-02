@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Helper;
 import models.User;
 
 /**
@@ -81,6 +82,7 @@ public class login extends HttpServlet {
                 //ingelogd - set session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                Helper.setLanguage(user.getLanguage(), request);
                 
                 url = "index.jsp";
                 success = true;

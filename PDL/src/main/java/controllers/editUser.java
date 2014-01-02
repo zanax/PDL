@@ -182,6 +182,9 @@ public class editUser extends HttpServlet {
                 request.setAttribute("errors", this.errors);
                 request.setAttribute("show", true);
             }
+            
+            //Reset the language (it could have been changed)
+            Helper.setLanguage(user.getLanguage(), request);
         } else {
             request.setAttribute("errors", this.errors);
             request.setAttribute("show", true);
@@ -189,7 +192,7 @@ public class editUser extends HttpServlet {
 
         request.setAttribute("success", this.success);
         request.setAttribute("show", true);
-
+        
         String url = "/pages/editUser.jsp";
         if (success) {
             url = "/pages/editUser.jsp";
