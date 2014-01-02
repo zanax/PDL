@@ -1,23 +1,24 @@
 <%@include file="/includes/header.jsp" %>
+<form method="post" action="createQuestion">
 
-<div class="content-header">
-    Create Question
-</div>
+    <div class="content-header">
+        Create Question
+    </div>
 
-<div class="course">
-    <div id="course-content">
-        <c:forEach var="error" items="${errors}">
-            <div class="error_message">
-                ${error}
-            </div>
-        </c:forEach>
-        <c:if test="${success != null && success}">
-            <div class="success_message">
-                U have successfully added a Question.
-            </div>
-        </c:if>
-        <c:if test="${show != null && show}">
-            <form method="post" action="createQuestion">
+    <div class="course">
+        <div id="course-content">
+            <c:forEach var="error" items="${errors}">
+                <div class="error_message">
+                    ${error}
+                </div>
+            </c:forEach>
+            <c:if test="${success != null && success}">
+                <div class="success_message">
+                    U have successfully added a Question.
+                </div>
+            </c:if>
+            <c:if test="${show != null && show}">
+
                 <label class="label">
                     <span class="form-span">Test: *</span>
                     <select class="form-input-select" name="test" required>
@@ -45,11 +46,18 @@
                 <label class="label">
                     <input name="answer3" type="text" class="form-input" value="${questionObj.answer3}">
                 </label>
-                <input type="submit" value="Add Question" class="button" id="button">
-            </form>
-        </c:if>
+
+            </c:if>
+        </div>
     </div>
-</div>
+
+    <div class="course">
+        <div id="course-content">
+            <input type="submit" class="button" id="button" value="Add Question">
+            <a href="teacherPanel" class="button" id="button">Cancel</a>
+        </div>        
+    </div>
+</form>
 
 <%@include file="/includes/footer.jsp" %>
 
