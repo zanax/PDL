@@ -1241,32 +1241,40 @@ public class DB {
             startConnection();
 
             String sql = "update Test "
-                    + "   set Test.amount_of_questions = ?, Test.time = ?, Test.course_id = ?, Test.chapter_id = ?, Test.start_date = ?, Test.end_date = ?, TestVertaling.title = ?, TestVertaling.description = ?"
-                    + "   inner join TestVertaling"
-                    + "   where Test.id = ?  "
-                    + "   and TestVertaling.language_id = ?"
-                    + "   and TestVertaling.test_id = ?";
+                    + "   set amount_of_questions = ?, time = ?, course_id = ?, chapter_id = ?, start_date = ?, end_date = ?"
+                    + "   where Test.id = ?  ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, test.getAmount_of_questions());
             prepared_statement.setInt(2, test.getTime());
             prepared_statement.setInt(3, test.getCourse_id());
-            prepared_statement.setInt(9, test.getId());
-            prepared_statement.setInt(10, test.getLanguage());
-            prepared_statement.setInt(11, test.getId());
-            prepared_statement.setString(7, test.getTitle());
-            prepared_statement.setString(8, test.getDescription());
-            
-            prepared_statement.setString(5, test.getStart_date());
-            prepared_statement.setString(6, test.getEnd_date());
             if (test.getChapter_id() == 0) {
                 prepared_statement.setNull(4, java.sql.Types.INTEGER);
             } else {
                 prepared_statement.setInt(4, test.getChapter_id());
             }
+            prepared_statement.setString(5, test.getStart_date());
+            prepared_statement.setString(6, test.getEnd_date());
+            prepared_statement.setInt(7, test.getId());
 
             affected_rows = prepared_statement.executeUpdate();
-
+            
+            if(affected_rows > 0){
+                //Set the translations
+                sql = "     update TestVertaling"
+                        + " set title = ?, description = ?"
+                        + " where TestVertaling.test_id = ?"
+                        + " and TestVertaling.language_id = ?";
+                
+                prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                prepared_statement.setString(1, test.getTitle());
+                prepared_statement.setString(2, test.getDescription());
+                prepared_statement.setInt(3, test.getId());
+                prepared_statement.setInt(4, test.getLanguage());
+                
+                affected_rows = prepared_statement.executeUpdate();
+            }
+            
             closeConnection();
 
         } catch (SQLException e) {

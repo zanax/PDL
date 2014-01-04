@@ -74,11 +74,13 @@ public class editTest extends HttpServlet {
         String course_id = request.getParameter("course_id").trim();
         String chapter_id = request.getParameter("chapter_id").trim();
         String amount_of_questions = request.getParameter("question_amount").trim();
+        String language_id = request.getParameter("language_id");
         int id = Helper.isInt(request.getParameter("id"));
         this.errors.clear();
         this.success = false;
         int int_time;
         int int_amount_of_questions;
+        int int_language = Helper.isInt(language_id);
         
         //TODO: check if start/end dates are correct (Date object?)
         
@@ -91,6 +93,7 @@ public class editTest extends HttpServlet {
         if(course_id.equals(""))                                                this.errors.add("\"Course\" is a required field.");
         if(amount_of_questions.equals(""))                                      this.errors.add("\"Amount of questions\" is a required field.");
         if((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
+        if( ! Helper.allowedLanguage(int_language))                             this.errors.add("Invalid language selected, please try again.");
         
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
@@ -133,6 +136,7 @@ public class editTest extends HttpServlet {
             test.setCourse_id(int_course_id);
             test.setChapter_id(int_chapter_id);
             test.setAmount_of_questions(int_amount_of_questions);
+            test.setLanguage(int_language);
             
             int affected_rows = DB.getInstance().updateTest(test);
             
