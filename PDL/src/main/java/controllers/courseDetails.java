@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
 import models.Course;
+import models.Helper;
 import models.Test;
 import models.User;
 
@@ -53,7 +54,7 @@ public class courseDetails extends HttpServlet {
 
             Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
             List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
-            List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")));
+            List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
             if (course != null) {
                 request.setAttribute("course", course);

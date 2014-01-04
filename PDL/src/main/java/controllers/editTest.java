@@ -38,7 +38,7 @@ public class editTest extends HttpServlet {
             int test_id = Helper.isInt(request.getParameter("id"));
             Test test = null;
             if(test_id > -1){
-                test = DB.getInstance().getTest(test_id);
+                test = DB.getInstance().getTest(test_id, Helper.getLanguage(request.getSession()));
 
                 if(test == null){
                     this.errors.add("The requested test does not exist.");

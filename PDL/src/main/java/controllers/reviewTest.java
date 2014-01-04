@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Helper;
 import models.Question;
 import models.Test;
 import models.User;
@@ -36,7 +37,7 @@ public class reviewTest extends HttpServlet {
             if (request.getParameter("testID") != null) {
                 try {
                     int testID = Integer.parseInt(request.getParameter("testID"));
-                    Test test = DB.getInstance().getTest(testID);
+                    Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
                     if (test != null) {
                         List<Question> questions = DB.getInstance().getQuestions(testID);
                         if (questions != null) {

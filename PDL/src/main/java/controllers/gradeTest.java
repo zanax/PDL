@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Helper;
 import models.Question;
 import models.Teacher;
 import models.Test;
@@ -49,7 +50,7 @@ public class gradeTest extends HttpServlet {
                         int studentID = Integer.parseInt(request.getParameter("studentID"));
                         User student = DB.getInstance().getUser(studentID);
                         if (student != null) {
-                            Test test = DB.getInstance().getTest(testID);
+                            Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
                             if (test != null) {
                                 List<Question> questions = DB.getInstance().getQuestions(testID);
                                 if (!questions.isEmpty()) {

@@ -60,6 +60,11 @@
                                 <a href="adminPanel"><%= Helper.translateWord(language, "Administrator") %></a>
                             </li>
                             <% }%>
+                            <% if (session.getAttribute("user") != null) {%>
+                            <li>
+                                <a href="chat"><%= Helper.translateWord(language, "Chat") %></a>
+                            </li>
+                            <%}%>
                             <% if (session.getAttribute("user") == null) {%>
                             <li>
                                 <a href="login"><%= Helper.translateWord(language, "Log In") %></a>

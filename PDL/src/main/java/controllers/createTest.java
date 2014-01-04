@@ -67,10 +67,12 @@ public class createTest extends HttpServlet {
         String course_id = request.getParameter("course_id").trim();
         String chapter_id = request.getParameter("chapter_id").trim();
         String amount_of_questions = request.getParameter("question_amount").trim();
+        String language_id = request.getParameter("language_id");
         this.errors.clear();
         this.success = false;
         int int_time;
         int int_amount_of_questions;
+        int int_language = Helper.isInt(language_id);
 
         //TODO: check if start/end dates are correct (Date object?)
         if (title.equals("")) {
@@ -103,7 +105,10 @@ public class createTest extends HttpServlet {
         if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) {
             this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
         }
-
+        if( ! Helper.allowedLanguage(int_language)){
+            this.errors.add("Invalid language selected, please try again.");
+        }
+                
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
         if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) {
@@ -143,6 +148,7 @@ public class createTest extends HttpServlet {
             test.setCourse_id(int_course_id);
             test.setChapter_id(int_chapter_id);
             test.setAmount_of_questions(int_amount_of_questions);
+            test.setLanguage(int_language);
 
             int test_id = DB.getInstance().insertTest(test);
 

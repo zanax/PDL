@@ -60,7 +60,7 @@ public class myGrades extends HttpServlet {
 
             //tests ophalen
             
-            ArrayList<Test> tests = DB.getInstance().getTests();          //All tests
+            ArrayList<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));          //All tests
             request.setAttribute("tests", tests);
 
             //System.out.println(grades);

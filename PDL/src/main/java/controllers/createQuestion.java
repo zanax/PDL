@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Helper;
 import models.Question;
 import models.Teacher;
 import models.Test;
@@ -47,7 +48,7 @@ public class createQuestion extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
 // List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
-            List<Test> tests = DB.getInstance().getTests();
+            List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             if (!tests.isEmpty()) {
                 request.setAttribute("tests", tests);
                 request.setAttribute("show", true);

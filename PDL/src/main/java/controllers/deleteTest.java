@@ -36,7 +36,7 @@ public class deleteTest extends HttpServlet {
             url = "/pages/404.jsp";
         }
         else{
-            Test test = DB.getInstance().getTest(Integer.parseInt(request.getParameter("id")));
+            Test test = DB.getInstance().getTest(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
             request.setAttribute("test", test);
         }
 

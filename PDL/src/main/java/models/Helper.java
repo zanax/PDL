@@ -76,15 +76,15 @@ public class Helper {
         return false;
     }
         
-    public static void setLanguage(int language, HttpServletRequest request){
-        boolean existing_language = false;
-        
+    public static boolean allowedLanguage(int language){
         for(int allowed_language : allowed_languages){
-            if(allowed_language == language){
-                existing_language = true;
-                break;
-            }
+            if(language == allowed_language) return true;
         }
+        return false;
+    }
+    
+    public static void setLanguage(int language, HttpServletRequest request){
+        boolean existing_language = allowedLanguage(language);
         
         HttpSession session = request.getSession();
         session.setAttribute("language", existing_language ? language : 0);

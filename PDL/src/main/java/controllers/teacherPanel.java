@@ -52,7 +52,7 @@ public class teacherPanel extends HttpServlet {
             request.setAttribute("courses", courses);
 
             //tests ophalen
-            ArrayList<Test> tests = DB.getInstance().getTests();
+            ArrayList<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             request.setAttribute("tests", tests);
 
             //questions ophalen

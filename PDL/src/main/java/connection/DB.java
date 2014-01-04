@@ -355,17 +355,15 @@ public class DB {
             startConnection();
 
             String sql = "insert "
-                    + "   into Test(course_id, chapter_id, amount_of_questions, time, title, description, start_date, end_date)"
-                    + "   values (?, ?, ?, ?, ?, ?, ?, ?)  ";
-            System.out.println(test.getChapter_id());
+                    + "   into Test(course_id, chapter_id, amount_of_questions, time, start_date, end_date)"
+                    + "   values (?, ?, ?, ?, ?, ?)  ";
+            
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, test.getCourse_id());
             prepared_statement.setInt(3, test.getAmount_of_questions());
             prepared_statement.setInt(4, test.getTime());
-            prepared_statement.setString(5, test.getTitle());
-            prepared_statement.setString(6, test.getDescription());
-            prepared_statement.setString(7, test.getStart_date());
-            prepared_statement.setString(8, test.getEnd_date());
+            prepared_statement.setString(5, test.getStart_date());
+            prepared_statement.setString(6, test.getEnd_date());
             if (test.getChapter_id() == 0) {
                 prepared_statement.setNull(2, java.sql.Types.INTEGER);
             } else {
@@ -379,7 +377,21 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
+            
+            //Plaats vertaling in de DB als test succesvol in DB is geplaatst.
+            if(id > 0){
+                sql = "  insert"
+                 + "     into TestVertaling(language_id, test_id, title, description) "
+                 + "     values (?, ?, ?, ?) ";
+                prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, test.getLanguage());
+                prepared_statement.setInt(2, id);
+                prepared_statement.setString(3, test.getTitle());
+                prepared_statement.setString(4, test.getDescription());
 
+                prepared_statement.execute();
+            }
+            
             closeConnection();
 
         } catch (SQLException e) {
@@ -599,22 +611,27 @@ public class DB {
         return courses;
     }
 
-    public Test getTest(int id) {
+    public Test getTest(int id, int language) {
         Test test = null;
 
         try {
             startConnection();
 
             String sql = "  select "
-                    + "         *"
+                    + "         Test.*, TestVertaling.*"
                     + "     from"
                     + "         Test"
+                    + "     inner join TestVertaling"
+                    + "         on TestVertaling.test_id = Test.id"
                     + "     where"
-                    + "         id = ?"
+                    + "         Test.id = ?"
+                    + "     AND"
+                    + "         TestVertaling.language_id = ?"
                     + "     limit 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, id);
+            prepared_statement.setInt(2, language);
 
             ResultSet rs = prepared_statement.executeQuery();
 
@@ -628,6 +645,7 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
+                test.setLanguage(language);
             }
 
             closeConnection();
@@ -638,48 +656,48 @@ public class DB {
         return test;
     }
 
-    public List<Test> getTestsByCouseID(List<Integer> ids) {
-        List<Test> tests = new ArrayList<Test>();
+//    public List<Test> getTestsByCourseID(List<Integer> ids) {
+//        List<Test> tests = new ArrayList<Test>();
+//
+//        try {
+//            startConnection();
+//            for (int id : ids) {
+//                String sql = "  select "
+//                        + "         *"
+//                        + "     from"
+//                        + "         Test"
+//                        + "     where"
+//                        + "         course_id = ?"
+//                        + "     limit 1";
+//
+//                PreparedStatement prepared_statement = conn.prepareStatement(sql);
+//                prepared_statement.setInt(1, id);
+//
+//                ResultSet rs = prepared_statement.executeQuery();
+//
+//                while (rs.next()) {
+//                    Test test = new Test(id);
+//                    test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+//                    test.setChapter_id(rs.getInt("chapter_id"));
+//                    test.setCourse_id(rs.getInt("course_id"));
+//                    test.setDescription(rs.getString("description"));
+//                    test.setEnd_date(rs.getString("end_date"));
+//                    test.setStart_date(rs.getString("start_date"));
+//                    test.setTime(rs.getInt("time"));
+//                    test.setTitle(rs.getString("title"));
+//                    tests.add(test);
+//                }
+//            }
+//
+//            closeConnection();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return tests;
+//    }
 
-        try {
-            startConnection();
-            for (int id : ids) {
-                String sql = "  select "
-                        + "         *"
-                        + "     from"
-                        + "         Test"
-                        + "     where"
-                        + "         course_id = ?"
-                        + "     limit 1";
-
-                PreparedStatement prepared_statement = conn.prepareStatement(sql);
-                prepared_statement.setInt(1, id);
-
-                ResultSet rs = prepared_statement.executeQuery();
-
-                while (rs.next()) {
-                    Test test = new Test(id);
-                    test.setAmount_of_questions(rs.getInt("amount_of_questions"));
-                    test.setChapter_id(rs.getInt("chapter_id"));
-                    test.setCourse_id(rs.getInt("course_id"));
-                    test.setDescription(rs.getString("description"));
-                    test.setEnd_date(rs.getString("end_date"));
-                    test.setStart_date(rs.getString("start_date"));
-                    test.setTime(rs.getInt("time"));
-                    test.setTitle(rs.getString("title"));
-                    tests.add(test);
-                }
-            }
-
-            closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return tests;
-    }
-
-    public ArrayList<Test> getTests() {
+    public ArrayList<Test> getTests(int language) {
 
         ArrayList<Test> tests = new ArrayList<Test>();
 
@@ -687,13 +705,17 @@ public class DB {
             startConnection();
 
             String sql = "  SELECT "
-                    + "         * "
+                    + "         Test.*, TestVertaling.* "
                     + "     FROM "
                     + "         Test "
-                    + "     WHERE isActive = 1 ";
+                    + "     INNER JOIN TestVertaling on Test.id = TestVertaling.test_id"
+                    + "     WHERE Test.isActive = 1 "
+                    + "     AND TestVertaling.language_id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-
+            
+            prepared_statement.setInt(1, language);
+            
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -706,6 +728,7 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
+                test.setLanguage(language);
 
                 tests.add(test);
             }
@@ -718,7 +741,7 @@ public class DB {
         return tests;
     }
 
-    public List<Test> getUserTests(User user) {
+    public List<Test> getUserTests(User user, int language) {
 
         List<Test> tests = new ArrayList<Test>();
         List<Course> courses = getUserCourses(user);
@@ -736,15 +759,21 @@ public class DB {
             startConnection();
 
             String sql = "  select "
-                    + "         * "
+                    + "         Test.*, TestVertaling.* "
                     + "     from "
                     + "         Test "
-                    + "     where course_id"
-                    + "     in "
-                    + sb.toString();
+                    + "     inner join TestVertaling"
+                    + "         on TestVertaling.test_id = Test.id"
+                    + "     where TestVertaling.language_id = ?"
+                    + "     and "
+                    + "         course_id"
+                    + "             in "
+                    +                   sb.toString();
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-
+            
+            prepared_statement.setInt(1, language);
+            
             ResultSet rs = prepared_statement.executeQuery();
 
             Test test;
@@ -980,9 +1009,9 @@ public class DB {
 
             String sql = " SELECT question.id, question.description,question.type, question.answer, question.question, "
                     + " question.answer1, question.answer2, question.answer3, question.test_id, question.isActive"
-                    + "  , test.title "
+                    + "  , test_vertaling.title "
                     + " FROM Question AS question "
-                    + " INNER JOIN Test AS test ON test.id = question.test_id "
+                    + " INNER JOIN TestVertaling AS test_vertaling ON test_vertaling.test_id = question.test_id "
                     + " WHERE question.isActive = 1 ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
@@ -1212,18 +1241,24 @@ public class DB {
             startConnection();
 
             String sql = "update Test "
-                    + "   set amount_of_questions = ?, time = ?, course_id = ?, chapter_id = ?, title = ?, description = ?, start_date = ?, end_date = ?"
-                    + "   where id = ?  ";
+                    + "   set Test.amount_of_questions = ?, Test.time = ?, Test.course_id = ?, Test.chapter_id = ?, Test.start_date = ?, Test.end_date = ?, TestVertaling.title = ?, TestVertaling.description = ?"
+                    + "   inner join TestVertaling"
+                    + "   where Test.id = ?  "
+                    + "   and TestVertaling.language_id = ?"
+                    + "   and TestVertaling.test_id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, test.getAmount_of_questions());
             prepared_statement.setInt(2, test.getTime());
             prepared_statement.setInt(3, test.getCourse_id());
             prepared_statement.setInt(9, test.getId());
-            prepared_statement.setString(5, test.getTitle());
-            prepared_statement.setString(6, test.getDescription());
-            prepared_statement.setString(7, test.getStart_date());
-            prepared_statement.setString(8, test.getEnd_date());
+            prepared_statement.setInt(10, test.getLanguage());
+            prepared_statement.setInt(11, test.getId());
+            prepared_statement.setString(7, test.getTitle());
+            prepared_statement.setString(8, test.getDescription());
+            
+            prepared_statement.setString(5, test.getStart_date());
+            prepared_statement.setString(6, test.getEnd_date());
             if (test.getChapter_id() == 0) {
                 prepared_statement.setNull(4, java.sql.Types.INTEGER);
             } else {
@@ -1246,11 +1281,18 @@ public class DB {
 
         try {
             startConnection();
-
+            
+            //Eerst de vertaling verwijderen
             String sql = "DELETE "
+                    + " FROM TestVertaling"
+                    + " WHERE test_id = ?";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, test_id);
+            
+            sql = "DELETE "
                     + " FROM Test"
                     + " WHERE id = ?";
-            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, test_id);
             prepared_statement.execute();
 
@@ -1308,7 +1350,7 @@ public class DB {
 //        }
 //
 //    }
-    public ArrayList<Test> getCourseTests(int course_id) {
+    public ArrayList<Test> getCourseTests(int course_id, int language) {
 
         ArrayList<Test> tests = new ArrayList<Test>();
 
@@ -1316,14 +1358,17 @@ public class DB {
             startConnection();
 
             String sql = "  select "
-                    + "         * "
+                    + "         Test.*, TestVertaling.* "
                     + "     from "
                     + "         Test "
-                    + "     where course_id = ? "
+                    + "     inner join TestVertaling on TestVertaling.test_id = Test.id"
+                    + "     where Test.course_id = ? "
+                    + "     and TestVertaling.language_id = ?"
                     + "     order by title asc";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, course_id);
+            prepared_statement.setInt(2, language);
 
             ResultSet rs = prepared_statement.executeQuery();
 
@@ -1337,6 +1382,7 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
+                test.setLanguage(rs.getInt("language"));
 
                 tests.add(test);
             }
@@ -1368,8 +1414,8 @@ public class DB {
 
     }
 
-    public void disableCourse(int course_id) {
-        ArrayList<Test> tests = getCourseTests(course_id);
+    public void disableCourse(int course_id, int language) {
+        ArrayList<Test> tests = getCourseTests(course_id, language);
         String sql = "";
 
         try {
@@ -1477,7 +1523,7 @@ public class DB {
 
             String sql = "SELECT grade . * , test.title "
                     + "FROM Grade AS grade "
-                    + "INNER JOIN Test AS test ON test.id = grade.test_id "
+                    + "INNER JOIN TestVertaling AS test ON test.test_id = grade.test_id "
                     + "WHERE user_id = ? ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);

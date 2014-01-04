@@ -7,6 +7,7 @@ public class Test {
     private int chapter_id;
     private int amount_of_questions;
     private int time;
+    private int language;
     private String title;
     private String description;
     private String start_date;
@@ -90,5 +91,13 @@ public class Test {
 
     public void setEnd_date(String end_date) {
         this.end_date = end_date;
+    }
+
+    public int getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(int language) {
+        this.language = language;
     }
 }

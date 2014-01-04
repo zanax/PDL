@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Course;
+import models.Helper;
 import models.Question;
 import models.Teacher;
 
@@ -75,7 +76,7 @@ public class disableQuestion extends HttpServlet {
 
         System.out.println("dit is een grap " + "String: " + question_nr + "int: " + question_id);
 
-        DB.getInstance().disableCourse(question_id);
+        DB.getInstance().disableCourse(question_id, Helper.getLanguage(request.getSession()));
         
         RequestDispatcher rd = request.getRequestDispatcher("/pages/teacherPanel.jsp");
         rd.forward(request, response);

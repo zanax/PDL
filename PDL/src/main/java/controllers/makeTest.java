@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Helper;
 import models.Test;
 import models.User;
 
@@ -43,7 +44,7 @@ public class makeTest extends HttpServlet {
             if (request.getParameter("id") != null) {
                 try {
                     int test_id = Integer.parseInt(request.getParameter("id"));
-                    Test test = DB.getInstance().getTest(test_id);
+                    Test test = DB.getInstance().getTest(test_id, Helper.getLanguage(request.getSession()));
                     if (test != null) {
                         if(DB.getInstance().isTestActive(test_id)) {
                             User user = (User) request.getSession().getAttribute("user");
@@ -97,7 +98,7 @@ public class makeTest extends HttpServlet {
             if (request.getParameter("id") != null) {
                 try {
                     int id = Integer.parseInt(request.getParameter("id"));
-                    Test test = DB.getInstance().getTest(id);
+                    Test test = DB.getInstance().getTest(id, Helper.getLanguage(request.getSession()));
                     if (test != null) {
                         List<Question> questions = DB.getInstance().getQuestions(id);
                         if (questions != null) {
