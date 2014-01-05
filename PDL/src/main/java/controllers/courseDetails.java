@@ -52,7 +52,7 @@ public class courseDetails extends HttpServlet {
 
         if (request.getParameter("id") != null) {
 
-            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
             List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
             List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
@@ -68,7 +68,7 @@ public class courseDetails extends HttpServlet {
 
                     request.setAttribute("logged_in", true);
 
-                    List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
+                    List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"), Helper.getLanguage(request.getSession()));
 
                     boolean enrolled = false;
 

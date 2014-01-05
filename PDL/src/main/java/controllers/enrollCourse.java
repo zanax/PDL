@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.Helper;
 import models.User;
 
 /**
@@ -47,7 +48,7 @@ public class enrollCourse extends HttpServlet {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
             List<Course> courses = DB.getInstance().getCourses();
-            courses.removeAll(DB.getInstance().getUserCourses(user));
+            courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
             if (!courses.isEmpty()) {
                 request.setAttribute("show", true);
                 request.setAttribute("courses", courses);
@@ -105,7 +106,7 @@ public class enrollCourse extends HttpServlet {
             } else {
                 User user = (User) request.getSession().getAttribute("user");
                 List<Course> courses = DB.getInstance().getCourses();
-                courses.removeAll(DB.getInstance().getUserCourses(user));
+                courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
                 request.setAttribute("courses", courses);
                 request.setAttribute("errors", this.errors);
             }

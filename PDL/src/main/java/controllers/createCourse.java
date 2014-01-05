@@ -67,6 +67,8 @@ public class createCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String url = "/pages/createCourse.jsp";
+        
         if (request.getSession().getAttribute("user") instanceof Teacher) {
             // Course
             Course course = new Course();
@@ -77,7 +79,11 @@ public class createCourse extends HttpServlet {
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
             String category = request.getParameter("category");
+            String s_language = request.getParameter("language_id");
+            int language = Helper.isInt(s_language);
+            
             this.errors.clear();
+            
             // Name
             if (name.equals("")) {
                 this.errors.add("\"Name\" is a required field.");
@@ -113,12 +119,22 @@ public class createCourse extends HttpServlet {
             } else {
                 course.setCategory(category);
             }
+            if( ! Helper.allowedLanguage(language)){
+                this.errors.add("Invalid language selected. Please try again.");
+            }
+            else{
+                course.setLanguage(language);
+            }
+            
             // Error Check
             if (errors.isEmpty()) {
                 int id = DB.getInstance().insertCourse(course);
                 if (id != -1) {
                     request.setAttribute("createdCourse", name);
                     request.setAttribute("success", true);
+                    
+                    url = "editCourse?id=" + id;
+                    response.sendRedirect(url);
                 } else {
                     request.setAttribute("errors", "Something went wrong with the Database.");
                 }
@@ -128,9 +144,9 @@ public class createCourse extends HttpServlet {
             }
             request.setAttribute("show", true);
         } else {
-            request.setAttribute("errors", "You have not the permission to Create a Course.");
+            request.setAttribute("errors", "You don't have the correct permissions to create a course.");
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createCourse.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 }

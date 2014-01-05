@@ -98,7 +98,7 @@ public class editTest extends HttpServlet {
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
         if(int_course_id > 0){
-            course = DB.getInstance().getCourse(int_course_id);
+            course = DB.getInstance().getCourse(int_course_id, Helper.getLanguage(request.getSession()));
             if(course == null) this.errors.add("Selected course does not exist");
         }
         else{

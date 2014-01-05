@@ -276,13 +276,11 @@ public class DB {
             startConnection();
 
             String sql = "insert "
-                    + "   into Course(name, description, category)"
-                    + "   values (?, ?, ?)  ";
+                    + "   into Course(category)"
+                    + "   values (?)  ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            prepared_statement.setString(1, course.getName());
-            prepared_statement.setString(2, course.getDescription());
-            prepared_statement.setString(3, course.getCategory());
+            prepared_statement.setString(1, course.getCategory());
 
             prepared_statement.execute();
 
@@ -291,7 +289,20 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
+            
+            if(id > 0){
+                sql = "  insert"
+                 + "     into CourseVertaling(course_id, language_id, name, description) "
+                 + "     values (?, ?, ?, ?) ";
+                prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, id);
+                prepared_statement.setInt(2, course.getLanguage());
+                prepared_statement.setString(3, course.getName());
+                prepared_statement.setString(4, course.getDescription());
 
+                prepared_statement.execute();
+            }
+            
             closeConnection();
 
         } catch (SQLException e) {
@@ -401,22 +412,27 @@ public class DB {
         return id;
     }
 
-    public Course getCourse(int id) {
+    public Course getCourse(int id, int language) {
         Course course = null;
 
         try {
             startConnection();
 
             String sql = "  select "
-                    + "         *"
+                    + "         Course.*, CourseVertaling.*"
                     + "     from "
                     + "         Course"
+                    + "     inner join CourseVertaling"
+                    + "         on CourseVertaling.course_id = Course.id"
                     + "     where "
                     + "         courseID = ?"
+                    + "     and"
+                    + "         CourseVertaling.language_id = ?"
                     + "     limit 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, id);
+            prepared_statement.setInt(2, language);
 
             ResultSet rs = prepared_statement.executeQuery();
 
@@ -580,7 +596,7 @@ public class DB {
         return chapters;
     }
 
-    public List<Course> getUserCourses(User user) {
+    public List<Course> getUserCourses(User user, int language) {
 
         long user_id = user.getId();
 
@@ -602,7 +618,7 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                courses.add(getCourse(rs.getInt("courseID")));
+                courses.add(getCourse(rs.getInt("courseID"), language));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -744,7 +760,7 @@ public class DB {
     public List<Test> getUserTests(User user, int language) {
 
         List<Test> tests = new ArrayList<Test>();
-        List<Course> courses = getUserCourses(user);
+        List<Course> courses = getUserCourses(user, language);
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         for (int i = 0; i < courses.size(); i++) {
@@ -917,8 +933,6 @@ public class DB {
                 course.setStartDate(rs.getDate("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
-
-                System.out.print(rs.getString("img_src"));
 
                 //course.setPopularity(rs.getInt("popularity"));
 //                course.setStudents(null);
@@ -1261,16 +1275,18 @@ public class DB {
             
             if(affected_rows > 0){
                 //Set the translations
-                sql = "     update TestVertaling"
-                        + " set title = ?, description = ?"
-                        + " where TestVertaling.test_id = ?"
-                        + " and TestVertaling.language_id = ?";
+                sql = "     insert into TestVertaling(language_id, test_id, title, description)"
+                        + " values(?, ?, ?, ?)"
+                        + " on duplicate key "
+                        + "     update "
+                        + "         title       =   values(title        ),"
+                        + "         description =   values(description  )";
                 
                 prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                prepared_statement.setString(1, test.getTitle());
-                prepared_statement.setString(2, test.getDescription());
-                prepared_statement.setInt(3, test.getId());
-                prepared_statement.setInt(4, test.getLanguage());
+                prepared_statement.setInt(1, test.getLanguage());
+                prepared_statement.setInt(2, test.getId());
+                prepared_statement.setString(3, test.getTitle());
+                prepared_statement.setString(4, test.getDescription());
                 
                 affected_rows = prepared_statement.executeUpdate();
             }
@@ -1296,6 +1312,7 @@ public class DB {
                     + " WHERE test_id = ?";
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, test_id);
+            prepared_statement.execute();
             
             sql = "DELETE "
                     + " FROM Test"
@@ -1492,8 +1509,6 @@ public class DB {
             prepared_statement.setInt(1, course_id);
             prepared_statement.execute();
 
-            System.out.println("amount +1 DB method");
-
             closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1511,8 +1526,6 @@ public class DB {
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, course_id);
             prepared_statement.execute();
-
-            System.out.println("amount -1 DB method");
 
             closeConnection();
         } catch (SQLException e) {

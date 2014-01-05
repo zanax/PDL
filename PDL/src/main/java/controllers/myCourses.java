@@ -47,7 +47,7 @@ public class myCourses extends HttpServlet {
             url = "/pages/404.jsp";
         } else {
 
-            List<Course> courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"));
+            List<Course> courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"), Helper.getLanguage(request.getSession()));
             
             if(courses.isEmpty()){
                 //TODO: Toevoegen aan errors arraylist i.p.v. request attribute!

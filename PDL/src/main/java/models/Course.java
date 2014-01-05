@@ -25,6 +25,7 @@ public class Course {
     private int numberOfStudents;
     private int popularity;
     private String imgSrc;
+    private int language;
 
     
     public Course() {
@@ -157,6 +158,14 @@ public class Course {
 
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
+    }
+
+    public int getLanguage() {
+        return language;
+    }
+    
+    public void setLanguage(int language) {
+        this.language = language;
     }
     
     

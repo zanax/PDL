@@ -47,15 +47,19 @@ public class deleteTest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        this.errors.clear();
         String test_nr = request.getParameter("test_id").trim();
 
-        int test_id = Integer.parseInt(test_nr);
-
-        System.out.println("dit is een grap " + "String: " + test_nr + "int: " + test_id);
-
-        DB.getInstance().deleteTest(test_id);
-
+        int test_id = Helper.isInt(test_nr);
+        
+        if(test_id != -1){
+            DB.getInstance().deleteTest(test_id);
+        }
+        else{
+            this.errors.add("Invalid test.");
+        }
+        
+        request.setAttribute("errors", errors);
         RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
 

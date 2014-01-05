@@ -18,7 +18,7 @@
             <c:if test="${success != null && success}">
                 <a href="myCourses" >
                     <div class="success_message">
-                        U have successfully created the Course '${createdCourse}'. Go to My Courses      
+                        You have successfully created the Course '${createdCourse}'.
                     </div>
                 </a>
             </c:if>
@@ -58,10 +58,13 @@
                     <!-- Tijdelijk totdat wel DB ervoor hebben -->
                 </select>
             </label>
-            <!-- <label class="label">
-                <input type="file" name="file" id="file">
-            </label> -->       
-
+            <label class="label">
+                <span class="form-span">Language: *</span>
+                <select class="form-input-select" name="language_id" required>
+                    <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
+                    <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
+                </select>
+            </label>
         </div>
 
     </div>

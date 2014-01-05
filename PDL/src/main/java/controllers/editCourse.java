@@ -43,7 +43,7 @@ public class editCourse extends HttpServlet {
             url = "/pages/404.jsp";
         }
         else if (request.getParameter("id") != null) {
-            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
             
             if (course != null) {
                 request.setAttribute("course", course);
@@ -73,7 +73,7 @@ public class editCourse extends HttpServlet {
         if (request.getSession().getAttribute("user") instanceof Teacher) {
             if (request.getParameter("id") != null) {
                 // Course
-                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
                 // Get parameters
                 String name = request.getParameter("name");
                 String description = request.getParameter("description");

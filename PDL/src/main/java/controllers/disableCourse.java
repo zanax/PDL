@@ -47,7 +47,7 @@ public class disableCourse extends HttpServlet {
             throws ServletException, IOException {
         
         System.out.println("de doGet is aangeroepen.");
-        Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")));
+        Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
         request.setAttribute("course", course);
 

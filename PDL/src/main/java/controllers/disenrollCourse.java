@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.Helper;
 import models.User;
 
 /**
@@ -39,7 +40,7 @@ public class disenrollCourse extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
-            List<Course> courses = DB.getInstance().getUserCourses(user);
+            List<Course> courses = DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession()));
             if (!courses.isEmpty()) {
                 request.setAttribute("show", true);
                 request.setAttribute("courses", courses);

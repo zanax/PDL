@@ -75,39 +75,17 @@ public class createTest extends HttpServlet {
         int int_language = Helper.isInt(language_id);
 
         //TODO: check if start/end dates are correct (Date object?)
-        if (title.equals("")) {
-            this.errors.add("\"Title\" is a required field.");
-        }
-        if (description.equals("")) {
-            this.errors.add("\"Description\" is a required field.");
-        }
-        if (time.equals("")) {
-            this.errors.add("\"Time\" is a required field.");
-        }
-        if ((int_time = Helper.isInt(time)) == -1) {
-            this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
-        }
-        if ((int_time = Helper.isInt(time)) == -1) {
-            this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
-        }
-        if (start_date.equals("")) {
-            this.errors.add("\"Start date\" is a required field.");
-        }
-        if (end_date.equals("")) {
-            this.errors.add("\"End date\" is a required field.");
-        }
-        if (course_id.equals("")) {
-            this.errors.add("\"Course\" is a required field.");
-        }
-        if (amount_of_questions.equals("")) {
-            this.errors.add("\"Amount of questions\" is a required field.");
-        }
-        if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1) {
-            this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
-        }
-        if( ! Helper.allowedLanguage(int_language)){
-            this.errors.add("Invalid language selected, please try again.");
-        }
+        if (title.equals(""))                                                           this.errors.add("\"Title\" is a required field.");
+        if (description.equals(""))                                                     this.errors.add("\"Description\" is a required field.");
+        if (time.equals(""))                                                            this.errors.add("\"Time\" is a required field.");
+        if ((int_time = Helper.isInt(time)) == -1)                                      this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
+        if ((int_time = Helper.isInt(time)) == -1)                                      this.errors.add("Wrong value for field \"Time\". Time must be all digits.");
+        if (start_date.equals(""))                                                      this.errors.add("\"Start date\" is a required field.");
+        if (end_date.equals(""))                                                        this.errors.add("\"End date\" is a required field.");
+        if (course_id.equals(""))                                                       this.errors.add("\"Course\" is a required field.");
+        if (amount_of_questions.equals(""))                                             this.errors.add("\"Amount of questions\" is a required field.");
+        if ((int_amount_of_questions = Helper.isInt(amount_of_questions)) == -1)        this.errors.add("Wrong value for field \"Amount of questions\". Amount of questions must be all digits.");
+        if( ! Helper.allowedLanguage(int_language))                                     this.errors.add("Invalid language selected, please try again.");
                 
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
@@ -116,7 +94,7 @@ public class createTest extends HttpServlet {
         }
 
         if (int_course_id > 0) {
-            course = DB.getInstance().getCourse(int_course_id);
+            course = DB.getInstance().getCourse(int_course_id, Helper.getLanguage(request.getSession()));
             if (course == null) {
                 this.errors.add("Selected course does not exist");
             }
