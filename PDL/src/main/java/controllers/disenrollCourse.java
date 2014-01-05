@@ -66,7 +66,7 @@ public class disenrollCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            List<Course> courses = DB.getInstance().getCourses();
+            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             if (!courses.isEmpty()) {
                 if (request.getParameter("id") != null) {
                     if (request.getParameter("agree") != null) {

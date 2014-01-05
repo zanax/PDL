@@ -48,7 +48,7 @@ public class teacherPanel extends HttpServlet {
             url = "/pages/404.jsp";
         } else {
             //courses ophalen
-            ArrayList<Course> courses = DB.getInstance().getCourses();
+            ArrayList<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
 
             //tests ophalen

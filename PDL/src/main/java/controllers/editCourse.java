@@ -49,7 +49,7 @@ public class editCourse extends HttpServlet {
                 request.setAttribute("course", course);
                 request.setAttribute("show", true);
             } else {
-                request.setAttribute("errors", "The course could not be found, please try again.");
+                request.setAttribute("errors", "The course could not be found. Please try again.");
             }
         } else {
             request.setAttribute("errors", "Something went wrong, please try again.");
@@ -81,7 +81,12 @@ public class editCourse extends HttpServlet {
                 String startDate = request.getParameter("startDate");
                 String endDate = request.getParameter("endDate");
                 String category = request.getParameter("category");
+                String s_language = request.getParameter("language_id");
+                int language = Helper.isInt(s_language);
+                
                 this.errors.clear();
+                
+
                 // Name
                 if (name.equals("")) {
                     this.errors.add("\"Name\" is a required field.");
@@ -117,13 +122,20 @@ public class editCourse extends HttpServlet {
                 } else {
                     course.setCategory(category);
                 }
+                if( ! Helper.allowedLanguage(language)){
+                    this.errors.add("Invalid language selected. Please try again.");
+                }
+                else{
+                    course.setLanguage(language);
+                }
+                
                 // Error Check
                 if (errors.isEmpty()) {
                     if (DB.getInstance().updateCourse(course)) {
                         request.setAttribute("editedCourse", name);
                         request.setAttribute("success", true);
                     } else {
-                        request.setAttribute("errors", "Something went wrong with the Database.");
+                        request.setAttribute("errors", "Something went wrong with the database. Please try again or contact an administrator.");
                     }
                 } else {
                     request.setAttribute("errors", this.errors);
@@ -131,10 +143,10 @@ public class editCourse extends HttpServlet {
                 request.setAttribute("course", course);
                 request.setAttribute("show", true);
             } else {
-                request.setAttribute("errors", "You have not the permission to Edit a Course.");
+                request.setAttribute("errors", "You don't have the correct permissions to edit a course.");
             }
         } else {
-            request.setAttribute("errors", "You have not selected a Course to Edit");
+            request.setAttribute("errors", "You have not selected a course to edit");
         }
         RequestDispatcher rd = request.getRequestDispatcher("/pages/editCourse.jsp");
         rd.forward(request, response);

@@ -47,7 +47,7 @@ public class enrollCourse extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
             User user = (User) request.getSession().getAttribute("user");
-            List<Course> courses = DB.getInstance().getCourses();
+            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
             if (!courses.isEmpty()) {
                 request.setAttribute("show", true);
@@ -105,7 +105,7 @@ public class enrollCourse extends HttpServlet {
                 return;
             } else {
                 User user = (User) request.getSession().getAttribute("user");
-                List<Course> courses = DB.getInstance().getCourses();
+                List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
                 courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
                 request.setAttribute("courses", courses);
                 request.setAttribute("errors", this.errors);

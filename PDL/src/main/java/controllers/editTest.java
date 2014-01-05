@@ -52,7 +52,7 @@ public class editTest extends HttpServlet {
             if( ! this.errors.isEmpty()) request.setAttribute("errors", this.errors);
 
             //Courses ophalen voor form
-            ArrayList<Course> courses = DB.getInstance().getCourses();
+            ArrayList<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
 
             url = "/pages/editTest.jsp";
@@ -149,7 +149,7 @@ public class editTest extends HttpServlet {
             }
         }
         
-        request.setAttribute("courses", DB.getInstance().getCourses());
+        request.setAttribute("courses", DB.getInstance().getCourses(Helper.getLanguage(request.getSession())));
         request.setAttribute("success", this.success);
         request.setAttribute("errors", this.errors);
         

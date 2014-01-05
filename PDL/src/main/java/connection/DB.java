@@ -423,7 +423,7 @@ public class DB {
                     + "     from "
                     + "         Course"
                     + "     inner join CourseVertaling"
-                    + "         on CourseVertaling.course_id = Course.id"
+                    + "         on CourseVertaling.course_id = Course.courseID"
                     + "     where "
                     + "         courseID = ?"
                     + "     and"
@@ -443,7 +443,7 @@ public class DB {
                 course.setCategory(rs.getString("category"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
                 course.setImgSrc(rs.getString("img_src"));
-
+                course.setLanguage(rs.getInt("language_id"));
             }
 
             closeConnection();
@@ -502,32 +502,47 @@ public class DB {
     }
 
     public boolean updateCourse(Course course) {
+        int affected_rows = 0;
+
         try {
             startConnection();
 
-            String sql = "  update Course "
-                    + "     set name = ?, description = ?, category = ?, maximumStudents = ?"
-                    + "     where "
-                    + "     courseID = ?";
+            String sql = "update Course "
+                    + "   set category = ?, maximumStudents = ?"
+                    + "   where Course.courseID = ?  ";
 
-            PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            prepared_statement.setString(1, course.getName());
-            prepared_statement.setString(2, course.getDescription());
-            prepared_statement.setString(3, course.getCategory());
-            prepared_statement.setInt(4, course.getMaximumStudents());
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setString(1, course.getCategory());
+            prepared_statement.setInt(2, course.getMaximumStudents());
+            prepared_statement.setInt(3, course.getId());
 
-            prepared_statement.setInt(5, course.getId());
-
-            prepared_statement.execute();
-
+            affected_rows = prepared_statement.executeUpdate();
+            
+            if(affected_rows > 0){
+                //Set the translations
+                sql = "     insert into CourseVertaling(course_id, language_id, name, description)"
+                        + " values(?, ?, ?, ?)"
+                        + " on duplicate key "
+                        + "     update "
+                        + "         name       =    values(name         ),"
+                        + "         description =   values(description  )";
+                
+                prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                prepared_statement.setInt(1, course.getId());
+                prepared_statement.setInt(2, course.getLanguage());
+                prepared_statement.setString(3, course.getName());
+                prepared_statement.setString(4, course.getDescription());
+                
+                affected_rows = prepared_statement.executeUpdate();
+            }
+            
             closeConnection();
-            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return (affected_rows > 0 ? true : false);
     }
 
     // Chapter
@@ -858,21 +873,26 @@ public class DB {
         return users;
     }
     
-    public ArrayList<Course> getCourses() {
+    public ArrayList<Course> getCourses(int language) {
         ArrayList<Course> courses = new ArrayList<Course>();
 
         try {
             startConnection();
 
             String sql = "  select "
-                    + "         * "
+                    + "         Course.*, CourseVertaling.* "
                     + "     from "
                     + "         Course "
-                    + "     where isActive = 1 "
+                    + "     inner join"
+                    + "         CourseVertaling"
+                    + "     on CourseVertaling.course_id = Course.courseID"
+                    + "     where Course.isActive = 1 "
+                    + "     and CourseVertaling.language_id = ?"
                     + "     order by name asc";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-
+            prepared_statement.setInt(1, language);
+            
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -887,6 +907,7 @@ public class DB {
                 course.setStartDate(rs.getDate("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
+                course.setLanguage(language);
 
                 //course.setPopularity(rs.getInt("popularity"));
 //                course.setStudents(null);
@@ -1457,7 +1478,7 @@ public class DB {
                 prepared_statement.execute();
             }
 
-            //Als de course 1 of meerdere bijhorende testen heeft
+            //Als de course 1 of meerdere bijbehorende testen heeft
             if (tests.size() > 0) {
                 sql = " UPDATE Course, Test"
                         + " SET Course.isActive = 0, Test.isActive = 0 "

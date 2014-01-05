@@ -45,16 +45,14 @@
                     <td>${course.name}</td>
                     <td>${course.description}</td>
                     <td>
-                        <a href="editCourse?id=${course.id}" 
-                           onmouseover="document.edit.src = edit_green.src"
-                           onmouseout="document.edit.src = edit_normal.src">
-                            <img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
+                        <a href="editCourse?id=${course.id}">
+                            <img id="edit" name="edit" alt="Edit" src="img/edit_green.png">
+                        </a>
 
 
-                        <a href="disableCourse?id=${course.id}" 
-                           onmouseover="document.delete.src = delete_red.src"
-                           onmouseout="document.delete.src = delete_normal.src">
-                            <img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
+                        <a href="disableCourse?id=${course.id}">
+                            <img id="delete" name="delete" alt="Delete" src="img/delete_red.png">
+                        </a>
                     </td>
                 </tr>
             </c:forEach>

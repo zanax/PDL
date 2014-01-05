@@ -48,7 +48,7 @@ public class createTest extends HttpServlet {
             url = "/pages/404.jsp";
         }
         else{
-            List<Course> courses = DB.getInstance().getCourses();
+            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
         }
         
@@ -141,7 +141,7 @@ public class createTest extends HttpServlet {
             }
         } else {
             request.setAttribute("errors", this.errors);
-            request.setAttribute("courses", DB.getInstance().getCourses());
+            request.setAttribute("courses", DB.getInstance().getCourses(Helper.getLanguage(request.getSession())));
         }
 
         request.setAttribute("title", title);

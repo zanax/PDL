@@ -132,9 +132,10 @@ public class createCourse extends HttpServlet {
                 if (id != -1) {
                     request.setAttribute("createdCourse", name);
                     request.setAttribute("success", true);
-                    
+                    System.out.println("editCourse?id="+id);
                     url = "editCourse?id=" + id;
                     response.sendRedirect(url);
+                    return;
                 } else {
                     request.setAttribute("errors", "Something went wrong with the Database.");
                 }

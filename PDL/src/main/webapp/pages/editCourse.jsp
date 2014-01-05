@@ -56,9 +56,14 @@
                         <!-- Tijdelijk totdat wel DB ervoor hebben -->
                     </select>
                 </label>
-                <!-- <label class="label">
-                    <input type="file" name="file" id="file">
-                </label> -->
+                <label class="label">
+                    <span class="form-span">Language: *</span>
+                    <select class="form-input-select" name="language_id" required>
+                        <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
+                        <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
+                    </select>
+                </label>
+                    
                 <input type="hidden" name="id" value="${course.id}">
                 <input type="submit" value="Save" class="button" id="button">
             </form>

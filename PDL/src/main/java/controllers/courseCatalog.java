@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Course;
+import models.Helper;
 
 /**
  *
@@ -42,7 +43,7 @@ public class courseCatalog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Course> courses = DB.getInstance().getCourses();
+        List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
         request.setAttribute("courses", courses);
 
         RequestDispatcher rd = request.getRequestDispatcher("/pages/courseCatalog.jsp");
