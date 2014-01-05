@@ -771,6 +771,73 @@ public class DB {
 
         return tests;
     }
+    
+    /**
+     * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
+     * @return 
+     */
+    public ArrayList<Test> getTestsIncludingNoTranslations(int language) {
+        ArrayList<Test> tests = new ArrayList<Test>();
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         Test "
+                    + "     where isActive = 1 "
+                    + "     order by id asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Test test = new Test(rs.getInt("id"));
+                test.setAmount_of_questions(rs.getInt("amount_of_questions"));
+                test.setChapter_id(rs.getInt("chapter_id"));
+                test.setCourse_id(rs.getInt("course_id"));
+                test.setEnd_date(rs.getString("end_date"));
+                test.setStart_date(rs.getString("start_date"));
+                test.setTime(rs.getInt("time"));
+                test.setLanguage(language);
+                
+                sql = "     select "
+                        + "     title, description"
+                        + " from"
+                        + "     TestVertaling"
+                        + " where language_id = ?"
+                        + " and test_id = ?";
+                
+                prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, language);
+                prepared_statement.setInt(2, test.getId());
+                
+                ResultSet rs2 = prepared_statement.executeQuery();
+                
+                while(rs2.next()){
+                    test.setTitle(rs2.getString("name"));
+                    test.setDescription(rs2.getString("description"));
+                }
+                
+                if(test.getTitle() == null){
+                    test.setTitle("No translation");
+                }
+                if(test.getDescription()== null){
+                    test.setDescription("No translation");
+                }
+
+                tests.add(test);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tests;
+    }
 
     public List<Test> getUserTests(User user, int language) {
 

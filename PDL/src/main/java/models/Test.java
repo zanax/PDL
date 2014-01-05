@@ -25,10 +25,6 @@ public class Test {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getCourse_id() {
         return course_id;
     }
