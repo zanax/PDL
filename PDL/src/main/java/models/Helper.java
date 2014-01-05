@@ -34,6 +34,7 @@ public class Helper {
         {"You have successfully edited your information", "U heeft succesvol uw informatie aangepast"},
         {"Gender", "Geslacht"},
         {"Male", "Man"},
+        {"Female", "Vrouw"},
         {"Firstname", "Voornaam"},
         {"Surname", "Achternaam"},
         {"City", "Stad"},
@@ -56,6 +57,9 @@ public class Helper {
         {"Contact information", "Contact informatie"},
         {"Phone", "Telefoon"},
         {"Send", "Versturen"},
+        {"Log in", "Inloggen"},
+        {"You have been successfully registered", "U bent succesvol geregistreerd"},
+        {"Register", "Registreren"},
     };
     
     
