@@ -923,7 +923,75 @@ public class DB {
 
         return courses;
     }
+    
+    /**
+     * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
+     * @return 
+     */
+    public ArrayList<Course> getCoursesIncludingNoTranslations(int language) {
+        ArrayList<Course> courses = new ArrayList<Course>();
 
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         Course "
+                    + "     where isActive = 1 "
+                    + "     order by CourseID asc";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course(rs.getInt("courseID"));
+                course.setCategory(rs.getString("category"));
+                course.setEndDate(rs.getDate("endDate"));
+                course.setIsActive(rs.getBoolean("isActive"));
+                course.setMaximumStudents(rs.getInt("maximumStudents"));
+                course.setStartDate(rs.getDate("startDate"));
+                course.setNumberOfStudents(rs.getInt("numberOfStudents"));
+                course.setImgSrc(rs.getString("img_src"));
+                course.setLanguage(language);
+                
+                sql = "     select "
+                        + "     name, description"
+                        + " from"
+                        + "     CourseVertaling"
+                        + " where language_id = ?"
+                        + " and course_id = ?";
+                
+                prepared_statement = conn.prepareStatement(sql);
+                prepared_statement.setInt(1, language);
+                prepared_statement.setInt(2, course.getId());
+                
+                ResultSet rs2 = prepared_statement.executeQuery();
+                
+                while(rs2.next()){
+                    course.setName(rs2.getString("name"));
+                    course.setDescription(rs2.getString("description"));
+                }
+                
+                if(course.getName() == null){
+                    course.setName("No translation");
+                }
+                if(course.getDescription()== null){
+                    course.setDescription("No translation");
+                }
+
+                courses.add(course);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
+    
     public ArrayList<Course> getPopularCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
 
