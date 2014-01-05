@@ -30,7 +30,35 @@ public class Helper {
         {"Info", "Info"},
         {"Back", "Terug"},
         {"Search for courses", "Zoeken naar cursussen"},
+        {"Edit user information", "Gebruikersinformatie aanpassen"},
+        {"You have successfully edited your information", "U heeft succesvol uw informatie aangepast"},
+        {"Gender", "Geslacht"},
+        {"Male", "Man"},
+        {"Firstname", "Voornaam"},
+        {"Surname", "Achternaam"},
+        {"City", "Stad"},
+        {"Country", "Land"},
+        {"Zipcode", "Postcode"},
+        {"Address", "Adres"},
+        {"Language", "Taal"},
+        {"Select language", "Selecteer taal"},
+        {"E-mail", "E-mail"},
+        {"Password", "Wachtwoord"},
+        {"Change your password", "Verander uw wachtwoord"},
+        {"New password", "Nieuw wachtwoord"},
+        {"Confirm password", "Bevestig wachtwoord"},
+        {"Save", "Opslaan"},
+        {"Required", "Verplicht"},
+        {"Optional", "Optioneel"},
+        {"Name", "Naam"},
+        {"Subject", "Onderwerp"},
+        {"Message", "Bericht"},
+        {"Contact information", "Contact informatie"},
+        {"Phone", "Telefoon"},
+        {"Send", "Versturen"},
     };
+    
+    
     private static final int[] allowed_languages = {0, 1};
     
     public static Helper getInstance(){
