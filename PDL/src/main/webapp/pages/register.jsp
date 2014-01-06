@@ -15,8 +15,8 @@
             </label>
             <div class="form-input-radio">
                 <span class="form-span"><%= Helper.translateWord(language, "Gender") %>:</span>
-                <%= Helper.translateWord(language, "Male") %><input name="gender" type="radio" value="m" required <c:if test="${gender == 'm'}">checked</c:if>>
-                <%= Helper.translateWord(language, "Female") %><input name="gender" type="radio" value="f" required <c:if test="${gender == 'f'}">checked</c:if>>
+                <%= Helper.translateWord(language, "Male") %><input name="gender" type="radio" value="m" required <c:if test="${user.gender == 109}">checked</c:if>> <!-- 109 == ASCII 'm' -->
+                <%= Helper.translateWord(language, "Female") %><input name="gender" type="radio" value="f" required <c:if test="${user.gender == 102}">checked</c:if>> <!-- 102 == ASCII 'f' -->
                 <input type="hidden" name="gender" value="empty">
             </div>
             <label class="label">

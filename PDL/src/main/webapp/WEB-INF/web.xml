@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
+        <servlet-name>viewChapter</servlet-name>
+        <servlet-class>controllers.viewChapter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>searchCourse</servlet-name>
+        <servlet-class>controllers.searchCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changeLanguage</servlet-name>
+        <servlet-class>controllers.changeLanguage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reviewTest</servlet-name>
+        <servlet-class>controllers.reviewTest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>gradeTest</servlet-name>
+        <servlet-class>controllers.gradeTest</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>register</servlet-name>
         <servlet-class>controllers.register</servlet-class>
     </servlet>
@@ -17,12 +37,20 @@
         <servlet-class>controllers.courseCatalog</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>courseDetails</servlet-name>
+        <servlet-class>controllers.courseDetails</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>popularCourses</servlet-name>
         <servlet-class>controllers.popularCourses</servlet-class>
     </servlet> 
     <servlet>
         <servlet-name>createCourse</servlet-name>
         <servlet-class>controllers.createCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createQuestion</servlet-name>
+        <servlet-class>controllers.createQuestion</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>enrollCourse</servlet-name>
@@ -35,6 +63,18 @@
     <servlet>
         <servlet-name>editCourse</servlet-name>
         <servlet-class>controllers.editCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editUser</servlet-name>
+        <servlet-class>controllers.editUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editQuestion</servlet-name>
+        <servlet-class>controllers.editQuestion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editGrade</servlet-name>
+        <servlet-class>controllers.editGrade</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>createTest</servlet-name>
@@ -61,10 +101,6 @@
         <servlet-class>controllers.teacherPanel</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>studentPanel</servlet-name>
-        <servlet-class>controllers.studentPanel</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Payment</servlet-name>
         <servlet-class>controllers.Payment</servlet-class>
     </servlet>
@@ -84,6 +120,24 @@
         <servlet-name>myGrades</servlet-name>
         <servlet-class>controllers.myGrades</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>myCourses</servlet-name>
+        <servlet-class>controllers.myCourses</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminPanel</servlet-name>
+        <servlet-class>controllers.adminPanel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>disableQuestion</servlet-name>
+        <servlet-class>controllers.disableQuestion</servlet-class>
+    </servlet>
+    
+    
+    
+    
+    
+    
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -109,6 +163,10 @@
         <url-pattern>/courseCatalog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>courseDetails</servlet-name>
+        <url-pattern>/courseDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>popularCourses</servlet-name>
         <url-pattern>/popularCourses</url-pattern>
     </servlet-mapping>    
@@ -117,8 +175,24 @@
         <url-pattern>/createCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>createQuestion</servlet-name>
+        <url-pattern>/createQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>editCourse</servlet-name>
         <url-pattern>/editCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editUser</servlet-name>
+        <url-pattern>/editUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editQuestion</servlet-name>
+        <url-pattern>/editQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editGrade</servlet-name>
+        <url-pattern>/editGrade</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>enrollCourse</servlet-name>
@@ -149,16 +223,12 @@
         <url-pattern>/chat</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>changeLanguage</servlet-name>
+        <url-pattern>/changeLanguage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>teacherPanel</servlet-name>
         <url-pattern>/teacherPanel</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>studentPanel</servlet-name>
-        <url-pattern>/studentPanel</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteCourse</servlet-name>
-        <url-pattern>/deleteCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>disableQuestion</servlet-name>
@@ -168,6 +238,35 @@
         <servlet-name>myGrades</servlet-name>
         <url-pattern>/myGrades</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myCourses</servlet-name>
+        <url-pattern>/myCourses</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>gradeTest</servlet-name>
+        <url-pattern>/gradeTest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reviewTest</servlet-name>
+        <url-pattern>/reviewTest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchCourse</servlet-name>
+        <url-pattern>/searchCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewChapter</servlet-name>
+        <url-pattern>/viewChapter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminPanel</servlet-name>
+        <url-pattern>/adminPanel</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+    
+    
     <session-config>
         <session-timeout>
             30
