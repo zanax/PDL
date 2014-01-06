@@ -26,8 +26,7 @@
                 <h4><%= Helper.translateWord(language, "Password") %></h4>
                 <input name="password" type="password" placeholder="<%= Helper.translateWord(language, "Password") %>" required class="form-input" style="text-align: center;">
             </div>
-            
-            <input class="button right" type="submit" value="<%= Helper.translateWord(language, "Log in") %>" id="button">
+                <input class="button right" type="submit" value="<%= Helper.translateWord(language, "Log in") %>" id="button">
         </form>
     </div>
 </div>

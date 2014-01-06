@@ -27,5 +27,24 @@
                 }
             });
         });
+        
+        $$('.cancel').each(function(el) {
+            var color = el.getStyle('backgroundColor');
+
+            el.addEvents({
+                mouseenter: function() {
+                    this.morph({
+                        'background-color': '#FF0000',
+                        'color': '#ffffff'
+                    });
+                },
+                mouseleave: function() {
+                    this.morph({
+                        backgroundColor: color,
+                        color: '#575757'
+                    });
+                }
+            });
+        });
     });
 </script>

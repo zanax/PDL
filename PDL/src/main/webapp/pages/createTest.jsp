@@ -74,7 +74,7 @@
     <div class="course">
         <div id="course-content">
             <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel" class="button" id="button">Cancel</a>
+            <a href="teacherPanel" class="button cancel" id="button">Cancel</a>
         </div>        
     </div>
 

@@ -119,11 +119,14 @@ div.content-header {
 }
 
 #button{
-	float: right;
+    float: right;
+    border-right: none;
+    border-top: none;
+    border-left: none;
 }
 
-#back-button{
-	float: right;
+#button.cancel{
+	float: left;
 }
 
 .success_message{
