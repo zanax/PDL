@@ -46,14 +46,6 @@
                 </select>
             </label>
             <label class="label">
-                <span class="form-span">Chapter:</span>
-                <select class="form-input-select" name="chapter_id" required autocomplete="off">
-                    <!-- Chapters ophalen en in select zetten -->
-                    <option value="0">None</option>
-                    <option value="1">Chapter 1</option>
-                </select>
-            </label>
-            <label class="label">
                 <span class="form-span">Amount of questions:</span>
                 <input name="question_amount" type="text" placeholder="10" value="${test.amount_of_questions}" class="form-input" required>
             </label>

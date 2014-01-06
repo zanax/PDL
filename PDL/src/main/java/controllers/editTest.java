@@ -72,7 +72,6 @@ public class editTest extends HttpServlet {
         String start_date = request.getParameter("start_date").trim();
         String end_date = request.getParameter("end_date").trim();
         String course_id = request.getParameter("course_id").trim();
-        String chapter_id = request.getParameter("chapter_id").trim();
         String amount_of_questions = request.getParameter("question_amount").trim();
         String language_id = request.getParameter("language_id");
         int id = Helper.isInt(request.getParameter("id"));
@@ -105,21 +104,6 @@ public class editTest extends HttpServlet {
             this.errors.add("Selected course does not exist.");
         }
         
-        Chapter chapter = null;
-        int int_chapter_id = Helper.isInt(chapter_id);
-        if(int_chapter_id == -1){ //non-correct id
-            this.errors.add("The selected chapter does not exist.");
-        }
-        else if(int_chapter_id > 0){ //a chapter is selected (0 is default, a test doesnt have to have a chapter, can just be linked to a course (test for the whole course))
-            chapter = DB.getInstance().getChapter(int_chapter_id);
-            if(chapter == null){
-                this.errors.add("The selected chapter does not exist.");
-            }
-            else if(chapter.getCourse_id() != int_course_id){
-                this.errors.add("The selected chapter does not exist in this course.");
-            }
-        }
-        
         
         String url = "/pages/editTest.jsp";
         if( ! (id > 0)){
@@ -134,7 +118,6 @@ public class editTest extends HttpServlet {
             test.setStart_date(start_date);
             test.setEnd_date(end_date);
             test.setCourse_id(int_course_id);
-            test.setChapter_id(int_chapter_id);
             test.setAmount_of_questions(int_amount_of_questions);
             test.setLanguage(int_language);
             

@@ -65,7 +65,6 @@ public class createTest extends HttpServlet {
         String start_date = request.getParameter("start_date").trim();
         String end_date = request.getParameter("end_date").trim();
         String course_id = request.getParameter("course_id").trim();
-        String chapter_id = request.getParameter("chapter_id").trim();
         String amount_of_questions = request.getParameter("question_amount").trim();
         String language_id = request.getParameter("language_id");
         this.errors.clear();
@@ -102,19 +101,6 @@ public class createTest extends HttpServlet {
             this.errors.add("Selected course does not exist.");
         }
 
-        Chapter chapter = null;
-        int int_chapter_id = Helper.isInt(chapter_id);
-        if (int_chapter_id == -1) { //non-correct id
-            this.errors.add("The selected chapter does not exist.");
-        } else if (int_chapter_id > 0) { //a chapter is selected (0 is default, a test doesnt have to have a chapter, can just be linked to a course (test for the whole course))
-            chapter = DB.getInstance().getChapter(int_chapter_id);
-            if (chapter == null) {
-                this.errors.add("The selected chapter does not exist.");
-            } else if (chapter.getCourse_id() != int_course_id) {
-                this.errors.add("The selected chapter does not exist in this course.");
-            }
-        }
-
         String url = "/pages/createTest.jsp";
         if (errors.isEmpty()) {
             Test test = new Test();
@@ -124,7 +110,6 @@ public class createTest extends HttpServlet {
             test.setStart_date(start_date);
             test.setEnd_date(end_date);
             test.setCourse_id(int_course_id);
-            test.setChapter_id(int_chapter_id);
             test.setAmount_of_questions(int_amount_of_questions);
             test.setLanguage(int_language);
 
@@ -150,7 +135,6 @@ public class createTest extends HttpServlet {
         request.setAttribute("start_date", start_date);
         request.setAttribute("end_date", end_date);
         request.setAttribute("course_id", course_id);
-        request.setAttribute("chapter_id", chapter_id);
         request.setAttribute("question_amount", amount_of_questions);
         request.setAttribute("success", this.success);
 
