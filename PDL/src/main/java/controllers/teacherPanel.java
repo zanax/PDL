@@ -53,6 +53,7 @@ public class teacherPanel extends HttpServlet {
 
             //tests ophalen
             ArrayList<Test> tests = DB.getInstance().getTestsIncludingNoTranslations(Helper.getLanguage(request.getSession()));
+            System.out.println(tests.size());
             request.setAttribute("tests", tests);
 
             //questions ophalen

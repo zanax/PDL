@@ -817,7 +817,7 @@ public class DB {
                 ResultSet rs2 = prepared_statement.executeQuery();
                 
                 while(rs2.next()){
-                    test.setTitle(rs2.getString("name"));
+                    test.setTitle(rs2.getString("title"));
                     test.setDescription(rs2.getString("description"));
                 }
                 
