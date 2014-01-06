@@ -1133,7 +1133,7 @@ public class DB {
 //        }
 //        return resultt;
 //    }
-    public Question getQuestion(int id) {
+        public Question getQuestion(int id) {
         Question question = null;
 
         try {
@@ -1154,11 +1154,14 @@ public class DB {
 
             while (rs.next()) {
                 question = new Question(id);
-                question.setQuestion("question");
-                question.setCorrectAnswer("correctAnswer");
-                question.setAnswer1("answer1");
-                question.setAnswer2("answer2");
-                question.setAnswer3("answer3");
+                question.setQuestion(rs.getString("question"));
+                question.setDescription(rs.getString("description"));
+                question.setCorrectAnswer(rs.getString("answer"));
+                question.setAnswer1(rs.getString("answer1"));
+                question.setAnswer2(rs.getString("answer2"));
+                question.setAnswer3(rs.getString("answer3"));
+                question.setTestId(rs.getInt("test_id"));
+
             }
 
             closeConnection();
@@ -1169,7 +1172,6 @@ public class DB {
 
         return question;
     }
-
     public ArrayList<Question> getQuestions() {
 
         ArrayList<Question> questions = new ArrayList<Question>();
@@ -1758,5 +1760,50 @@ public class DB {
         }
 
         return grade;
+    }
+    
+    public boolean updateQuestion(Question question) {
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = " UPDATE Question "
+                    + "   SET question = ?, answer = ?, "
+                    + "   answer1 = ?, answer2 = ?, answer3 = ?, test_id = ?, type = ?, description = ? "
+                    + "   WHERE Question.id = ?  ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            prepared_statement.setString(1, question.getQuestion());
+            prepared_statement.setString(2, question.getCorrectAnswer());
+            prepared_statement.setString(3, question.getAnswer1());
+            prepared_statement.setString(4, question.getAnswer2());
+            prepared_statement.setString(5, question.getAnswer3());
+            prepared_statement.setInt(6, question.getTestId());
+
+            //Kijkt of een vraag multiple of single choice is.
+            if (("").equals(question.getAnswer1()) && ("").equals(question.getAnswer2()) && ("").equals(question.getAnswer3())) {
+                prepared_statement.setString(7, "s");
+            } else {
+                prepared_statement.setString(7, "m");
+            }
+
+            //Vult de vraag + mogelijke antwoorden in bij description.
+            prepared_statement.setString(8, question.getQuestion() + " " + question.getCorrectAnswer()
+                    + " " + question.getAnswer1() + " " + question.getAnswer2() + " " + question.getAnswer3());
+
+            prepared_statement.setInt(9, question.getId());
+
+
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return (affected_rows > 0 ? true : false);
     }
 }

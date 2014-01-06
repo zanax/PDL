@@ -17,36 +17,38 @@
             </div>
         </c:if>
 
-            <form method="post" action="editQuestion">
-                <label class="label">
-                    <span class="form-span">Test: *</span>
-                    <select class="form-input-select" name="test" required>
-                        <option value="">Select Test...</option>
-                        <c:forEach items="${tests}" var="test">
-                            <option value="${test.id}" <c:if test="${test_id != null && test_id == test.id}">selected</c:if>>${test.title}</option>
-                        </c:forEach>
-                    </select>
-                </label>
-                <label class="label">
-                    <span class="form-span">Question: *</span>
-                    <input name="question" type="text" class="form-input" value="${questionObj.question}" required>
-                </label>
-                <label class="label">
-                    <span class="form-span">Correct Answer: *</span>
-                    <input name="correctAnswer" type="text" class="form-input" value="${questionObj.correctAnswer}" required>
-                </label>
-                <label class="label">
-                    <span class="form-span">Other Answers:</span>
-                    <input name="answer1" type="text" class="form-input" value="${questionObj.answer1}">
-                </label>
-                <label class="label">
-                    <input name="answer2" type="text" class="form-input" value="${questionObj.answer2}">
-                </label>
-                <label class="label">
-                    <input name="answer3" type="text" class="form-input" value="${questionObj.answer3}">
-                </label>
-                <input type="submit" value="Save Question" class="button" id="button">
-            </form>
+        <form method="post" action="editQuestion">
+            <input type="hidden" value="${questionObj.id}" name="id">
+
+            <label class="label">
+                <span class="form-span">Test: *</span>
+                <select class="form-input-select" name="test" required>
+                    <option value="">Select Test...</option>
+                    <c:forEach items="${tests}" var="test">
+                        <option value="${test.id}" ${test.id == questionObj.testId ? 'selected' : ''}>${test.title}</option>
+                    </c:forEach>
+                </select>
+            </label>
+            <label class="label">
+                <span class="form-span">Question: *</span>
+                <input name="question" type="text" class="form-input" value="${questionObj.question}" required>
+            </label>
+            <label class="label">
+                <span class="form-span">Correct Answer: *</span>
+                <input name="correctAnswer" type="text" class="form-input" value="${questionObj.correctAnswer}" required>
+            </label>
+            <label class="label">
+                <span class="form-span">Other Answers:</span>
+                <input name="answer1" type="text" class="form-input" value="${questionObj.answer1}">
+            </label>
+            <label class="label">
+                <input name="answer2" type="text" class="form-input" value="${questionObj.answer2}">
+            </label>
+            <label class="label">
+                <input name="answer3" type="text" class="form-input" value="${questionObj.answer3}">
+            </label>
+            <input type="submit" value="Save Question" class="button" id="button">
+        </form>
     </div>
 </div>
 
