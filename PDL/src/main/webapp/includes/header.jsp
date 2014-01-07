@@ -37,54 +37,52 @@
                                 <a href="popularCourses">Home</a>
                             </li>
                             <li>
-                                <a href="courseCatalog"><%= Helper.translateWord(language, "Courses") %></a>
+                                <a href="courseCatalog"><%= Helper.translateWord(language, "Courses")%></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Student) {%>
+
                             <li>
-                                <a href="myCourses"><%= Helper.translateWord(language, "My Courses") %></a>
-                            </li>
-                            <li>
-                                <a href="myGrades"><%= Helper.translateWord(language, "My Grades") %></a>
+                                <a href="studentPanel"><%= Helper.translateWord(language, "Student Panel")%></a>
                             </li>
                             <% }%>
                             <li>
-                                <a href="contact"><%= Helper.translateWord(language, "Contact") %></a>
+                                <a href="contact"><%= Helper.translateWord(language, "Contact")%></a>
                             </li>
                             <% if (session.getAttribute("user") instanceof Teacher) {%>
                             <li>
-                                <a href="teacherPanel"><%= Helper.translateWord(language, "Teacher") %></a>
+                                <a href="teacherPanel"><%= Helper.translateWord(language, "Teacher")%></a>
+                            </li>
+                            <li>
+                                <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
                             </li>
                             <% }%>
                             <% if (session.getAttribute("user") instanceof Admin) {%>
                             <li>
-                                <a href="adminPanel"><%= Helper.translateWord(language, "Administrator") %></a>
+                                <a href="adminPanel"><%= Helper.translateWord(language, "Administrator")%></a>
                             </li>
                             <% }%>
                             <% if (session.getAttribute("user") != null) {%>
                             <li>
-                                <a href="chat"><%= Helper.translateWord(language, "Chat") %></a>
+                                <a href="chat"><%= Helper.translateWord(language, "Chat")%></a>
                             </li>
                             <%}%>
                             <% if (session.getAttribute("user") == null) {%>
                             <li>
-                                <a href="login"><%= Helper.translateWord(language, "Log In") %></a>
+                                <a href="login"><%= Helper.translateWord(language, "Log In")%></a>
                             </li>              
                             <li>
-                                <a href="register"><%= Helper.translateWord(language, "Register") %></a>
+                                <a href="register"><%= Helper.translateWord(language, "Register")%></a>
                             </li>
                             <% } else {%>
                             <li>
-                                <a href="editUser"><%= Helper.translateWord(language, "Profile") %></a>
-                            </li>
-                            <li>
-                                <a href="logout"><%= Helper.translateWord(language, "Log Out") %></a>
+                                <a href="logout"><%= Helper.translateWord(language, "Log Out")%></a>
                             </li>
                             <%}%>
                             <li>
                                 <div id="nav-search">
                                     <form method="get" action="searchCourses">
                                         <input type="image" value="search" src="img/toolbar_find.png">
-                                        <input type="text" name="keyword" placeholder="<%= Helper.translateWord(language, "Search for courses") %>">
+                                        <input type="text" name="keyword" placeholder="<%= Helper.translateWord(language, "Search for courses")%>">
                                     </form>
                                 </div>
                             </li>
@@ -93,9 +91,9 @@
                                     <form method="post" action="changeLanguage">
                                         <select name="language" class="select">
                                             <option value="0" <c:if test="${language == 0}">selected</c:if>>
-                                                English (UK)
-                                            </option>
-                                            <option value="1" <c:if test="${language == 1}">selected</c:if>>
+                                                    English (UK)
+                                                </option>
+                                                <option value="1" <c:if test="${language == 1}">selected</c:if>>
                                                 Nederlands
                                             </option>
                                         </select>
