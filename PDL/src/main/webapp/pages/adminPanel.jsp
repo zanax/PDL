@@ -1,5 +1,22 @@
 <%@include file="/includes/header.jsp" %>
 
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script language=JavaScript>
+    var edit_normal = new Image();
+    edit_normal.src = "edit_normal.png";
+
+    var edit_green = new Image();
+    edit_green.src = "edit_green.png";
+
+    var delete_normal = new Image();
+    delete_normal.src = "delete_normal.png";
+
+    var delete_red = new Image();
+    delete_red.src = "delete_red.png";
+</script>
+
+
 <div class="content-header">
     Administrator options
 </div>
@@ -9,8 +26,11 @@
         <div class="content-inner title">
             Users
         </div>
-
-        <table class="table">
+        
+        
+        
+        <table class="table" id="userTable">
+            <input type="text" id="searchUsers" placeholder="Type to search">
             <tr>
                 <th style="width: 25px; ">
                     #ID
@@ -39,8 +59,9 @@
                     <td>${user.kindOfUser}</td>
                     <td>${user.isBanned}</td>
                     <td>
-                        <a href=""><img src="img/edit.png"></a>
-                        <a href=""><img src="img/delete.png"></a>
+                        <a href="changeUser?id=${user.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
+                        <a href="javascript:if(confirm('Weet u het zeker dat u ${user.firstname} ${user.surname} wilt bannen/unbannen?'))
+                           window.location='setBanned?id=${user.id}';"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -77,8 +98,8 @@
                     <td>${course.name}</td>
                     <td>${course.description}</td>
                     <td>
-                        <a href="editCourse?id=${course.id}"><img src="img/edit.png"></a>
-                        <a href="disableCourse?id=${course.id}"><img src="img/delete.png"></a>
+                        <a href="editCourse?id=${course.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
+                        <a href="disableCourse?id=${course.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -115,8 +136,8 @@
                     <td>${test.title}</td>
                     <td>${test.description}</td>
                     <td style="text-align: center;">
-                        <a href="editTest?id=${test.id}"><img src="img/edit.png"></a>
-                        <a href="deleteTest?id=${test.id}"><img src="img/delete.png"></a>
+                        <a href="editTest?id=${test.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
+                        <a href="deleteTest?id=${test.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -158,8 +179,8 @@
                     <td>${question.testTitle}</td>
                     <td>${question.description}</td>
                     <td>
-                        <a href="editQuestion?id=${question.id}"><img src="img/edit.png"></a>
-                        <a href="disableCourse?id=${question.id}"><img src="img/delete.png"></a>
+                        <a href="editQuestion?id=${question.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
+                        <a href="disableCourse?id=${question.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -172,5 +193,18 @@
         </a>
     </div>
 </div>
+
+
+<script type="text/javascript">
+var $rows = $('#userTable tr');
+$('#searchUsers').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
 
 <%@include file="/includes/footer.jsp" %>
