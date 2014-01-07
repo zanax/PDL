@@ -12,9 +12,11 @@
             </div>
         </c:forEach>
         <c:if test="${success != null && success}">
+            <a href="adminPanel" >
             <div class="success_message">
-                U have successfully edited the permissions of this user
+                Succes! Click to get back to the Admin Panel.
             </div>
+            </a>
         </c:if>
         <c:if test="${show != null && show}">
             <c:if test="${user.kindOfUser.equals('Student')}">

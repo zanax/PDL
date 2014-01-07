@@ -1,5 +1,7 @@
 <%@include file="/includes/header.jsp" %>
 
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <script language=JavaScript>
     var edit_normal = new Image();
     edit_normal.src = "edit_normal.png";
@@ -14,6 +16,7 @@
     delete_red.src = "delete_red.png";
 </script>
 
+
 <div class="content-header">
     Administrator options
 </div>
@@ -23,8 +26,11 @@
         <div class="content-inner title">
             Users
         </div>
-
-        <table class="table">
+        
+        
+        
+        <table class="table" id="userTable">
+            <input type="text" id="searchUsers" placeholder="Type to search">
             <tr>
                 <th style="width: 25px; ">
                     #ID
@@ -187,5 +193,18 @@
         </a>
     </div>
 </div>
+
+
+<script type="text/javascript">
+var $rows = $('#userTable tr');
+$('#searchUsers').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
 
 <%@include file="/includes/footer.jsp" %>
