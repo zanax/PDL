@@ -5,20 +5,29 @@
         Create Question
     </div>
 
-    <div class="course">
-        <div id="course-content">
-            <c:forEach var="error" items="${errors}">
+    <c:forEach var="error" items="${errors}">
+        <div class="course">
+            <div id="course-content">
                 <div class="error_message">
                     ${error}
                 </div>
-            </c:forEach>
-            <c:if test="${success != null && success}">
+            </div>
+        </div>
+    </c:forEach>
+
+    <c:if test="${success != null && success}">
+        <div class="course">
+            <div id="course-content">
                 <div class="success_message">
                     U have successfully added a Question.
                 </div>
-            </c:if>
+            </div>
+        </div>
+    </c:if>
+    
+    <div class="course">
+        <div id="course-content">
             <c:if test="${show != null && show}">
-
                 <label class="label">
                     <span class="form-span">Test: *</span>
                     <select class="form-input-select" name="test" required>
@@ -53,7 +62,9 @@
 
     <div class="course">
         <div id="course-content">
-            <input type="submit" class="button" id="button" value="Add Question">
+            <label class="label">
+                <input type="submit" class="button" id="button" value="Add Question">
+            </label>
             <a href="teacherPanel" class="button" id="button">Cancel</a>
         </div>        
     </div>
