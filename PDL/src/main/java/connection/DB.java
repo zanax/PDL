@@ -167,6 +167,144 @@ public class DB {
 
         return affected_rows;
     }
+    
+    public int banUser(int userId) {
+
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "  update User "
+                    + "     set banned = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setBoolean(1, true);
+            prepared_statement.setInt(2, userId);
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
+    
+    public int unBanUser(int userId) {
+
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "  update User "
+                    + "     set banned = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setBoolean(1, false);
+            prepared_statement.setInt(2, userId);
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
+    
+    public int makeTeacher(int userId) {
+
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "  update User "
+                    + "     set is_admin = ?, is_teacher = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setBoolean(1, false);
+            prepared_statement.setBoolean(2, true);
+            prepared_statement.setInt(3, userId);
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
+    
+    public int makeAdmin(int userId) {
+
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "  update User "
+                    + "     set is_admin = ?, is_teacher = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setBoolean(1, true);
+            prepared_statement.setBoolean(2, false);
+            prepared_statement.setInt(3, userId);
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
+    
+    public int makeStudent(int userId) {
+
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "  update User "
+                    + "     set is_teacher = ?, is_admin = ?"
+                    + "     where "
+                    + "     user_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setBoolean(1, false);
+            prepared_statement.setBoolean(2, false);
+            prepared_statement.setInt(3, userId);
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
 
     public User getUser(String email) {
         User user = null;
@@ -217,7 +355,61 @@ public class DB {
         return user;
 
     }
+    
+    
+    //haalt ook gebande users op
+    public User getEveryUser(int userID) {
+        User user = null;
 
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         User"
+                    + "     where "
+                    + "         user_id = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, userID);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getBoolean("is_teacher") == true) {
+                    user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
+                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                    user = new Student(rs.getInt("user_id"));
+                }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
+                user.setIsTeacher(rs.getBoolean("is_teacher"));
+                user.setIsAdmin(rs.getBoolean("is_admin"));
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+
+    }
+    
     public User getUser(int userID) {
         User user = null;
 
@@ -240,10 +432,12 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-                if (rs.getBoolean("is_teacher") == false) {
-                    user = new Student(rs.getInt("user_id"));
-                } else {
+                if (rs.getBoolean("is_teacher") == true) {
                     user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
+                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                    user = new Student(rs.getInt("user_id"));
                 }
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
@@ -257,6 +451,8 @@ public class DB {
                 user.setCountry(rs.getString("country"));
                 user.setGender(rs.getString("gender").charAt(0));
                 user.setLanguage(rs.getInt("language_id"));
+                user.setIsTeacher(rs.getBoolean("is_teacher"));
+                user.setIsAdmin(rs.getBoolean("is_admin"));
             }
 
             closeConnection();
