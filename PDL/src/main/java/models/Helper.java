@@ -66,7 +66,6 @@ public class Helper {
         {"Welcome to: ","Welkom bij: "}
     };
     
-    
     private static final int[] allowed_languages = {0, 1};
 
     public static Helper getInstance() {
