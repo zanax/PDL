@@ -14,6 +14,7 @@
         <title>3 2 Learn</title>
 
         <script type="text/javascript" src="plugins/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+        <script type="text/javascript" src="plugins/mootools/mootools-more-1.4.0.1.js"></script>
 
         <link rel="stylesheet" type="text/css" href="css/main.css" />
         <link rel="stylesheet" type="text/css" href="css/header.css" />
@@ -52,9 +53,6 @@
                             <li>
                                 <a href="teacherPanel"><%= Helper.translateWord(language, "Teacher")%></a>
                             </li>
-                            <li>
-                                <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
-                            </li>
                             <% }%>
                             <% if (Helper.isAdmin(user)) {%>
                             <li>
@@ -64,6 +62,9 @@
                             <% if (user != null) {%>
                             <li>
                                 <a href="chat"><%= Helper.translateWord(language, "Chat")%></a>
+                            </li>
+                            <li>
+                                <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
                             </li>
                             <%}%>
                             <% if (user == null) {%>

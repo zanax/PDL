@@ -6,14 +6,15 @@
     Chat
 </div>
 
-<div class="course">
-    <div class="course-content" style="text-align: center;">
+<div class="course" id="video">
+    <div id="course-content" style="text-align: center;">
         <!-- local/remote videos container -->
         <div id="videos-container"></div>
     </div>
 </div>
+<script>$('video').hide();</script>
 
-<div class="course">
+<div class="course" id="private-stream">
     <div id="course-content">
         <section class="experiment">
             <section>
@@ -26,30 +27,59 @@
     </div>
 </div>
 
-<div class="course">
+<div class="course" id="create-stream">
     <div id="course-content">
         <section class="experiment">
             <section>                    
                 <label class="label">
-                    <span class="form-span">Public:</span>
+                    <span class="form-span">Livestream name:</span>
                         <input type="text" id="conference-name">
                 </label>
             </section>
         </section>
-        <button id="setup-new-conference" class="setup button right">Create chat</button>
+        <button id="setup-new-conference" class="setup button right">Create livestream</button>
     </div>
 </div>
 
-<div class="course">
-    <div class="course-content">
-        <!-- list of all available broadcasting rooms -->
-        Available chatrooms
-        <table style="width: 100%;" id="rooms-list"></table>
+<div class="course" id="available-streams">
+    <div id="course-content">
+        <section class="experiment">
+            <section>
+                <!-- list of all available broadcasting rooms -->
+                Available livestreams
+                <table style="width: 100%;" id="rooms-list"></table>
+            </section>
+        </section>
+        <div id="setup-new-conference" style="display: none;"></div>
     </div>
 </div>
+
+<div class="course" id="stop-stream">
+    <div id="course-content">
+        <a href="">
+            <div class="button full-width cancel">
+                Stop livestream
+            </div>
+        </a>
+    </div>
+</div>
+<script>$('stop-stream').hide();</script>
 
 <%@include file="/includes/footer.jsp" %>
-        
+      
+<script>
+    window.addEvent('domready', function() {
+        $('setup-new-conference').addEvent('click', function(){
+           $('available-streams').hide();
+           $('create-stream').hide();
+           $('private-stream').hide();
+           
+           $('video').toggle();
+           $('stop-stream').toggle();
+        });
+    });
+</script>
+
 <script>
     // Muaz Khan - https://github.com/muaz-khan
     // MIT License - https://www.webrtc-experiment.com/licence/

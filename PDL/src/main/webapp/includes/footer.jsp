@@ -6,7 +6,6 @@
 </body>
 </html>
 
-
 <script>
     window.addEvent('domready', function() {
         $$('.button').each(function(el) {
