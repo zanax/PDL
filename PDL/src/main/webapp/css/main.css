@@ -104,6 +104,9 @@ div.content-header {
     border-radius: 4px;
     border-bottom: 1px solid #BDBDBD;
     bottom: 10px;
+    border-right: none;
+    border-top: none;
+    border-left: none;
 }
 
 .button.full-width{
@@ -120,9 +123,6 @@ div.content-header {
 
 #button{
     float: right;
-    border-right: none;
-    border-top: none;
-    border-left: none;
 }
 
 #button.cancel{

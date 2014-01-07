@@ -7,23 +7,44 @@
 </div>
 
 <div class="course">
+    <div class="course-content" style="text-align: center;">
+        <!-- local/remote videos container -->
+        <div id="videos-container"></div>
+    </div>
+</div>
+
+<div class="course">
     <div id="course-content">
         <section class="experiment">
             <section>
-                <span>
-                    Private ?? <a href="" target="_blank" title="Open this link in new tab. Then your room will be private!"><code><strong id="unique-token">#123456789</strong></code></a>
-                </span>
-
-                <input type="text" id="conference-name">
-                <button id="setup-new-conference" class="setup">Setup New Conference</button>
+                <label class="label">
+                    <span class="form-span">Private:</span> 
+                    <a class="button" href="" target="_blank" title="Open this link in new tab. Then your room will be private!"><code><strong id="unique-token">#123456789</strong></code></a>
+                </label>
             </section>
-
-            <!-- list of all available broadcasting rooms -->
-            <table style="width: 100%;" id="rooms-list"></table>
-
-            <!-- local/remote videos container -->
-            <div id="videos-container"></div>
         </section>
+    </div>
+</div>
+
+<div class="course">
+    <div id="course-content">
+        <section class="experiment">
+            <section>                    
+                <label class="label">
+                    <span class="form-span">Public:</span>
+                        <input type="text" id="conference-name">
+                </label>
+            </section>
+        </section>
+        <button id="setup-new-conference" class="setup button right">Create chat</button>
+    </div>
+</div>
+
+<div class="course">
+    <div class="course-content">
+        <!-- list of all available broadcasting rooms -->
+        Available chatrooms
+        <table style="width: 100%;" id="rooms-list"></table>
     </div>
 </div>
 

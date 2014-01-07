@@ -30,7 +30,7 @@ public class deleteTest extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/deleteTest.jsp";
-        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
@@ -40,7 +40,7 @@ public class deleteTest extends HttpServlet {
             request.setAttribute("test", test);
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/deleteTest.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

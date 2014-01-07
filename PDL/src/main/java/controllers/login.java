@@ -66,16 +66,19 @@ public class login extends HttpServlet {
         
         //TODO: Zoek naar email in db, fetch user
         if(errors.isEmpty()){
+            
             password = register.md5(password);
             
             DB db = DB.getInstance();
-            User user = db.getUser(email);
+            User user = db.getEveryUser(email);
             
             if(user == null){
                 errors.add("Wrong e-mail or password.");
             }
             else if( ! password.equals(user.getPassword())){
                 errors.add("Wrong e-mail or password");
+            }else if(user.isIsBanned()){
+                errors.add("You are banned, contact the site's administrator for more info");
             }
 
             if(errors.isEmpty()){

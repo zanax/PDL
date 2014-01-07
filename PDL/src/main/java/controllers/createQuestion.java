@@ -33,8 +33,7 @@ public class createQuestion extends HttpServlet {
         errors = new ArrayList<String>();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+/**
 * Handles the HTTP
 * <code>GET</code> method.
 *
@@ -46,8 +45,11 @@ public class createQuestion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
-// List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
+        
+        this.errors.clear();
+        String url = "/pages/createQuestion.jsp";
+        
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             if (!tests.isEmpty()) {
                 request.setAttribute("tests", tests);
@@ -56,9 +58,11 @@ public class createQuestion extends HttpServlet {
                 request.setAttribute("errors", "You have no Tests to create a Question for.");
             }
         } else {
-            request.setAttribute("errors", "You have not the right permission.");
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createQuestion.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 
@@ -125,17 +129,18 @@ public class createQuestion extends HttpServlet {
                 questionObj.setAnswer3("");
             }
 
-            
-               DB.getInstance().insertQuestion(questionObj);
-
-
             if (errors.isEmpty()) {
                 request.setAttribute("success", true);
+                DB.getInstance().insertQuestion(questionObj);
             } else {
                 request.setAttribute("questionObj", questionObj);
                 request.setAttribute("errors", errors);
             }
-
+            
+            List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
+            if (!tests.isEmpty()) {
+                request.setAttribute("tests", tests);
+            }
 
             request.setAttribute("show", true);
             RequestDispatcher rd = request.getRequestDispatcher("/pages/createQuestion.jsp");
@@ -152,6 +157,7 @@ public class createQuestion extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
 // optie 2
 // if (request.getSession().getAttribute("user") instanceof Teacher) {
 // List<Course> courses = DB.getInstance().getUserCourses((Teacher) request.getSession().getAttribute("user"));

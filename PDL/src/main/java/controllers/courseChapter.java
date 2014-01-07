@@ -24,16 +24,13 @@ import models.Helper;
 import models.Test;
 import models.User;
 
-/**
- *
- * @author Zanax
- */
-@WebServlet(name = "courseDetails", urlPatterns = {"/courseDetails"})
-public class courseDetails extends HttpServlet {
+
+@WebServlet(name = "courseChapter", urlPatterns = {"/courseChapter"})
+public class courseChapter extends HttpServlet {
 
     private List<String> errors;
 
-    public courseDetails() {
+    public courseChapter() {
         this.errors = new ArrayList<String>();
     }
 

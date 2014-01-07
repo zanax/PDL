@@ -1,6 +1,6 @@
 <%@include file="/includes/header.jsp" %>       
 <div class="content-header">
-    My courses
+    <%= Helper.translateWord(language, "My Courses")%>  
 </div>
 
 <c:forEach var="error" items="${errors}">

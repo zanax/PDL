@@ -332,6 +332,54 @@ public class DB {
                     user = new Teacher(rs.getInt("user_id"));
                 } else if (rs.getBoolean("is_admin") == true) {
                     user = new Admin(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false) {
+                    user = new Student(rs.getInt("user_id"));
+                }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
+            }
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+
+    }
+    
+     public User getEveryUser(String email) {
+        User user = null;
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         User"
+                    + "     where "
+                    + "         email = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setString(1, email);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getBoolean("is_teacher") == true) {
+                    user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
                 } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
                     user = new Student(rs.getInt("user_id"));
                 }
@@ -485,11 +533,11 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
-            
-            if(id > 0){
+
+            if (id > 0) {
                 sql = "  insert"
-                 + "     into CourseVertaling(course_id, language_id, name, description) "
-                 + "     values (?, ?, ?, ?) ";
+                        + "     into CourseVertaling(course_id, language_id, name, description) "
+                        + "     values (?, ?, ?, ?) ";
                 prepared_statement = conn.prepareStatement(sql);
                 prepared_statement.setInt(1, id);
                 prepared_statement.setInt(2, course.getLanguage());
@@ -498,7 +546,7 @@ public class DB {
 
                 prepared_statement.execute();
             }
-            
+
             closeConnection();
 
         } catch (SQLException e) {
@@ -564,7 +612,7 @@ public class DB {
             String sql = "insert "
                     + "   into Test(course_id, chapter_id, amount_of_questions, time, start_date, end_date)"
                     + "   values (?, ?, ?, ?, ?, ?)  ";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, test.getCourse_id());
             prepared_statement.setInt(3, test.getAmount_of_questions());
@@ -584,12 +632,12 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
-            
+
             //Plaats vertaling in de DB als test succesvol in DB is geplaatst.
-            if(id > 0){
+            if (id > 0) {
                 sql = "  insert"
-                 + "     into TestVertaling(language_id, test_id, title, description) "
-                 + "     values (?, ?, ?, ?) ";
+                        + "     into TestVertaling(language_id, test_id, title, description) "
+                        + "     values (?, ?, ?, ?) ";
                 prepared_statement = conn.prepareStatement(sql);
                 prepared_statement.setInt(1, test.getLanguage());
                 prepared_statement.setInt(2, id);
@@ -598,7 +646,7 @@ public class DB {
 
                 prepared_statement.execute();
             }
-            
+
             closeConnection();
 
         } catch (SQLException e) {
@@ -713,8 +761,8 @@ public class DB {
             prepared_statement.setInt(3, course.getId());
 
             affected_rows = prepared_statement.executeUpdate();
-            
-            if(affected_rows > 0){
+
+            if (affected_rows > 0) {
                 //Set the translations
                 sql = "     insert into CourseVertaling(course_id, language_id, name, description)"
                         + " values(?, ?, ?, ?)"
@@ -722,16 +770,16 @@ public class DB {
                         + "     update "
                         + "         name       =    values(name         ),"
                         + "         description =   values(description  )";
-                
+
                 prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 prepared_statement.setInt(1, course.getId());
                 prepared_statement.setInt(2, course.getLanguage());
                 prepared_statement.setString(3, course.getName());
                 prepared_statement.setString(4, course.getDescription());
-                
+
                 affected_rows = prepared_statement.executeUpdate();
             }
-            
+
             closeConnection();
 
         } catch (SQLException e) {
@@ -821,7 +869,8 @@ public class DB {
                     + "     from "
                     + "         SubbedCourses"
                     + "     where "
-                    + "         userID = ?";
+                    + "         userID = ?"
+                    + " and isActive = 1" ;
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setLong(1, user_id);
@@ -872,7 +921,7 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
-                test.setLanguage(language);
+                //test.setLanguage(language);
             }
 
             closeConnection();
@@ -923,7 +972,6 @@ public class DB {
 //
 //        return tests;
 //    }
-
     public ArrayList<Test> getTests(int language) {
 
         ArrayList<Test> tests = new ArrayList<Test>();
@@ -940,9 +988,9 @@ public class DB {
                     + "     AND TestVertaling.language_id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            
+
             prepared_statement.setInt(1, language);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -967,10 +1015,11 @@ public class DB {
 
         return tests;
     }
-    
+
     /**
      * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
-     * @return 
+     *
+     * @return
      */
     public ArrayList<Test> getTestsIncludingNoTranslations(int language) {
         ArrayList<Test> tests = new ArrayList<Test>();
@@ -986,7 +1035,7 @@ public class DB {
                     + "     order by id asc";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -997,30 +1046,30 @@ public class DB {
                 test.setEnd_date(rs.getString("end_date"));
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
-                test.setLanguage(language);
-                
+                //test.setLanguage(language);
+
                 sql = "     select "
                         + "     title, description"
                         + " from"
                         + "     TestVertaling"
                         + " where language_id = ?"
                         + " and test_id = ?";
-                
+
                 prepared_statement = conn.prepareStatement(sql);
                 prepared_statement.setInt(1, language);
                 prepared_statement.setInt(2, test.getId());
-                
+
                 ResultSet rs2 = prepared_statement.executeQuery();
-                
-                while(rs2.next()){
+
+                while (rs2.next()) {
                     test.setTitle(rs2.getString("title"));
                     test.setDescription(rs2.getString("description"));
                 }
-                
-                if(test.getTitle() == null){
+
+                if (test.getTitle() == null) {
                     test.setTitle("No translation");
                 }
-                if(test.getDescription()== null){
+                if (test.getDescription() == null) {
                     test.setDescription("No translation");
                 }
 
@@ -1062,12 +1111,12 @@ public class DB {
                     + "     and "
                     + "         course_id"
                     + "             in "
-                    +                   sb.toString();
+                    + sb.toString();
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            
+
             prepared_statement.setInt(1, language);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             Test test;
@@ -1135,7 +1184,7 @@ public class DB {
 
         return users;
     }
-    
+
     public ArrayList<Course> getCourses(int language) {
         ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -1155,7 +1204,7 @@ public class DB {
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, language);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -1186,10 +1235,11 @@ public class DB {
 
         return courses;
     }
-    
+
     /**
      * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
-     * @return 
+     *
+     * @return
      */
     public ArrayList<Course> getCoursesIncludingNoTranslations(int language) {
         ArrayList<Course> courses = new ArrayList<Course>();
@@ -1205,7 +1255,7 @@ public class DB {
                     + "     order by CourseID asc";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -1218,29 +1268,29 @@ public class DB {
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
                 course.setLanguage(language);
-                
+
                 sql = "     select "
                         + "     name, description"
                         + " from"
                         + "     CourseVertaling"
                         + " where language_id = ?"
                         + " and course_id = ?";
-                
+
                 prepared_statement = conn.prepareStatement(sql);
                 prepared_statement.setInt(1, language);
                 prepared_statement.setInt(2, course.getId());
-                
+
                 ResultSet rs2 = prepared_statement.executeQuery();
-                
-                while(rs2.next()){
+
+                while (rs2.next()) {
                     course.setName(rs2.getString("name"));
                     course.setDescription(rs2.getString("description"));
                 }
-                
-                if(course.getName() == null){
+
+                if (course.getName() == null) {
                     course.setName("No translation");
                 }
-                if(course.getDescription()== null){
+                if (course.getDescription() == null) {
                     course.setDescription("No translation");
                 }
 
@@ -1254,23 +1304,28 @@ public class DB {
 
         return courses;
     }
-    
-    public ArrayList<Course> getPopularCourses() {
+
+    public ArrayList<Course> getPopularCourses(int language) {
         ArrayList<Course> courses = new ArrayList<Course>();
 
         try {
             startConnection();
 
-            String sql = "  SELECT "
-                    + "         * "
-                    + "     FROM "
+            String sql = "  select " //GET POPULAR COURSES
+                    + "         Course.*, CourseVertaling.* "
+                    + "     from "
                     + "         Course "
-                    + "     WHERE isActive = 1 "
-                    + "     ORDER BY numberOfStudents DESC, name"
+                    + "     inner join "
+                    + "         CourseVertaling "
+                    + "     on CourseVertaling.course_id = Course.courseID "
+                    + "     where Course.isActive = 1 "
+                    + "     and CourseVertaling.language_id = ?"
+                    + "     ORDER BY numberOfStudents DESC, name "
                     + "     LIMIT 3";
-
+            
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
-
+            prepared_statement.setInt(1, language);
+            
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -1407,8 +1462,6 @@ public class DB {
 
         return questions;
     }
-    
-    
 
     public List<Question> getQuestions(int test_id) {
 
@@ -1450,9 +1503,9 @@ public class DB {
         return questions;
     }
 
-    public Map<Integer,String> getAnswers(int user_id, int test_id) {
-        Map<Integer,String> answers = new HashMap<Integer,String>();
-        
+    public Map<Integer, String> getAnswers(int user_id, int test_id) {
+        Map<Integer, String> answers = new HashMap<Integer, String>();
+
         try {
             startConnection();
 
@@ -1488,7 +1541,7 @@ public class DB {
         boolean resultt = false;
         try {
             startConnection();
-            
+
             String sql = "select "
                     + "   1 "
                     + "   from"
@@ -1534,7 +1587,7 @@ public class DB {
             ResultSet rs = prepared_statement.executeQuery();
 
             if (rs.next()) {
-                if(rs.getBoolean("isActive")) {
+                if (rs.getBoolean("isActive")) {
                     resultt = true;
                 }
             }
@@ -1626,8 +1679,8 @@ public class DB {
             prepared_statement.setInt(7, test.getId());
 
             affected_rows = prepared_statement.executeUpdate();
-            
-            if(affected_rows > 0){
+
+            if (affected_rows > 0) {
                 //Set the translations
                 sql = "     insert into TestVertaling(language_id, test_id, title, description)"
                         + " values(?, ?, ?, ?)"
@@ -1635,16 +1688,16 @@ public class DB {
                         + "     update "
                         + "         title       =   values(title        ),"
                         + "         description =   values(description  )";
-                
+
                 prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 prepared_statement.setInt(1, test.getLanguage());
                 prepared_statement.setInt(2, test.getId());
                 prepared_statement.setString(3, test.getTitle());
                 prepared_statement.setString(4, test.getDescription());
-                
+
                 affected_rows = prepared_statement.executeUpdate();
             }
-            
+
             closeConnection();
 
         } catch (SQLException e) {
@@ -1659,7 +1712,7 @@ public class DB {
 
         try {
             startConnection();
-            
+
             //Eerst de vertaling verwijderen
             String sql = "DELETE "
                     + " FROM TestVertaling"
@@ -1667,7 +1720,7 @@ public class DB {
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, test_id);
             prepared_statement.execute();
-            
+
             sql = "DELETE "
                     + " FROM Test"
                     + " WHERE id = ?";
@@ -1761,7 +1814,7 @@ public class DB {
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
                 test.setTitle(rs.getString("title"));
-                test.setLanguage(rs.getInt("language"));
+                //test.setLanguage(rs.getInt("language"));
 
                 tests.add(test);
             }
