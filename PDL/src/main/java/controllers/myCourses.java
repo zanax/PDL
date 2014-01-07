@@ -41,7 +41,7 @@ public class myCourses extends HttpServlet {
         this.errors.clear();
         String url = "/pages/myCourses.jsp";
         
-        if ( ! Helper.isStudent(request.getSession().getAttribute("user"))) {
+        if ( !Helper.isStudent(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";

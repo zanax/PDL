@@ -12,11 +12,14 @@ import javax.servlet.http.HttpSession;
  * @author Bono
  */
 public class Helper {
+
     private static Helper helper = null;
     public static int LANGUAGE_UK = 0, LANGUAGE_DUTCH = 1;
     private static String[][] translations = {
         //Words
         {"My Courses", "Mijn Cursussen"},
+        {"My Grades", "Mijn Cijfers"},
+        {"Student Panel", "Student Paneel"},
         {"Courses", "Cursussen"},
         {"Log In", "Inloggen"},
         {"Contact", "Contact"},
@@ -60,92 +63,92 @@ public class Helper {
         {"Log in", "Inloggen"},
         {"You have been successfully registered", "U bent succesvol geregistreerd"},
         {"Register", "Registreren"},
+        {"Welcome to: ","Welkom bij: "}
     };
     
     
     private static final int[] allowed_languages = {0, 1};
-    
-    public static Helper getInstance(){
-        if(helper == null){
+
+    public static Helper getInstance() {
+        if (helper == null) {
             helper = new Helper();
         }
-        
+
         return helper;
     }
-    
-    
-    public static int isInt(String string){
+
+    public static int isInt(String string) {
         int outcome = -1;
-        
-        try{
+
+        try {
             outcome = Integer.parseInt(string);
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return outcome;
         }
-        
+
         return outcome;
     }
-    
-    public static boolean isTeacher(Object user){        
-        if(user instanceof Teacher){
+
+    public static boolean isTeacher(Object user) {
+        if (user instanceof Teacher) {
             return true;
         }
         return false;
     }
-    
-    public static boolean isAdmin(Object user){        
-        if(user instanceof Admin){
+
+    public static boolean isAdmin(Object user) {
+        if (user instanceof Admin) {
             return true;
         }
         return false;
     }
-    
-    public static boolean isStudent(Object user){
-        if(user instanceof Student){
+
+    public static boolean isStudent(Object user) {
+        if (user instanceof Student) {
             return true;
         }
         return false;
     }
-        
-    public static boolean allowedLanguage(int language){
-        for(int allowed_language : allowed_languages){
-            if(language == allowed_language) return true;
+
+    public static boolean allowedLanguage(int language) {
+        for (int allowed_language : allowed_languages) {
+            if (language == allowed_language) {
+                return true;
+            }
         }
         return false;
     }
-    
-    public static void setLanguage(int language, HttpServletRequest request){
+
+    public static void setLanguage(int language, HttpServletRequest request) {
         boolean existing_language = allowedLanguage(language);
-        
+
         HttpSession session = request.getSession();
         session.setAttribute("language", existing_language ? language : 0);
     }
-    
-    public static int getLanguage(HttpSession session){
+
+    public static int getLanguage(HttpSession session) {
         int language = 0;
-        
-        if(session.getAttribute("language") != null){
+
+        if (session.getAttribute("language") != null) {
             Object session_language = session.getAttribute("language");
-            
-            if(session_language instanceof Integer){
+
+            if (session_language instanceof Integer) {
                 language = (Integer) session_language;
-            }
-            else if(session_language instanceof String){
+            } else if (session_language instanceof String) {
                 language = Helper.isInt((String) session_language);
             }
         }
         System.out.println(language);
         return language;
     }
-    
-    public static String translateWord(int language, String word){
-        for(String[] trans_words : translations){
-            if(trans_words[0].equals(word)){
+
+    public static String translateWord(int language, String word) {
+        for (String[] trans_words : translations) {
+            if (trans_words[0].equals(word)) {
                 word = trans_words[language];
             }
         }
-        
+
         return word;
     }
 }
