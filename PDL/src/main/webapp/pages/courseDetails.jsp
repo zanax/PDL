@@ -17,7 +17,6 @@
     <div class="content-header">
         Welcome to: ${course.name}!
     </div>
-
     <div class="course">
         <div id="course-content">
             <div ALIGN="center" id="course-content-image">
@@ -49,7 +48,6 @@
     <div class="content-header">
         Chapters in this course
     </div>
-
     <div class="course">
         <div id="course-content">
             <c:forEach var="chapter" items="${chapters}">
@@ -66,7 +64,6 @@
     <div class="content-header">
         Tests in this course
     </div>
-
     <div class="course">
         <div id="course-content">
             <c:forEach var="test" items="${tests}">
@@ -79,6 +76,22 @@
             </c:forEach>
         </div>
     </div>
+            
+    <!--Alleen aan studenten/leraren laten zien-->
+    <% if (user != null) {%>
+    <div class="content-header">
+        Livestreams
+    </div>
+    <div class="course">
+        <div id="course-content">
+            <a href="livestreamDetail?id=${course.id}">
+                <div class="button full-width">
+                    Go to page
+                </div>
+            </a>
+        </div>
+    </div>
+    <% } %>
 
 </c:if>
 

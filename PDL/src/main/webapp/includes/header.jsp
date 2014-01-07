@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <%@ page session="true" %>
 <% int language = Helper.getLanguage(session);%>
+<% User user = (User) session.getAttribute("user"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -39,8 +40,7 @@
                             <li>
                                 <a href="courseCatalog"><%= Helper.translateWord(language, "Courses")%></a>
                             </li>
-                            <% if (session.getAttribute("user") instanceof Student) {%>
-
+                            <% if (Helper.isStudent(user)) {%>
                             <li>
                                 <a href="studentPanel"><%= Helper.translateWord(language, "Student Panel")%></a>
                             </li>
@@ -48,7 +48,7 @@
                             <li>
                                 <a href="contact"><%= Helper.translateWord(language, "Contact")%></a>
                             </li>
-                            <% if (session.getAttribute("user") instanceof Teacher) {%>
+                            <% if (Helper.isTeacher(user)) {%>
                             <li>
                                 <a href="teacherPanel"><%= Helper.translateWord(language, "Teacher")%></a>
                             </li>
@@ -56,17 +56,17 @@
                                 <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
                             </li>
                             <% }%>
-                            <% if (session.getAttribute("user") instanceof Admin) {%>
+                            <% if (Helper.isAdmin(user)) {%>
                             <li>
                                 <a href="adminPanel"><%= Helper.translateWord(language, "Administrator")%></a>
                             </li>
                             <% }%>
-                            <% if (session.getAttribute("user") != null) {%>
+                            <% if (user != null) {%>
                             <li>
                                 <a href="chat"><%= Helper.translateWord(language, "Chat")%></a>
                             </li>
                             <%}%>
-                            <% if (session.getAttribute("user") == null) {%>
+                            <% if (user == null) {%>
                             <li>
                                 <a href="login"><%= Helper.translateWord(language, "Log In")%></a>
                             </li>              
