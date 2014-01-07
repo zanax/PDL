@@ -6,13 +6,19 @@
 
 package controllers;
 
+import connection.DB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Course;
+import models.Helper;
 
 /**
  *
@@ -20,10 +26,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "chat", urlPatterns = {"/chat"})
 public class chat extends HttpServlet {
+    private List<String> errors;
+
+    public chat() {
+        this.errors = new ArrayList<String>();
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //TODO: Check for permissions
+        this.errors.clear();
+        
+        String url = "pages/chat.jsp";
+        if(request.getSession().getAttribute("user") == null){
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
     
     @Override
