@@ -72,15 +72,16 @@ public class courseDetails extends HttpServlet {
 
                     boolean enrolled = false;
 
-                    if (!subbed_courses.isEmpty()) {
-                        for (int i = 0; i < subbed_courses.size(); i++) {
-                            int subcourse_id = subbed_courses.get(i).getId();
-                            if (subcourse_id == course_id) {
+                   
+                    for (Course subbed_course : subbed_courses) {
+                        if (subbed_course != null) {
+                            if (subbed_course.getId() == course_id) {
                                 enrolled = true;
                                 break;
                             }
                         }
                     }
+                    
 
                     request.setAttribute("enrolled", enrolled);
 
