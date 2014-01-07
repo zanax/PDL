@@ -34,7 +34,7 @@ public class editGrade extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/editGrade.jsp";
-        if( ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+        if( ! Helper.isTeacher(request.getSession().getAttribute("user")) &&  ! Helper.isTeacher(request.getSession().getAttribute("user"))){
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";

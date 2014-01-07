@@ -46,7 +46,11 @@ public class createQuestion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
+        
+        this.errors.clear();
+        String url = "/pages/createQuestion.jsp";
+        
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
 // List<Test> tests = DB.getInstance().getUserTests((Teacher) request.getSession().getAttribute("user"));
             List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             if (!tests.isEmpty()) {
@@ -56,9 +60,11 @@ public class createQuestion extends HttpServlet {
                 request.setAttribute("errors", "You have no Tests to create a Question for.");
             }
         } else {
-            request.setAttribute("errors", "You have not the right permission.");
+            this.errors.add("You do not have the correct permissions to visit this page.");
+            request.setAttribute("errors", this.errors);
+            url = "/pages/404.jsp";
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/createQuestion.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 

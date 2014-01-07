@@ -356,6 +356,54 @@ public class DB {
 
     }
     
+     public User getEveryUser(String email) {
+        User user = null;
+
+        try {
+            startConnection();
+
+            String sql = "  select "
+                    + "         *"
+                    + "     from "
+                    + "         User"
+                    + "     where "
+                    + "         email = ?"
+                    + "     limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setString(1, email);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getBoolean("is_teacher") == true) {
+                    user = new Teacher(rs.getInt("user_id"));
+                } else if (rs.getBoolean("is_admin") == true) {
+                    user = new Admin(rs.getInt("user_id"));
+                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                    user = new Student(rs.getInt("user_id"));
+                }
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setLanguage(rs.getInt("language_id"));
+            }
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+
+    }
+    
     
     //haalt ook gebande users op
     public User getEveryUser(int userID) {
