@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Grade;
 import models.Helper;
 import models.Question;
 import models.Teacher;
@@ -102,10 +103,33 @@ public class gradeTest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            int testID = Integer.parseInt(request.getParameter("testID"));
+            int studentID = Integer.parseInt(request.getParameter("studentID"));
+            List<Question> questions = DB.getInstance().getQuestions(testID);
 
-        int testID = Integer.parseInt(request.getParameter("testID"));
-        int studentID = Integer.parseInt(request.getParameter("studentID"));
-        List<Question> questions = DB.getInstance().getQuestions(testID);
+            if(questions != null) {
+                int points = 0;
+                for(Question question : questions) {
+                    String g = request.getParameter(Integer.toString(question.getId()));
+                    if(g.equalsIgnoreCase("true")) {
+                        points++;
+                    }
+                }
+
+                double gradeFormula = (((double) points / (double) questions.size()) * 9 + 1); 
+                // Formula moet miss anders, aangezien ene vraag andere punten aantal geeft?
+                Grade grade = new Grade();
+                grade.setTestId(testID);
+                grade.setUserId(studentID);
+                grade.setGrade((int) gradeFormula);
+                if(DB.getInstance().insertGrade(grade)) {
+                    request.setAttribute("success", true);
+                }
+            }
+        } catch(NumberFormatException e) {
+            e.printStackTrace();
+        }
         
         RequestDispatcher rd = request.getRequestDispatcher("/pages/gradeTest.jsp");
         rd.forward(request, response);
@@ -113,7 +137,6 @@ public class gradeTest extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

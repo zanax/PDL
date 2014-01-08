@@ -15,11 +15,12 @@
         </div>
     </div>
 </c:if>
+
 <c:if test="${success != null && success}">
     <div class="course">
         <div id="course-content">
             <div class="success_message">
-                U have successfully graded the Test.   
+                U have successfully graded the Test. 
             </div>
         </div>
     </div>
@@ -55,6 +56,7 @@
                     <label class="label">
                         <span class="form-span">Answer</span>
                         ${answers.get(question.id)}
+                        <br>
                     </label>
                     <label class="label">
                         <span class="form-span">Correct Answer</span>
