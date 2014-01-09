@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
+        <servlet-name>livestreamChat</servlet-name>
+        <servlet-class>controllers.livestreamChat</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>livestreamDetail</servlet-name>
         <servlet-class>controllers.livestreamDetail</servlet-class>
     </servlet>
@@ -270,6 +274,11 @@
         <servlet-name>livestreamDetail</servlet-name>
         <url-pattern>/livestreamDetail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>livestreamChat</servlet-name>
+        <url-pattern>/livestreamChat</url-pattern>
+    </servlet-mapping>
+    
     
     
     

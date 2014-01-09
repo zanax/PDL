@@ -64,6 +64,9 @@
                                 <a href="chat"><%= Helper.translateWord(language, "Chat")%></a>
                             </li>
                             <li>
+                                <a href="livestreamChat"><%= Helper.translateWord(language, "Video chat")%></a>
+                            </li>
+                            <li>
                                 <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
                             </li>
                             <%}%>

@@ -63,7 +63,9 @@ public class Helper {
         {"Log in", "Inloggen"},
         {"You have been successfully registered", "U bent succesvol geregistreerd"},
         {"Register", "Registreren"},
-        {"Welcome to: ","Welkom bij: "}
+        {"Welcome to: ","Welkom bij: "},
+        {"Livestreams", "Livestreams"},
+        {"Video chat", "Video chat"},
     };
     
     private static final int[] allowed_languages = {0, 1};
