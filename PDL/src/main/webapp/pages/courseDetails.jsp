@@ -13,9 +13,9 @@
 </c:if>
 
 <c:if test="${show != null}">
-
     <div class="content-header">
         Welcome to: ${course.name}!
+
     </div>
     <div class="course">
         <div id="course-content">
@@ -53,7 +53,7 @@
             <c:forEach var="chapter" items="${chapters}">
                 <a href="viewChapter?id=${chapter.id}">
                     <div class="button full-width">
-                        ${chapter.title}
+                        ${chapter.chapterName}
                     </div>
                 </a>
                 <br>
@@ -76,7 +76,7 @@
             </c:forEach>
         </div>
     </div>
-            
+
     <!--Alleen aan studenten/leraren laten zien-->
     <% if (user != null) {%>
     <div class="content-header">
@@ -91,7 +91,7 @@
             </a>
         </div>
     </div>
-    <% } %>
+    <% }%>
 
 </c:if>
 
