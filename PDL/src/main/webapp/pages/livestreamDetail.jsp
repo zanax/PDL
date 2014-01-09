@@ -12,7 +12,7 @@
         <div id="videos-container"></div>
     </div>
 </div>
-<script>$('video').hide();</script>
+<script>$('chat-part').hide();</script>
 
 <% if (Helper.isAdmin(user) || Helper.isTeacher(user)) {%>
 <div class="course" id="create-chat">
@@ -52,7 +52,7 @@
         </a>
     </div>
 </div>
-<script>$('stop-stream').hide();</script> 
+<script>$('leave-chat').hide();</script> 
 <%@include file="/includes/footer.jsp" %>
 
 <script>
@@ -61,16 +61,7 @@
             toggleContent();
         });
         
-        var target = document;
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                console.log(mutation.type);
-            });    
-        });
-        
-        var config = {attributes: true, childList: true, characterData: true};
-        observer.observe(target, config);
-    });
+        alterDynamicChatButtons();
 </script>
 
 <script>

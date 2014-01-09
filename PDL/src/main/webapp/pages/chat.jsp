@@ -88,8 +88,6 @@
             toggleContent();
         });
         
-        $('rooms-list').addEvent('click', function(){
-            toggleContent();
-        });
+        alterDynamicChatButtons();
     });
 </script>
