@@ -46,4 +46,12 @@
             });
         });
     });
+    
+    function toggleContent(){
+            $('create-chat').hide();
+            $('chat-rooms').hide();
+
+            $('chat-part').toggle();
+            $('leave-chat').toggle();
+        }
 </script>
