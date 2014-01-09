@@ -42,6 +42,7 @@
                 <label class="label">
                     <span class="form-span">Your Answer:</span>
                     ${answers.get(question.id)}
+                    <br>
                 </label>
                 <br>
                 <label class="label">

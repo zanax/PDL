@@ -77,6 +77,10 @@
         <servlet-class>controllers.editUser</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>changeUser</servlet-name>
+        <servlet-class>controllers.changeUser</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>editQuestion</servlet-name>
         <servlet-class>controllers.editQuestion</servlet-class>
     </servlet>
@@ -221,6 +225,10 @@
     <servlet-mapping>
         <servlet-name>deleteTest</servlet-name>
         <url-pattern>/deleteTest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeUser</servlet-name>
+        <url-pattern>/changeUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>contact</servlet-name>

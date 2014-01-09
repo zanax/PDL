@@ -27,54 +27,58 @@
 </c:if>
 
 <script>
-var mins = 0;
-var secs = 0;
+    var mins = 0;
+    var secs = 0;
 
-function cd() {
-    mins = ${test.time};
-    redo();
-}
-
-function dis(mins, secs) {
-    var disp;
-    if(mins <= 9) {
-        disp = " 0";
-    } else {
-        disp = " ";
+    function cd() {
+        mins = ${test.time};
+        redo();
     }
-    disp += mins + ":";
-    if(secs <= 9) {
-        disp += "0" + secs;
-    } else {
-        disp += secs;
+
+    function dis(mins, secs) {
+        var disp;
+        if(mins <= 9) {
+            disp = " 0";
+        } else {
+            disp = " ";
+        }
+        disp += mins + ":";
+        if(secs <= 9) {
+            disp += "0" + secs;
+        } else {
+            disp += secs;
+        }
+        return(disp);
     }
-    return(disp);
-}
 
-function redo() {
-    secs--;
-    if(secs === -1) {
-        secs = 59;
-        mins--;
+    function redo() {
+        secs--;
+        if(secs === -1) {
+            secs = 59;
+            mins--;
+        }
+        document.makeTest.disp.value = dis(mins,secs);
+        if((mins === 0) && (secs === 0)) {
+            document.forms["makeTest"].submit();
+        } else {
+            cd = setTimeout("redo()",1000);
+        }
     }
-    document.makeTest.disp.value = dis(mins,secs); // setup additional displays here.
-    if((mins === 0) && (secs === 0)) {
-        window.alert("Time is up. Press OK to continue."); // change timeout message as required
-        window.location = " "; // redirects to specified page once timer ends and ok button is pressed
-    } else {
-        cd = setTimeout("redo()",1000);
+
+    function init() {
+        cd();
     }
-}
 
-function init() {
-  cd();
-}
-
-window.onload = init;
-
+// Source: http://www.javascriptsource.com/time-date/countdown-timer.html
+// Edited by Maarten, no Licenses
 </script>
 
 <c:if test="${show != null && show}">
+    
+    <script>
+        window.onload = init;
+    </script>
+    
     <form name="makeTest" method="post" action="makeTest">
         <div class="course">
             <div id="course-content">

@@ -2011,6 +2011,32 @@ public class DB {
         return grade;
     }
     
+    public boolean insertGrade(Grade grade) {
+        
+         try {
+            startConnection();
+
+            String sql = "insert "
+                    + " into Grade(user_id, test_id, grade)"
+                    + " values (?, ?, ?) ";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, grade.getUserId());
+            prepared_statement.setInt(2, grade.getTestId());
+            prepared_statement.setInt(3, grade.getGrade());
+
+            prepared_statement.execute();
+
+            closeConnection();
+            
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
     public boolean updateQuestion(Question question) {
         int affected_rows = 0;
 
