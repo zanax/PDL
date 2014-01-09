@@ -12,6 +12,7 @@ public class Test {
     private String description;
     private String start_date;
     private String end_date;
+    private boolean isActive;
 
     public Test() {
 
@@ -96,4 +97,13 @@ public class Test {
     public void setLanguage(int language) {
         this.language = language;
     }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
 }

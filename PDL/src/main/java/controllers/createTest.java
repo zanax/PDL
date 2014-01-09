@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package controllers;
 
 import connection.DB;
@@ -23,10 +18,6 @@ import models.Course;
 import models.Helper;
 import models.Test;
 
-/**
-*
-* @author Bono
-*/
 @WebServlet(name = "createTest", urlPatterns = {"/createTest"})
 public class createTest extends HttpServlet {
 
@@ -42,6 +33,7 @@ public class createTest extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "pages/createTest.jsp";
+        
         if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
@@ -115,6 +107,9 @@ public class createTest extends HttpServlet {
 
             int test_id = DB.getInstance().insertTest(test);
 
+                        System.out.println("test_id: " + test_id);
+
+            
             if (test_id > 0) {
                 this.success = true;
                 url = "editTest?id=" + test_id;

@@ -21,6 +21,7 @@ public class Question {
     private String answer3;
     private char type;
     private String testTitle;
+    private boolean isActive;
 
     public char getType() {
         return type;
@@ -61,8 +62,8 @@ public class Question {
 
     public void setTestTitle(String testTitle) {
         this.testTitle = testTitle;
-    }  
-    
+    }
+
     public int getId() {
         return id;
     }
@@ -118,4 +119,13 @@ public class Question {
     public void setTestId(int testId) {
         this.testId = testId;
     }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+    
 }

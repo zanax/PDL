@@ -167,7 +167,7 @@ public class DB {
 
         return affected_rows;
     }
-    
+
     public int banUser(int userId) {
 
         int affected_rows = 0;
@@ -194,7 +194,7 @@ public class DB {
 
         return affected_rows;
     }
-    
+
     public int unBanUser(int userId) {
 
         int affected_rows = 0;
@@ -221,7 +221,7 @@ public class DB {
 
         return affected_rows;
     }
-    
+
     public int makeTeacher(int userId) {
 
         int affected_rows = 0;
@@ -249,7 +249,7 @@ public class DB {
 
         return affected_rows;
     }
-    
+
     public int makeAdmin(int userId) {
 
         int affected_rows = 0;
@@ -277,7 +277,7 @@ public class DB {
 
         return affected_rows;
     }
-    
+
     public int makeStudent(int userId) {
 
         int affected_rows = 0;
@@ -355,8 +355,8 @@ public class DB {
         return user;
 
     }
-    
-     public User getEveryUser(String email) {
+
+    public User getEveryUser(String email) {
         User user = null;
 
         try {
@@ -380,7 +380,7 @@ public class DB {
                     user = new Teacher(rs.getInt("user_id"));
                 } else if (rs.getBoolean("is_admin") == true) {
                     user = new Admin(rs.getInt("user_id"));
-                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                } else if (rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false) {
                     user = new Student(rs.getInt("user_id"));
                 }
                 user.setFirstname(rs.getString("firstname"));
@@ -403,8 +403,7 @@ public class DB {
         return user;
 
     }
-    
-    
+
     //haalt ook gebande users op
     public User getEveryUser(int userID) {
         User user = null;
@@ -430,7 +429,7 @@ public class DB {
                     user = new Teacher(rs.getInt("user_id"));
                 } else if (rs.getBoolean("is_admin") == true) {
                     user = new Admin(rs.getInt("user_id"));
-                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                } else if (rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false) {
                     user = new Student(rs.getInt("user_id"));
                 }
                 user.setFirstname(rs.getString("firstname"));
@@ -457,7 +456,7 @@ public class DB {
         return user;
 
     }
-    
+
     public User getUser(int userID) {
         User user = null;
 
@@ -484,7 +483,7 @@ public class DB {
                     user = new Teacher(rs.getInt("user_id"));
                 } else if (rs.getBoolean("is_admin") == true) {
                     user = new Admin(rs.getInt("user_id"));
-                } else if(rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false){
+                } else if (rs.getBoolean("is_admin") == false && rs.getBoolean("is_teacher") == false) {
                     user = new Student(rs.getInt("user_id"));
                 }
                 user.setFirstname(rs.getString("firstname"));
@@ -812,11 +811,60 @@ public class DB {
             while (rs.next()) {
                 chapter = new Chapter(id);
                 chapter.setCourse_id(rs.getInt("courseID"));
-                chapter.setTitle(rs.getString("chapterName"));
-                chapter.setDescription(rs.getString("description"));
+                chapter.setChapterName(rs.getString("chapterName"));
+                chapter.setChapter_description(rs.getString("chapter_description"));
+                chapter.setChapter_content(rs.getString("chapter_content"));
+
             }
 
             closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return chapter;
+    }
+
+    public Chapter getChapterCourse(int id, int language) {
+        Chapter chapter = null;
+
+        try {
+            startConnection();
+
+            String sql = "select Course.*, CourseVertaling.* , Chapter.* "
+                    + "from Chapter "
+                    + " inner join Course on Course.courseID = Chapter.courseID "
+                    + " inner join CourseVertaling on CourseVertaling.course_id = Chapter.courseID "
+                    + " where Chapter.id = ? "
+                    + " and CourseVertaling.language_id = ? "
+                    + " limit 1";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, id);
+            prepared_statement.setInt(2, language);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                chapter = new Chapter(id);
+
+                //Chapter
+                chapter.setCourse_id(rs.getInt("courseID"));
+                chapter.setChapter_description(rs.getString("chapter_description"));
+                chapter.setChapterName(rs.getString("chapterName"));
+                chapter.setChapter_content(rs.getString("chapter_content"));
+
+                //Course vertaling
+                chapter.setDescription(rs.getString("description"));
+                chapter.setTitle(rs.getString("name"));
+
+                //Course
+                chapter.setImgSrc(rs.getString("img_src"));
+
+            }
+
+            closeConnection();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -836,7 +884,8 @@ public class DB {
                     + "     from"
                     + "         Chapter"
                     + "     where"
-                    + "         courseID = ?";
+                    + "         courseID = ?"
+                    + "     and isActive = 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, id);
@@ -870,7 +919,7 @@ public class DB {
                     + "         SubbedCourses"
                     + "     where "
                     + "         userID = ?"
-                    + " and isActive = 1" ;
+                    + " and isActive = 1";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setLong(1, user_id);
@@ -1017,7 +1066,7 @@ public class DB {
     }
 
     /**
-     * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
+     * Gebruik deze methode om alle tests op te halen, onafhankelijk van taal.
      *
      * @return
      */
@@ -1046,8 +1095,9 @@ public class DB {
                 test.setEnd_date(rs.getString("end_date"));
                 test.setStart_date(rs.getString("start_date"));
                 test.setTime(rs.getInt("time"));
-                //test.setLanguage(language);
+                test.setIsActive(rs.getBoolean("isActive"));
 
+                //test.setLanguage(language);
                 sql = "     select "
                         + "     title, description"
                         + " from"
@@ -1219,6 +1269,7 @@ public class DB {
                 course.setStartDate(rs.getDate("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
+                course.setBg_imgSrc(rs.getString("background_img_src"));
                 course.setLanguage(language);
 
                 //course.setPopularity(rs.getInt("popularity"));
@@ -1322,10 +1373,10 @@ public class DB {
                     + "     and CourseVertaling.language_id = ?"
                     + "     ORDER BY numberOfStudents DESC, name "
                     + "     LIMIT 3";
-            
+
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, language);
-            
+
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
@@ -1384,7 +1435,7 @@ public class DB {
 //        }
 //        return resultt;
 //    }
-        public Question getQuestion(int id) {
+    public Question getQuestion(int id) {
         Question question = null;
 
         try {
@@ -1423,6 +1474,7 @@ public class DB {
 
         return question;
     }
+
     public ArrayList<Question> getQuestions() {
 
         ArrayList<Question> questions = new ArrayList<Question>();
@@ -1451,6 +1503,7 @@ public class DB {
                 question.setAnswer3(rs.getString("answer3"));
                 question.setDescription(rs.getString("description"));
                 question.setTestId(rs.getInt("test_id"));
+                question.setIsActive(rs.getBoolean("isActive"));
 
                 questions.add(question);
             }
@@ -2010,7 +2063,7 @@ public class DB {
 
         return grade;
     }
-    
+
     public boolean updateQuestion(Question question) {
         int affected_rows = 0;
 
@@ -2044,7 +2097,6 @@ public class DB {
 
             prepared_statement.setInt(9, question.getId());
 
-
             prepared_statement.execute();
 
             closeConnection();
@@ -2054,5 +2106,148 @@ public class DB {
         }
 
         return (affected_rows > 0 ? true : false);
+    }
+
+    public int insertChapter(Chapter chapter) {
+        int id = -1;
+
+        try {
+            startConnection();
+
+            String sql = "insert "
+                    + "   into Chapter(courseID, chapterName, chapter_description, chapter_content)"
+                    + "   values (?, ?, ?, ?)";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setInt(1, chapter.getCourse_id());
+            prepared_statement.setString(2, chapter.getChapterName());
+            prepared_statement.setString(3, chapter.getChapter_description());
+            prepared_statement.setString(4, chapter.getChapter_content());
+
+            prepared_statement.execute();
+
+            ResultSet generatedKeys = prepared_statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = (int) generatedKeys.getLong(1);
+            }
+            generatedKeys.close();
+
+            //Plaats vertaling in de DB als test succesvol in DB is geplaatst.
+//            if (id > 0) {
+//                sql = "  insert"
+//                        + "     into TestVertaling(language_id, test_id, title, description) "
+//                        + "     values (?, ?, ?, ?) ";
+//                prepared_statement = conn.prepareStatement(sql);
+//                prepared_statement.setInt(1, test.getLanguage());
+//                prepared_statement.setInt(2, id);
+//                prepared_statement.setString(3, test.getTitle());
+//                prepared_statement.setString(4, test.getDescription());
+//
+//                prepared_statement.execute();
+//            }
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    public ArrayList<Chapter> getChapters() {
+
+        ArrayList<Chapter> chapters = new ArrayList<Chapter>();
+
+        try {
+            startConnection();
+
+            String sql = " SELECT * "
+                    + "FROM Chapter ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Chapter chapter = new Chapter(rs.getInt("id"));
+                chapter.setCourse_id(rs.getInt("courseID"));
+                chapter.setChapter_description(rs.getString("chapter_description"));
+                chapter.setChapterName(rs.getString("chapterName"));
+                chapter.setChapter_content(rs.getString("chapter_content"));
+                chapter.setIsActive(rs.getBoolean("isActive"));
+
+                chapters.add(chapter);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return chapters;
+    }
+
+    public int updateChapter(Chapter chapter) {
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = "update Chapter "
+                    + "   set courseID = ?, chapterName = ?, chapter_description = ?, chapter_content = ? "
+                    + "   where Chapter.id = ? ";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            prepared_statement.setInt(1, chapter.getCourse_id());
+            prepared_statement.setString(2, chapter.getChapterName());
+            prepared_statement.setString(3, chapter.getChapter_description());
+            prepared_statement.setString(4, chapter.getChapter_content());
+            prepared_statement.setInt(5, chapter.getId());
+
+            affected_rows = prepared_statement.executeUpdate();
+
+//            if (affected_rows > 0) {
+//                //Set the translations
+//                sql = "     insert into TestVertaling(language_id, test_id, title, description)"
+//                        + " values(?, ?, ?, ?)"
+//                        + " on duplicate key "
+//                        + "     update "
+//                        + "         title       =   values(title        ),"
+//                        + "         description =   values(description  )";
+//
+//                prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//                prepared_statement.setInt(1, test.getLanguage());
+//                prepared_statement.setInt(2, test.getId());
+//                prepared_statement.setString(3, test.getTitle());
+//                prepared_statement.setString(4, test.getDescription());
+//
+//                affected_rows = prepared_statement.executeUpdate();
+//            }
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return affected_rows;
+    }
+
+    public void disableChapter(int chapter_id) {
+        try {
+            startConnection();
+
+            String sql = "UPDATE Chapter  "
+                    + " set isActive = 0"
+                    + " WHERE id = ?";
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            prepared_statement.setInt(1, chapter_id);
+            prepared_statement.execute();
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
