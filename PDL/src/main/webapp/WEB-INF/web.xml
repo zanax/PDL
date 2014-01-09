@@ -5,6 +5,7 @@
         <servlet-name>livestreamChat</servlet-name>
         <servlet-class>controllers.livestreamChat</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>livestreamDetail</servlet-name>
         <servlet-class>controllers.livestreamDetail</servlet-class>
