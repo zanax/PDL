@@ -6,24 +6,32 @@
 package controllers;
 
 import connection.DB;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import models.Course;
 import models.Helper;
 import models.Teacher;
+import org.apache.commons.net.ftp.FTPClient;
 
 /**
  *
  * @author Zanax & Donna
  */
 @WebServlet(name = "createCourse", urlPatterns = {"/createCourse"})
+@MultipartConfig
 public class createCourse extends HttpServlet {
 
     private List<String> errors;
@@ -34,7 +42,8 @@ public class createCourse extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,18 +55,23 @@ public class createCourse extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/createCourse.jsp";
+<<<<<<< HEAD
         if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
+=======
+        if (!Helper.isTeacher(request.getSession().getAttribute("user"))) {
+>>>>>>> ca996e5883a6e421a3fb8dad803757104cd2f03c
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -68,7 +82,7 @@ public class createCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "/pages/createCourse.jsp";
-        
+
         if (request.getSession().getAttribute("user") instanceof Teacher) {
             // Course
             Course course = new Course();
@@ -81,9 +95,9 @@ public class createCourse extends HttpServlet {
             String category = request.getParameter("category");
             String s_language = request.getParameter("language_id");
             int language = Helper.isInt(s_language);
-            
+
             this.errors.clear();
-            
+
             // Name
             if (name.equals("")) {
                 this.errors.add("\"Name\" is a required field.");
@@ -119,20 +133,36 @@ public class createCourse extends HttpServlet {
             } else {
                 course.setCategory(category);
             }
-            if( ! Helper.allowedLanguage(language)){
+            if (!Helper.allowedLanguage(language)) {
                 this.errors.add("Invalid language selected. Please try again.");
-            }
-            else{
+            } else {
                 course.setLanguage(language);
             }
-            
+
+
             // Error Check
             if (errors.isEmpty()) {
                 int id = DB.getInstance().insertCourse(course);
                 if (id != -1) {
+
+                    FTPClient client = new FTPClient();
+                    Part fileContent = request.getPart("uploadfile");
+                    String fileName = "";
+                    String courseId = Integer.toString(id);
+                    String path = "PDL/course/" + courseId;
+                    System.out.println("Dit is de naam vd nieuwe map" + path);
+
+                    try {
+                        fileName = FTPUpload.getFilename(fileContent);
+                        fileName = "course_picture.png";
+                    } catch (MessagingException ex) {
+                        Logger.getLogger(createCourse.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    FTPUpload.uploadFile(client, fileName, fileContent.getInputStream(), path);
+
                     request.setAttribute("createdCourse", name);
                     request.setAttribute("success", true);
-                    System.out.println("editCourse?id="+id);
+                    System.out.println("editCourse?id=" + id);
                     url = "editCourse?id=" + id;
                     response.sendRedirect(url);
                     return;
@@ -149,5 +179,6 @@ public class createCourse extends HttpServlet {
         }
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
+//        }
     }
 }

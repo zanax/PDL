@@ -1,7 +1,7 @@
 <%@include file="/includes/header.jsp" %> 
 
 
-<form method="post" action="createCourse">
+<form method="post" action="createCourse" enctype="multipart/form-data">
 
 
     <div class="content-header">
@@ -63,19 +63,29 @@
                 <select class="form-input-select" name="language_id" required>
                     <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
-                </select>
-            </label>
+                    </select>
+                </label>
+                
+                    <!--<form action="upload" method="post" name="upload" enctype="multipart/form-data">-->
+                        <label class="label">
+                            <span class="form-span">Course Picture: *</span>
+                            <input name="uploadfile" type="file" multiple accept='image/*' size="50" id="uploadfile" required>
+                            <!--<input type="submit" name="action" class="button" id="button" value="Submit file">-->
+                        </label>
+                    <!--</form>-->
+                
+            </div>
+
+            <div class="course">
+                <div id="course-content">
+                    <input type="submit"  class="button" id="button" value="Submit form">
+                    <a href="teacherPanel" class="button" id="button">Cancel</a>
+                </div>        
+            </div>
+
+
         </div>
-
-    </div>
-
-    <div class="course">
-        <div id="course-content">
-            <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel" class="button" id="button">Cancel</a>
-        </div>        
-    </div>
-</form>
+    </form>
 
 
 <%@include file="/includes/footer.jsp" %>
