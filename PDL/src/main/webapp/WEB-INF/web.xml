@@ -43,7 +43,7 @@
     <servlet>
         <servlet-name>popularCourses</servlet-name>
         <servlet-class>controllers.popularCourses</servlet-class>
-    </servlet> 
+    </servlet>
     <servlet>
         <servlet-name>createCourse</servlet-name>
         <servlet-class>controllers.createCourse</servlet-class>
@@ -132,12 +132,14 @@
         <servlet-name>disableQuestion</servlet-name>
         <servlet-class>controllers.disableQuestion</servlet-class>
     </servlet>
-    
-    
-    
-    
-    
-    
+    <servlet>
+        <servlet-name>FileUploadHandler</servlet-name>
+        <servlet-class>controllers.FileUploadHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FTPUpload</servlet-name>
+        <servlet-class>controllers.FTPUpload</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -169,7 +171,7 @@
     <servlet-mapping>
         <servlet-name>popularCourses</servlet-name>
         <url-pattern>/popularCourses</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>createCourse</servlet-name>
         <url-pattern>/createCourse</url-pattern>
@@ -262,11 +264,14 @@
         <servlet-name>adminPanel</servlet-name>
         <url-pattern>/adminPanel</url-pattern>
     </servlet-mapping>
-    
-    
-    
-    
-    
+    <servlet-mapping>
+        <servlet-name>FileUploadHandler</servlet-name>
+        <url-pattern>/FileUploadHandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FTPUpload</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
