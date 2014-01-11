@@ -72,7 +72,19 @@
     <div class="course">
         <div id="course-content">
             <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel" class="button" id="button">Cancel</a>
+            <% if (Helper.isTeacher(user)) {%>
+            <li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% }%>
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>
         </div>        
     </div>
 </form>

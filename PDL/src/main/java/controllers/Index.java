@@ -21,10 +21,10 @@ import models.Course;
 import models.Helper;
 
 
-@WebServlet(name = "popularCourses", urlPatterns = {"/popularCourses"})
-public class popularCourses extends HttpServlet {
+@WebServlet(name = "Index", urlPatterns = {"/Index"})
+public class Index extends HttpServlet {
 
-    public popularCourses() {
+    public Index() {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -44,7 +44,7 @@ public class popularCourses extends HttpServlet {
         request.setAttribute("courses", courses);
         System.out.print(courses);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/popularCourses.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         rd.forward(request, response);
     }
 

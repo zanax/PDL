@@ -24,7 +24,7 @@
             </div>
         </div>
     </c:if>
-    
+
     <div class="course">
         <div id="course-content">
             <c:if test="${show != null && show}">
@@ -62,10 +62,20 @@
 
     <div class="course">
         <div id="course-content">
-            <label class="label">
-                <input type="submit" class="button" id="button" value="Add Question">
-            </label>
-            <a href="teacherPanel" class="button" id="button">Cancel</a>
+            <input type="submit" class="button" id="button" value="Add Question">
+            <% if (Helper.isTeacher(user)) {%>
+            <li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% }%>
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>
         </div>        
     </div>
 </form>

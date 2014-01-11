@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <%@ page session="true" %>
 <% int language = Helper.getLanguage(session);%>
-<% User user = (User) session.getAttribute("user"); %>
+<% User user = (User) session.getAttribute("user");%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -36,7 +36,7 @@
                     <nav id="main-nav">
                         <ul>
                             <li>
-                                <a href="popularCourses">Home</a>
+                                <a href="Index">Home</a>
                             </li>
                             <li>
                                 <a href="courseCatalog"><%= Helper.translateWord(language, "Courses")%></a>
@@ -65,11 +65,11 @@
                             </li>
                             <li>
                                 <a href="livestreamChat"><%= Helper.translateWord(language, "Video chat")%></a>
-                            </li>
-                            <li>
-                                <a href="editUser"><%= Helper.translateWord(language, "Profile")%></a>
-                            </li>
+                            </li>                            
                             <%}%>
+                            <li>
+                                <a href="http://145.92.6.85:8080/jforum-2.1.9/forums/list.page">Forum</a>
+                            </li>
                             <% if (user == null) {%>
                             <li>
                                 <a href="login"><%= Helper.translateWord(language, "Log In")%></a>
@@ -82,6 +82,7 @@
                                 <a href="logout"><%= Helper.translateWord(language, "Log Out")%></a>
                             </li>
                             <%}%>
+                            
                             <li>
                                 <div id="nav-search">
                                     <form method="get" action="searchCourses">

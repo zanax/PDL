@@ -22,7 +22,7 @@
                     </div>
                 </a>
             </c:if>
-             <label class="label">
+            <label class="label">
                 <span class="form-span">Course:*</span>
                 <select class="form-input-select" name="course_id" required>
                     <!-- Courses ophalen en in select zetten -->
@@ -52,19 +52,23 @@
                 </select>
             </label>
         </div>
-
     </div>
-
-    <div class="course">
-        <div id="course-content">
-            <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel">
-                <div class="button cancel cancel-left">
-                    Cancel
-                </div>
-            </a>
-        </div>        
+<div class="course">
+    <div id="course-content">
+        <input type="submit" class="button" id="button" value="Submit">
+        
+        <% if (Helper.isTeacher(user)) {%>
+        <li>
+            <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+        </li>
+        <% }%>
+        <% if (Helper.isAdmin(user)) {%>
+        <li>
+            <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+        </li>
+        <%}%>        
     </div>
+</div>
 </form>
 
 

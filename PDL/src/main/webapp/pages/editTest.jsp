@@ -70,6 +70,20 @@
             </label>
             
             <input type="submit" class="button" id="button" value="Save">
+
+            <% if (Helper.isTeacher(user)) {%>
+            <li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% }%>
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>
         </form>
     </div>
 </div>

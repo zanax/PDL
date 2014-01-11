@@ -1275,7 +1275,7 @@ public class DB {
                 course.setStartDate(rs.getDate("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
-                course.setBg_imgSrc(rs.getString("background_img_src"));
+                //course.setBg_imgSrc(rs.getString("background_img_src"));
                 course.setLanguage(language);
 
                 //course.setPopularity(rs.getInt("popularity"));
@@ -1308,7 +1308,6 @@ public class DB {
                     + "         *"
                     + "     from "
                     + "         Course "
-                    + "     where isActive = 1 "
                     + "     order by CourseID asc";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
@@ -1492,8 +1491,7 @@ public class DB {
                     + " question.answer1, question.answer2, question.answer3, question.test_id, question.isActive"
                     + "  , test_vertaling.title "
                     + " FROM Question AS question "
-                    + " INNER JOIN TestVertaling AS test_vertaling ON test_vertaling.test_id = question.test_id "
-                    + " WHERE question.isActive = 1 ";
+                    + " INNER JOIN TestVertaling AS test_vertaling ON test_vertaling.test_id = question.test_id ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
 
@@ -1697,7 +1695,7 @@ public class DB {
             startConnection();
             sql = "UPDATE Question "
                     + " SET isActive = 0"
-                    + " WHERE questionID = ?";
+                    + " WHERE id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setInt(1, question_id);
@@ -2069,10 +2067,10 @@ public class DB {
 
         return grade;
     }
-    
+
     public boolean insertGrade(Grade grade) {
-        
-         try {
+
+        try {
             startConnection();
 
             String sql = "insert "
@@ -2086,16 +2084,16 @@ public class DB {
             prepared_statement.execute();
 
             closeConnection();
-            
+
             return true;
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return false;
     }
-    
+
     public boolean updateQuestion(Question question) {
         int affected_rows = 0;
 
