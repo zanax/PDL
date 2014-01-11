@@ -28,8 +28,7 @@ public class login extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -44,8 +43,7 @@ public class login extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -60,46 +58,48 @@ public class login extends HttpServlet {
         String password = request.getParameter("password");
         boolean success = false;
         String url = "/pages/login.jsp";
-        
-        if(email.trim().equals("")) errors.add("\"E-mail\" is a required field.");
-        if(password.trim().equals("")) errors.add("\"Password\" is a required field.");
-        
+
+        if (email.trim().equals("")) {
+            errors.add("\"E-mail\" is a required field.");
+        }
+        if (password.trim().equals("")) {
+            errors.add("\"Password\" is a required field.");
+        }
+
         //TODO: Zoek naar email in db, fetch user
-        if(errors.isEmpty()){
-            
+        if (errors.isEmpty()) {
+
             password = register.md5(password);
-            
+
             DB db = DB.getInstance();
             User user = db.getEveryUser(email);
-            
-            if(user == null){
+
+            if (user == null) {
                 errors.add("Wrong e-mail or password.");
-            }
-            else if( ! password.equals(user.getPassword())){
+            } else if (!password.equals(user.getPassword())) {
                 errors.add("Wrong e-mail or password");
-            }else if(user.isIsBanned()){
+            } else if (user.isIsBanned()) {
                 errors.add("You are banned, contact the site's administrator for more info");
             }
 
-            if(errors.isEmpty()){
+            if (errors.isEmpty()) {
                 //ingelogd - set session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 Helper.setLanguage(user.getLanguage(), request);
-                
-                url = "index.jsp";
+
+                url = "/index.jsp";
                 success = true;
-            }
-            else{
+            } else {
                 request.setAttribute("errors", errors);
             }
-        }
-        else{
+        } else {
             request.setAttribute("errors", errors);
         }
-        
+        System.out.println("url: " + url);
+
         request.setAttribute("success", success);
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
+        RequestDispatcher rdIndex = request.getRequestDispatcher(url);
+        rdIndex.forward(request, response);
     }
 }

@@ -129,6 +129,14 @@
     <div class="course">
         <div id="course-content">
             <input type="submit" class="button" id="button" value="<%= Helper.translateWord(language, "Save")%>">
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>
         </div>
     </div>
 

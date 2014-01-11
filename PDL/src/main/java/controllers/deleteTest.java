@@ -53,7 +53,7 @@ public class deleteTest extends HttpServlet {
         int test_id = Helper.isInt(test_nr);
         
         if(test_id != -1){
-            DB.getInstance().deleteTest(test_id);
+            DB.getInstance().disableTest(test_id);
         }
         else{
             this.errors.add("Invalid test.");

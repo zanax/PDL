@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Chapter;
 import models.Course;
 import models.Helper;
 import models.Question;
@@ -56,6 +57,10 @@ public class adminPanel extends HttpServlet {
             //tests ophalen
             ArrayList<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             request.setAttribute("tests", tests);
+            
+             //chapters ophalen
+            ArrayList<Chapter> chapters = DB.getInstance().getChapters();
+            request.setAttribute("chapters", chapters);
 
             //questions ophalen
             ArrayList<Question> questions = DB.getInstance().getQuestions();

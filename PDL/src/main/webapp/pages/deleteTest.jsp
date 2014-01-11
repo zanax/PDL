@@ -20,15 +20,28 @@
         <form method="post" action="deleteTest">
             <div id="course-content-title">
                 <div class="error_message">
-                        Are you sure you want to delete this test: '${test.title}'?      
-                    </div>
-                
+                    Are you sure you want to delete this test: '${test.title}'?      
+                </div>
+
                 <input type="hidden" name="test_id" value="${test.id}" class="form-input" style="text-align: center;">
             </div>
             <div class="course-button info" style="left: 725px;">
 
                 <input type="hidden" name="id" value="${test.id}">
                 <input type="submit" value="Delete test" class="button">
+                <% if (Helper.isTeacher(user)) {%>
+                <li>
+                    <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                </li>
+                <% }%>
+                <% if (Helper.isAdmin(user)) {%>
+                <li>
+                    <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                </li>
+                <% } else {%>
+                <li>
+                </li>
+                <%}%>
             </div><br/><br/><br/><br/>
 
         </form>

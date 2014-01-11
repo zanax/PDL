@@ -25,10 +25,8 @@
     <div id="content-inner-block">
         <div class="content-inner title">
             Users
-        </div>
-        
-        
-        
+        </div>       
+
         <table class="table" id="userTable">
             <input type="text" id="searchUsers" placeholder="Type to search">
             <tr>
@@ -70,7 +68,6 @@
     </div>
 </div>
 
-
 <div class="content-inner">
     <div id="content-inner-block">
         <div class="content-inner title">
@@ -88,6 +85,9 @@
                 <th style="width: auto;">
                     Description
                 </th>
+                <th style="width: auto;">
+                    Active
+                </th>
                 <th style="width: 30px;">
                     Actions
                 </th>
@@ -97,9 +97,14 @@
                     <td>${course.id}</td>
                     <td>${course.name}</td>
                     <td>${course.description}</td>
+                    <td>${course.isActive}</td>
                     <td>
-                        <a href="editCourse?id=${course.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
-                        <a href="disableCourse?id=${course.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
+                        <a href="editCourse?id=${course.id}">
+                            <img id="edit" name="edit" alt="Edit" src="img/edit_green.png">
+                        </a>
+                        <a href="disableCourse?id=${course.id}">
+                            <img id="delete" name="delete" alt="Delete" src="img/delete_red.png">
+                        </a>
                     </td>
                 </tr>
             </c:forEach>
@@ -112,6 +117,51 @@
         </a>
     </div>
 </div>
+
+<div class="content-inner">
+    <div id="content-inner-block">
+        <div class="content-inner title">
+            Chapters
+        </div>
+        <table class="table">
+            <th style="width: 25px;">
+                #ID
+            </th>
+            <th style="width: 120px;">
+                Title
+            </th>
+            <th style="width: auto;">
+                Description
+            </th>
+            <th style="width: auto;">
+                Active
+            </th>
+            <th style="width: 30px;">
+                Actions
+            </th>
+            <c:forEach items="${chapters}" var="chapter">
+                <tr>
+                    <td style="text-align: center;">${chapter.id}</td>
+                    <td>${chapter.chapterName}</td>
+                    <td>${chapter.chapter_description}</td>
+                    <td>${chapter.isActive}</td>
+                    <td style="text-align: center;">
+                        <a href="editChapter?id=${chapter.id}"><img src="img/edit_green.png"></a>
+                        <a href="disableChapter?id=${chapter.id}"><img src="img/delete_red.png"></a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+
+        <a href="createChapter">
+            <div class="button full-width middle">
+                Create chapter
+            </div>
+        </a>
+    </div>
+
+</div>
+
 <div class="content-inner">
     <div id="content-inner-block">
         <div class="content-inner title">
@@ -135,9 +185,10 @@
                     <td style="text-align: center;">${test.id}</td>
                     <td>${test.title}</td>
                     <td>${test.description}</td>
+                    <td>${test.isActive}</td>
                     <td style="text-align: center;">
-                        <a href="editTest?id=${test.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
-                        <a href="deleteTest?id=${test.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
+                        <a href="editTest?id=${test.id}"><img src="img/edit_green.png"></a>
+                        <a href="deleteTest?id=${test.id}"><img src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -169,6 +220,9 @@
                 <th style="width: auto;">
                     Description
                 </th>
+                <th style="width: auto;">
+                    Active
+                </th>
                 <th style="width: 30px;">
                     Actions
                 </th>
@@ -178,9 +232,11 @@
                     <td>${question.id}</td>
                     <td>${question.testTitle}</td>
                     <td>${question.description}</td>
+                    <td>${question.isActive}</td>
+
                     <td>
-                        <a href="editQuestion?id=${question.id}"><img id="edit" name="edit" alt="Edit" src="img/edit_green.png"></a>
-                        <a href="disableCourse?id=${question.id}"><img id="delete" name="delete" alt="Delete" src="img/delete_red.png"></a>
+                        <a href="editQuestion?id=${question.id}"><img src="img/edit_green.png"></a>
+                        <a href="disableQuestion?id=${question.id}"><img src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -194,17 +250,37 @@
     </div>
 </div>
 
+<div class="course">
+    <div id="course-content">
+        <div id="course-content-image">
+            <a href="editUser"><img src="img/default_picture.png"></a>
+        </div>
+        <div id="course-content-title">
+            <h4><a href="editUser"><%= Helper.translateWord(language, "Profile")%></a></h4>
+        </div>
+        <div id="course-content-description">
+            <%= Helper.translateWord(language, "Profile")%>  
+
+        </div>
+        <div class="course-button info">
+
+            <a href="editUser" class="button" id="button">Ga naar</a>
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/javascript">
-var $rows = $('#userTable tr');
-$('#searchUsers').keyup(function() {
-    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    
-    $rows.show().filter(function() {
-        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-        return !~text.indexOf(val);
-    }).hide();
-});
+    var $rows = $('#userTable tr');
+    $('#searchUsers').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
 </script>
 
 <%@include file="/includes/footer.jsp" %>

@@ -26,7 +26,7 @@
                 Something went wrong, Please try again.
             </div>
         </c:if>
-       <form method="post" action="editChapter">
+        <form method="post" action="editChapter">
             <input type="hidden" value="${chapter.id}" name="id">                        
             <label class="label">
                 <span class="form-span">Course:</span>
@@ -45,14 +45,27 @@
                 <span class="form-span">Description:</span>
                 <textarea name="chapter_description" placeholder="Description" class="form-input-textarea" required>${chapter.chapter_description}</textarea>
             </label>
-           <label class="label">
+            <label class="label">
                 <span class="form-span">Content:</span>
                 <textarea name="chapter_content" placeholder="Content" class="form-input-textarea" required>${chapter.chapter_content}</textarea>
             </label>
-            
+
             <input type="submit" class="button" id="button" value="Save">
+            <% if (Helper.isTeacher(user)) {%>
+            <li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% }%>
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>
         </form>
-        </div>
     </div>
+</div>
 
 <%@include file="/includes/footer.jsp" %>

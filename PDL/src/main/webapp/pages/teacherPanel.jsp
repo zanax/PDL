@@ -18,6 +18,7 @@
 <div class="content-header">
     Teacher
 </div>
+
 <div class="content-inner">
     <div id="content-inner-block">
         <div class="content-inner title">
@@ -186,7 +187,7 @@
 
                     <td>
                         <a href="editQuestion?id=${question.id}"><img src="img/edit_green.png"></a>
-                        <a href="disableCourse?id=${question.id}"><img src="img/delete_red.png"></a>
+                        <a href="disableQuestion?id=${question.id}"><img src="img/delete_red.png"></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -197,6 +198,25 @@
                 Create question
             </div>
         </a>
+    </div>
+</div>
+
+<div class="course">
+    <div id="course-content">
+        <div id="course-content-image">
+            <a href="editUser"><img src="img/default_picture.png"></a>
+        </div>
+        <div id="course-content-title">
+            <h4><a href="editUser"><%= Helper.translateWord(language, "Profile")%></a></h4>
+        </div>
+        <div id="course-content-description">
+            <%= Helper.translateWord(language, "Profile")%>  
+
+        </div>
+        <div class="course-button info">
+
+            <a href="editUser" class="button" id="button">Ga naar</a>
+        </div>
     </div>
 </div>
 

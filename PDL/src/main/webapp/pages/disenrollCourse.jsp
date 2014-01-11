@@ -32,6 +32,8 @@
                     <input type="radio" name="agree" value="agree">
                 </label>
                 <input type="submit" value="Disenroll" class="button" id="button">
+                <a href="courseCatalog" class="button cancel" id="button">Cancel</a>
+
             </form>
         </c:if>
     </div>
