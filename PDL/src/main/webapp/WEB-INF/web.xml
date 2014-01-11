@@ -200,16 +200,6 @@
         <servlet-name>studentPanel</servlet-name>
         <servlet-class>controllers.studentPanel</servlet-class>
     </servlet>
-    
-    <servlet>
-        <servlet-name>FileUploadHandler</servlet-name>
-        <servlet-class>controllers.FileUploadHandler</servlet-class>
-    </servlet>
-    
-    <servlet>
-        <servlet-name>FTPUpload</servlet-name>
-        <servlet-class>controllers.FTPUpload</servlet-class>
-    </servlet>
 
 
 
@@ -413,15 +403,7 @@
         <url-pattern>/studentPanel</url-pattern>
     </servlet-mapping>
     
-    <servlet-mapping>
-        <servlet-name>FileUploadHandler</servlet-name>
-        <url-pattern>/FileUploadHandler</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>FTPUpload</servlet-name>
-        <url-pattern>/upload</url-pattern>
-    </servlet-mapping>
+
     
     
     
