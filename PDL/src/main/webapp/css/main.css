@@ -129,12 +129,17 @@ div.content-header {
     float: right;
 }
 
+.button.cancel-left{
+    float: left;
+    display: inline-block;
+}
+
 #button{
     float: right;
 }
 
 #button.cancel{
-	float: left;
+    float: left;
 }
 
 .success_message{

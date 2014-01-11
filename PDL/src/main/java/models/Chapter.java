@@ -4,6 +4,7 @@ public class Chapter {
 
     private int id;
     private int course_id;
+    private int language;
     private String title;
     private String chapter_description;
     private String chapterName;
@@ -98,6 +99,14 @@ public class Chapter {
 
     public void setChapter_content(String chapter_content) {
         this.chapter_content = chapter_content;
+    }
+
+    public int getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(int language) {
+        this.language = language;
     }
 
 }

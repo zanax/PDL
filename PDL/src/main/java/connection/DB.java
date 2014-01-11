@@ -2141,14 +2141,11 @@ public class DB {
             startConnection();
 
             String sql = "insert "
-                    + "   into Chapter(courseID, chapterName, chapter_description, chapter_content)"
-                    + "   values (?, ?, ?, ?)";
+                    + "   into Chapter(courseID)"
+                    + "   values (?)";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setInt(1, chapter.getCourse_id());
-            prepared_statement.setString(2, chapter.getChapterName());
-            prepared_statement.setString(3, chapter.getChapter_description());
-            prepared_statement.setString(4, chapter.getChapter_content());
 
             prepared_statement.execute();
 
@@ -2157,20 +2154,24 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
+            
+            
+            //Plaats vertaling in de DB als chapter succesvol in DB is geplaatst.
+            if (id > 0) {
+                sql = "  insert"
+                        + "     into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content) "
+                        + "     values (?, ?, ?, ?, ?) ";
+                prepared_statement = conn.prepareStatement(sql);
+                
+                prepared_statement.setInt(1, id);
+                prepared_statement.setInt(2, chapter.getLanguage());
+                prepared_statement.setString(3, chapter.getChapterName());
+                prepared_statement.setString(4, chapter.getChapter_description());
+                prepared_statement.setString(5, chapter.getChapter_content());
 
-            //Plaats vertaling in de DB als test succesvol in DB is geplaatst.
-//            if (id > 0) {
-//                sql = "  insert"
-//                        + "     into TestVertaling(language_id, test_id, title, description) "
-//                        + "     values (?, ?, ?, ?) ";
-//                prepared_statement = conn.prepareStatement(sql);
-//                prepared_statement.setInt(1, test.getLanguage());
-//                prepared_statement.setInt(2, id);
-//                prepared_statement.setString(3, test.getTitle());
-//                prepared_statement.setString(4, test.getDescription());
-//
-//                prepared_statement.execute();
-//            }
+                prepared_statement.execute();
+            }
+            
             closeConnection();
 
         } catch (SQLException e) {

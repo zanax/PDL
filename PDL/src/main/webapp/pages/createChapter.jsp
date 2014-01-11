@@ -44,13 +44,13 @@
                 <span class="form-span">Chapter content:*</span>
                 <textarea name="chapter_content" placeholder="content" class="form-input-textarea" required>${chapter.chapter_content}</textarea>
             </label>
-<!--            <label class="label">
-                <span class="form-span">Language: *</span>
+            <label class="label">
+                <span class="form-span">Language:</span>
                 <select class="form-input-select" name="language_id" required>
                     <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
                 </select>
-            </label>-->
+            </label>
         </div>
 
     </div>
@@ -58,7 +58,11 @@
     <div class="course">
         <div id="course-content">
             <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel" class="button" id="button">Cancel</a>
+            <a href="teacherPanel">
+                <div class="button cancel cancel-left">
+                    Cancel
+                </div>
+            </a>
         </div>        
     </div>
 </form>
