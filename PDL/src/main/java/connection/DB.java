@@ -918,8 +918,7 @@ public class DB {
                     + "     from "
                     + "         SubbedCourses"
                     + "     where "
-                    + "         userID = ?"
-                    + " and isActive = 1";
+                    + "         userID = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setLong(1, user_id);
