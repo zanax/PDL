@@ -30,16 +30,17 @@ public class editChapter extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/editChapter.jsp";
+        
         if (!Helper.isTeacher(request.getSession().getAttribute("user")) && !Helper.isAdmin(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
         } else {
             int chapter_id = Helper.isInt(request.getParameter("id"));
-            System.out.println("chapter_id: " + chapter_id);
+            
             Chapter chapter = null;
             if (chapter_id > -1) {
-                chapter = DB.getInstance().getChapter(chapter_id);
+                chapter = DB.getInstance().getChapter(chapter_id, Helper.getLanguage(request.getSession()));
 
                 if (chapter == null) {
                     this.errors.add("The requested chapter does not exist.");
@@ -74,8 +75,10 @@ public class editChapter extends HttpServlet {
         String chapterName = request.getParameter("chapterName").trim();
         String chapter_description = request.getParameter("chapter_description").trim();
         String chapter_content = request.getParameter("chapter_content").trim();
+        String s_language = request.getParameter("language_id");
         int id = Helper.isInt(request.getParameter("id"));
-
+        int language = Helper.isInt(s_language);
+        
         //String language_id = request.getParameter("language_id");
         this.errors.clear();
         
@@ -94,10 +97,10 @@ public class editChapter extends HttpServlet {
         if (chapter_content.equals("")) {
             this.errors.add("\"Chapter content\" is a required field.");
         }
-
-//        if (!Helper.allowedLanguage(int_language)) {
-//            this.errors.add("Invalid language selected, please try again.");
-//        }
+        if (!Helper.allowedLanguage(language)) {
+            this.errors.add("Invalid language selected, please try again.");
+        }
+        
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
         if (int_course_id > 0) {
@@ -120,14 +123,15 @@ public class editChapter extends HttpServlet {
             chapter.setChapterName(chapterName);
             chapter.setChapter_description(chapter_description);
             chapter.setChapter_content(chapter_content);
-
+            chapter.setLanguage(language);
+            
             int affected_rows = DB.getInstance().updateChapter(chapter);
 
             if (affected_rows > 0) {
                 this.success = true;
                 request.setAttribute("chapter", chapter);
             } else {
-                this.errors.add("Something went wrong with saving the test. Please try again.");
+                this.errors.add("Something went wrong with saving the chapter. Please try again.");
             }
         }
 

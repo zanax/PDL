@@ -8,7 +8,7 @@
     <div id="course-content">
         <c:if test="${success != null && success}">
             <div class="success_message">
-                The Chapter has been successfully edited.
+                The chapter has been successfully edited.
             </div>
         </c:if>
         <c:if test="${create_success != null && create_success}">
@@ -39,7 +39,7 @@
             </label>
             <label class="label">
                 <span class="form-span">Chapter name:</span>
-                <textarea name="chapterName" placeholder="Chapter name" class="form-input-textarea" required>${chapter.chapterName}</textarea>
+                <input name="chapterName" type="text" placeholder="Name" value="${chapter.chapterName}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Description:</span>
@@ -49,10 +49,26 @@
                 <span class="form-span">Content:</span>
                 <textarea name="chapter_content" placeholder="Content" class="form-input-textarea" required>${chapter.chapter_content}</textarea>
             </label>
-            
-            <input type="submit" class="button" id="button" value="Save">
-        </form>
+            <label class="label">
+                <span class="form-span">Language:</span>
+                <select class="form-input-select" name="language_id" required>
+                    <option value="0" <c:if test="${chapter.language == 0}">selected</c:if>>English (UK)</option>
+                    <option value="1" <c:if test="${chapter.language == 1}">selected</c:if>>Nederlands</option>
+                </select>
+            </label>
         </div>
     </div>
+                
+    <div class="course">
+        <div id="course-content">
+            <input type="submit" class="button" id="button" value="Submit">
+            <a href="teacherPanel">
+                <div class="button cancel cancel-left">
+                    Cancel
+                </div>
+            </a>
+        </div>        
+    </div>
+</form>
 
 <%@include file="/includes/footer.jsp" %>

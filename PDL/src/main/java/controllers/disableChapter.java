@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
+import models.Helper;
 
 @WebServlet(name = "disableChapter", urlPatterns = {"/disableChapter"})
 public class disableChapter extends HttpServlet {
@@ -31,7 +32,7 @@ public class disableChapter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Chapter chapter = DB.getInstance().getChapter(Integer.parseInt(request.getParameter("id")));
+        Chapter chapter = DB.getInstance().getChapter(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
         request.setAttribute("chapter", chapter);
 
