@@ -47,6 +47,7 @@ public class createChapter extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String course_id = request.getParameter("course_id").trim();
         String chapterName = request.getParameter("chapterName").trim();
         String chapter_description = request.getParameter("chapter_description").trim();

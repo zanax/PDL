@@ -70,7 +70,7 @@ public class createCourse extends HttpServlet {
             throws ServletException, IOException {
         String url = "/pages/createCourse.jsp";
         
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             // Course
             Course course = new Course();
             // Get parameters
