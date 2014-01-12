@@ -702,9 +702,7 @@ public class DB {
         return course;
     }
 
-    public List<Course> searchCourse(String criteria) {
-
-        Course course = null;
+    public List<Course> searchCourses(String criteria, int language) {
 
         List<Course> courses = new ArrayList<Course>();
 
@@ -714,29 +712,23 @@ public class DB {
             String sql = "  select "
                     + "         *"
                     + "     from "
-                    + "         Course"
+                    + "         CourseVertaling"
                     + "     where "
-                    + "         name LIKE ?"
-                    + "     OR  description LIKE ?"
-                    + "     OR  category LIKE ?";
+                    + "         (name LIKE ?"
+                    + "     OR  description LIKE ?)"
+                    + "     AND "
+                    + "         language_id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
             prepared_statement.setString(1, "%" + criteria + "%");
             prepared_statement.setString(2, "%" + criteria + "%");
-            prepared_statement.setString(3, "%" + criteria + "%");
+            prepared_statement.setInt(3, language);
 
             ResultSet rs = prepared_statement.executeQuery();
 
             while (rs.next()) {
-
-                course = new Course(rs.getInt("courseID"));
-                course.setName(rs.getString("name"));
-                course.setDescription(rs.getString("description"));
-                course.setCategory(rs.getString("category"));
-                course.setMaximumStudents(rs.getInt("maximumStudents"));
-                course.setImgSrc(rs.getString("img_src"));
-
-                courses.add(course);
+                
+                courses.add(getCourse(rs.getInt("course_id"), language));
             }
 
             closeConnection();

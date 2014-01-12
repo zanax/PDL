@@ -13,11 +13,9 @@
         </c:forEach>
         <c:if test="${show != null && show}">
             <c:if test="${success != null && success}">
-                <a href="myCourses" >
                     <div class="success_message">
                         The course has been successfully edited.     
                     </div>
-                </a>
             </c:if>
 <<<<<<< HEAD
         

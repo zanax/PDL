@@ -85,7 +85,7 @@
                             
                             <li>
                                 <div id="nav-search">
-                                    <form method="get" action="searchCourses">
+                                    <form method="get" action="searchCourse">
                                         <input type="image" value="search" src="img/toolbar_find.png">
                                         <input type="text" name="keyword" placeholder="<%= Helper.translateWord(language, "Search for courses")%>">
                                     </form>

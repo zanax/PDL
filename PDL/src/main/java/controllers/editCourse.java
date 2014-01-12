@@ -70,7 +70,7 @@ public class editCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             if (request.getParameter("id") != null) {
                 // Course
                 Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
@@ -110,11 +110,11 @@ public class editCourse extends HttpServlet {
                 }
                 // Start Date
                 if (!startDate.equals("")) {
-                    course.setStartDate(null);
+                    course.setStartDate(startDate);
                 }
                 // End Date
                 if (!endDate.equals("")) {
-                    course.setEndDate(null);
+                    course.setEndDate(endDate);
                 }
                 // Category
                 if (category.equals("")) {
