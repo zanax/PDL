@@ -23,27 +23,27 @@
                 </a>
             </c:if>
             <label class="label">
-                <span class="form-span">Name: *</span>
+                <span class="form-span">Name:</span>
                 <input name="name" type="text" placeholder="Name" value="${course.name}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Maximum Students:</span>
-                <input name="maximumStudents" type="text" placeholder="0" value="${course.maximumStudents}" class="form-input">
+                <input name="maximumStudents" type="text" placeholder="0" value="${course.maximumStudents}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">Start Date:</span>
-                <input name="startDate" type="text" placeholder="DD-MM-YYYY" value="${course.startDate}" class="form-input">
+                <input name="startDate" type="text" placeholder="DD-MM-YYYY" value="${course.startDate}" class="form-input" required>
             </label>
             <label class="label">
                 <span class="form-span">End Date:</span>
-                <input name="endDate" type="text" placeholder="DD-MM-YYYY" value="${course.endDate}" class="form-input">
+                <input name="endDate" type="text" placeholder="DD-MM-YYYY" value="${course.endDate}" class="form-input" required>
             </label>
             <label class="label">
-                <span class="form-span">Description: *</span>
+                <span class="form-span">Description:</span>
                 <textarea name="description" placeholder="Description" class="form-input-textarea" required>${course.description}</textarea>
             </label>
             <label class="label">
-                <span class="form-span">Category: *</span>
+                <span class="form-span">Category:</span>
                 <select class="form-input-select" name="category" required>
                     <option value="">Select category...</option>
                     <option value="Art">Art</option>
@@ -59,7 +59,7 @@
                 </select>
             </label>
             <label class="label">
-                <span class="form-span">Language: *</span>
+                <span class="form-span">Language:</span>
                 <select class="form-input-select" name="language_id" required>
                     <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
