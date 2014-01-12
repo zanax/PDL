@@ -84,24 +84,15 @@ public class enrollCourse extends HttpServlet {
                 this.errors.add("\"Course\" is a required field.");
             }
 
-            // Payment Method
-            String method = request.getParameter("paymentMethod");
-            if (method == null) {
-                this.errors.add("\"Payment Method\" is a required field.");
-            }
-
             // Check
             if (this.errors.isEmpty()) {
                 request.setAttribute("id", id);
-                request.setAttribute("paymentMethod", method);
                 DB.getInstance().enrollCourse(id, ((User) request.getSession().getAttribute("user")).getId());
                 DB.getInstance().amountPlusOne(id);
 
-                request.setAttribute("success", true); // TEMP
+                request.setAttribute("success", true);
 
-                request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response); // Verwijst terug naar de page
-
-                //request.getRequestDispatcher("Payment").forward(request, response); // Verwijst terug naar de page
+                request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response);
                 return;
             } else {
                 User user = (User) request.getSession().getAttribute("user");

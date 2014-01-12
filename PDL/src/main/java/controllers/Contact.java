@@ -91,13 +91,13 @@ public class Contact extends HttpServlet {
 
     public void sendMail(String to, String subject, String body) {
 
-        System.out.println("de sendMail methode is aangeroepen.");
+        //System.out.println("de sendMail methode is aangeroepen.");
         String from = "32learn.contact";  // GMail user name (just the part before "@gmail.com")
         String pass = "3!2Leren."; // GMail password
 
 
         Properties props = System.getProperties();
-        System.out.println("Dit staat in props: " + props);
+        //System.out.println("Dit staat in props: " + props);
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);

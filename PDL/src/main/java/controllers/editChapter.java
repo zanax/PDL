@@ -55,7 +55,7 @@ public class editChapter extends HttpServlet {
             }
 
             //Courses ophalen voor form
-            ArrayList<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
+            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
 
             url = "/pages/editChapter.jsp";

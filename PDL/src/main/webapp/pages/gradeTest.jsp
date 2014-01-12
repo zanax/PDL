@@ -37,7 +37,7 @@
                 <br>
                 <label class="label">
                     <span class="form-span">Student:</span>
-                    ${student.firstname}
+                    ${student.firstname} ${student.surname}
                 </label>
                 <input type="submit" value="Grade Test" class="button" id="button">
             </div>

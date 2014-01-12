@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Course;
 import models.Grade;
 import models.Helper;
 import models.Test;
@@ -24,12 +25,12 @@ import models.User;
  *
  * @author Maarten
  */
-@WebServlet(name = "editGrade", urlPatterns = {"/editGrade"})
-public class editGrade extends HttpServlet {
+@WebServlet(name = "courseBanUser", urlPatterns = {"/courseBanUser"})
+public class courseBanUser extends HttpServlet {
 
     private List<String> errors;
 
-    public editGrade() {
+    public courseBanUser() {
         this.errors = new ArrayList<String>();
     }
 
@@ -37,29 +38,22 @@ public class editGrade extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.errors.clear();
-        String url = "/pages/editGrade.jsp";
-        if (Helper.isTeacher(request.getSession().getAttribute("user"))) {
+        String url = "/pages/courseBanUser.jsp";
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             try {
-                int testID = Integer.parseInt(request.getParameter("testID"));
-                int studentID = Integer.parseInt(request.getParameter("studentID"));
-                User student = DB.getInstance().getUser(studentID);
-                if (student != null) {
-                    Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
-                    if (test != null) {
-                        Grade grade = DB.getInstance().getGrade(studentID, testID);
-                        if (grade != null) {
-                            request.setAttribute("show", true);
-                            request.setAttribute("student", student);
-                            request.setAttribute("test", test);
-                            request.setAttribute("grade", grade);
-                        } else {
-                            request.setAttribute("errors", "Grade not found");
-                        }
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                Course course = DB.getInstance().getCourse(courseID, Helper.getLanguage(request.getSession()));
+                if(course != null) {
+                    List<User> users = DB.getInstance().getCourseUsers(course.getId());
+                    if(!users.isEmpty()) {
+                        request.setAttribute("show", true);
+                        request.setAttribute("course", course);
+                        request.setAttribute("users", users);
                     } else {
-                        request.setAttribute("errors", "Test not found");
+                        request.setAttribute("errors", "Users not found.");
                     }
                 } else {
-                    request.setAttribute("errors", "Student not found");
+                    request.setAttribute("errors", "Course not found.");
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -79,21 +73,16 @@ public class editGrade extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.errors.clear();
-        String url = "/pages/editGrade.jsp";
+        String url = "/pages/courseBanUser.jsp";
         
-        if (Helper.isTeacher(request.getSession().getAttribute("user"))) {
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             try {
-                int testID = Integer.parseInt(request.getParameter("testID"));
-                int studentID = Integer.parseInt(request.getParameter("studentID"));
-                int editedGrade = Integer.parseInt(request.getParameter("grade"));
-                Grade grade = new Grade();
-                grade.setTestId(testID);
-                grade.setGrade(editedGrade);
-                grade.setUserId(studentID);
-                if (DB.getInstance().updateGrade(grade)) {
+                int studentID = Integer.parseInt(request.getParameter("userID"));
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                if(DB.getInstance().disenrollCourse(studentID, courseID)) {
                     request.setAttribute("success", true);
                 } else {
-                    request.setAttribute("errors", "Failed to save the Grade");
+                     request.setAttribute("errors", "Failed to ban the User.");
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();

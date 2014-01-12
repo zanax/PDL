@@ -27,6 +27,7 @@
                         </c:forEach>
                     </select>
                 </label>
+<<<<<<< HEAD
                 <label class="label">
                     <span class="form-span">Payment Method: *</span>
                     <select class="form-input-select" name="paymentMethod" required>
@@ -39,6 +40,10 @@
                 <input type="submit" value="Pay for this Course" class="button" id="button">
                 <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
 
+=======
+                <input type="submit" value="Enroll Course" class="button" id="button">
+                <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
+>>>>>>> ad9ac49bb45e6f95e4afec0da997b53b77e39091
             </form>
         </c:if>
     </div>

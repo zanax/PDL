@@ -49,20 +49,20 @@ public class teacherPanel extends HttpServlet {
             url = "/pages/404.jsp";
         } else {
             //courses ophalen
-            ArrayList<Course> courses = DB.getInstance().getCoursesIncludingNoTranslations(Helper.getLanguage(request.getSession()));
+            List<Course> courses = DB.getInstance().getCoursesIncludingNoTranslations(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
             
             //chapters ophalen
-            ArrayList<Chapter> chapters = DB.getInstance().getChaptersIncludingNoTranslations(Helper.getLanguage(request.getSession()));
+            List<Chapter> chapters = DB.getInstance().getChaptersIncludingNoTranslations(Helper.getLanguage(request.getSession()));
             request.setAttribute("chapters", chapters);
 
             //tests ophalen
-            ArrayList<Test> tests = DB.getInstance().getTestsIncludingNoTranslations(Helper.getLanguage(request.getSession()));
+            List<Test> tests = DB.getInstance().getTestsIncludingNoTranslations(Helper.getLanguage(request.getSession()));
             System.out.println(tests.size());
             request.setAttribute("tests", tests);
 
             //questions ophalen
-            ArrayList<Question> questions = DB.getInstance().getQuestions();
+            List<Question> questions = DB.getInstance().getQuestions();
             request.setAttribute("questions", questions);
         }
 
