@@ -17,8 +17,8 @@ public class Course {
     private Teacher headTeacher;
     private int maximumStudents = 0; // 0 betekent geen limiet
     private boolean isActive;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private String name;
     private String description;
     private String category;
@@ -96,19 +96,19 @@ public class Course {
         this.isActive = isActive;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
