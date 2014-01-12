@@ -6,11 +6,10 @@ package controllers;
 
 /**
  *
- * @author Niels
+ * @author Gijs
  */
 import connection.DB;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,23 +17,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Chapter;
 import models.Course;
 import models.Helper;
-import models.Teacher;
-import models.Test;
 
-/**
- *
- * @author Zanax
- */
-@WebServlet(name = "viewChapter", urlPatterns = {"/viewChapter"})
-public class viewChapter extends HttpServlet {
 
-    private List<String> errors;
+@WebServlet(name = "Index", urlPatterns = {"/Index"})
+public class Index extends HttpServlet {
 
-    public viewChapter() {
-        this.errors = new ArrayList<String>();
+    public Index() {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -49,24 +39,12 @@ public class viewChapter extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("id") != null) {  
 
-            Chapter chapter = DB.getInstance().getChapterCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+        List<Course> courses = DB.getInstance().getPopularCourses(Helper.getLanguage(request.getSession()));
+        request.setAttribute("courses", courses);
+        System.out.print(courses);
 
-            if (chapter != null) {
-                request.setAttribute("chapter", chapter);
-                request.setAttribute("show", true);
-                System.out.println("chapter: " + chapter.getTitle());
-                
-
-            } else {
-                request.setAttribute("errors", "Something went wrong with the Database");
-            }
-        } else {
-            request.setAttribute("errors", "We missed the ID");
-
-        }
-        RequestDispatcher rd = request.getRequestDispatcher("/pages/viewChapter.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         rd.forward(request, response);
     }
 
@@ -81,6 +59,5 @@ public class viewChapter extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
     }
 }

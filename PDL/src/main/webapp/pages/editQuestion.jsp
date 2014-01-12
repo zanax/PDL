@@ -47,8 +47,23 @@
             <label class="label">
                 <input name="answer3" type="text" class="form-input" value="${questionObj.answer3}">
             </label>
-            <input type="submit" value="Save Question" class="button" id="button">
+    </div>
+</div>
+            
+<div class="course">
+    <div id="course-content">
+        <input type="submit" value="Save" class="button" id="button">
         </form>
+        <% if (Helper.isTeacher(user)) {%>
+        <li>
+            <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+        </li>
+        <% }%>
+        <% if (Helper.isAdmin(user)) {%>
+        <li>
+            <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+        </li>
+        <%}%>
     </div>
 </div>
 

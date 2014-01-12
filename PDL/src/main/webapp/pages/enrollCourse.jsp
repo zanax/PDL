@@ -37,6 +37,8 @@
                     </select>
                 </label>
                 <input type="submit" value="Pay for this Course" class="button" id="button">
+                <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
+
             </form>
         </c:if>
     </div>

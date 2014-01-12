@@ -16,7 +16,7 @@ public class Course {
     private List<Teacher> teachers;
     private Teacher headTeacher;
     private int maximumStudents = 0; // 0 betekent geen limiet
-    private boolean isActive = false;
+    private boolean isActive;
     private Date startDate;
     private Date endDate;
     private String name;
@@ -25,9 +25,9 @@ public class Course {
     private int numberOfStudents;
     private int popularity;
     private String imgSrc;
+    private String bg_imgSrc;
     private int language;
 
-    
     public Course() {
 
     }
@@ -51,7 +51,7 @@ public class Course {
     public List<Teacher> getTeachers() {
         return teachers;
     }
-    
+
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
@@ -163,10 +163,17 @@ public class Course {
     public int getLanguage() {
         return language;
     }
-    
+
     public void setLanguage(int language) {
         this.language = language;
     }
-    
-    
+
+    public String getBg_imgSrc() {
+        return bg_imgSrc;
+    }
+
+    public void setBg_imgSrc(String bg_imgSrc) {
+        this.bg_imgSrc = bg_imgSrc;
+    }
+
 }

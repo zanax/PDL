@@ -3,7 +3,7 @@
 <script src="https://www.webrtc-experiment.com/RTCMultiConnection-v1.4.js"> </script>
 
 <div class="content-header">
-    Livestream - ${course.name}
+    Video chat
 </div>
 
 <div class="course" id="chat-part">
@@ -14,7 +14,6 @@
 </div>
 <script>$('chat-part').hide();</script>
 
-<% if (Helper.isAdmin(user) || Helper.isTeacher(user)) {%>
 <div class="course" id="create-chat">
     <div id="course-content">
         <section class="experiment">
@@ -28,7 +27,6 @@
         <button id="setup-new-conference" class="setup button right">Create livestream</button>
     </div>
 </div>
-<% } %>
 
 <div class="course" id="chat-rooms">
     <div id="course-content">
@@ -52,7 +50,8 @@
         </a>
     </div>
 </div>
-<script>$('leave-chat').hide();</script> 
+<script>$('leave-chat').hide();</script>
+
 <%@include file="/includes/footer.jsp" %>
 
 <script>
@@ -62,6 +61,7 @@
         });
         
         alterDynamicChatButtons();
+    });
 </script>
 
 <script>

@@ -20,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Course;
 import models.Helper;
 
-/**
- *
- * @author Zanax & Donna
- */
+
 @WebServlet(name = "popularCourses", urlPatterns = {"/popularCourses"})
 public class popularCourses extends HttpServlet {
 

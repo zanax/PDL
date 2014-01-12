@@ -21,6 +21,19 @@
         <div id="course-content">
             <form method="get" action="editGrade">
                 <input type="submit" value="Submit" class="button" id="button"> 
+                <% if (Helper.isTeacher(user)) {%>
+                <li>
+                    <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                </li>
+                <% }%>
+                <% if (Helper.isAdmin(user)) {%>
+                <li>
+                    <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                </li>
+                <% } else {%>
+                <li>
+                </li>
+                <%}%>
             </form>
         </div>
     </div>

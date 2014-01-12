@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
+        <servlet-name>livestreamChat</servlet-name>
+        <servlet-class>controllers.livestreamChat</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>livestreamDetail</servlet-name>
         <servlet-class>controllers.livestreamDetail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewChapter</servlet-name>
         <servlet-class>controllers.viewChapter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createChapter</servlet-name>
+        <servlet-class>controllers.createChapter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>disableChapter</servlet-name>
+        <servlet-class>controllers.disableChapter</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>searchCourse</servlet-name>
@@ -73,6 +85,10 @@
         <servlet-class>controllers.editUser</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>changeUser</servlet-name>
+        <servlet-class>controllers.changeUser</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>editQuestion</servlet-name>
         <servlet-class>controllers.editQuestion</servlet-class>
     </servlet>
@@ -109,7 +125,7 @@
         <servlet-class>controllers.Payment</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>deleteCourse</servlet-name>
+        <servlet-name>disableCourse</servlet-name>
         <servlet-class>controllers.disableCourse</servlet-class>
     </servlet>
     <servlet>
@@ -136,12 +152,27 @@
         <servlet-name>disableQuestion</servlet-name>
         <servlet-class>controllers.disableQuestion</servlet-class>
     </servlet>
-    
-    
-    
-    
-    
-    
+    <servlet>
+        <servlet-name>setBanned</servlet-name>
+        <servlet-class>controllers.setBanned</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>studentPanel</servlet-name>
+        <servlet-class>controllers.studentPanel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Index</servlet-name>
+        <servlet-class>controllers.Index</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -173,7 +204,7 @@
     <servlet-mapping>
         <servlet-name>popularCourses</servlet-name>
         <url-pattern>/popularCourses</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>createCourse</servlet-name>
         <url-pattern>/createCourse</url-pattern>
@@ -207,6 +238,10 @@
         <url-pattern>/disenrollCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>disableCourse</servlet-name>
+        <url-pattern>/disableCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>createTest</servlet-name>
         <url-pattern>/createTest</url-pattern>
     </servlet-mapping>
@@ -217,6 +252,10 @@
     <servlet-mapping>
         <servlet-name>deleteTest</servlet-name>
         <url-pattern>/deleteTest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeUser</servlet-name>
+        <url-pattern>/changeUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>contact</servlet-name>
@@ -263,6 +302,14 @@
         <url-pattern>/viewChapter</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>createChapter</servlet-name>
+        <url-pattern>/createChapter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>disableChapter</servlet-name>
+        <url-pattern>/disableChapter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>adminPanel</servlet-name>
         <url-pattern>/adminPanel</url-pattern>
     </servlet-mapping>
@@ -270,17 +317,36 @@
         <servlet-name>livestreamDetail</servlet-name>
         <url-pattern>/livestreamDetail</url-pattern>
     </servlet-mapping>
-    
-    
-    
-    
-    
+    <servlet-mapping>
+        <servlet-name>livestreamChat</servlet-name>
+        <url-pattern>/livestreamChat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setBanned</servlet-name>
+        <url-pattern>/setBanned</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>studentPanel</servlet-name>
+        <url-pattern>/studentPanel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Index</servlet-name>
+        <url-pattern>/Index</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>Index</welcome-file>
     </welcome-file-list>
 </web-app>

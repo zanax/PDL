@@ -58,16 +58,27 @@
                 <select class="form-input-select" name="language_id" required>
                     <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
-                </select>
-            </label>
+                    </select>
+                </label>
+            </div>
         </div>
-    </div>
 
-    <div class="course">
-        <div id="course-content">
-            <input type="submit" class="button" id="button" value="Submit">
-            <a href="teacherPanel" class="button cancel" id="button">Cancel</a>
-        </div>        
+        <div class="course">
+            <div id="course-content">
+                <input type="submit" class="button" id="button" value="Submit">
+            <% if (Helper.isTeacher(user)) {%>
+            <li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% }%>
+            <% if (Helper.isAdmin(user)) {%>
+            <li>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </li>
+            <% } else {%>
+            <li>
+            </li>
+            <%}%>        </div>        
     </div>
 
 </form>

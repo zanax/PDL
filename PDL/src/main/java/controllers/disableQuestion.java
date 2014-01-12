@@ -70,13 +70,13 @@ public class disableQuestion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         String question_nr = request.getParameter("question_id").trim();
+         String question_nr = request.getParameter("id").trim();
 
         int question_id = Integer.parseInt(question_nr);
 
         System.out.println("dit is een grap " + "String: " + question_nr + "int: " + question_id);
 
-        DB.getInstance().disableCourse(question_id, Helper.getLanguage(request.getSession()));
+        DB.getInstance().disableQuestion(question_id);
         
         RequestDispatcher rd = request.getRequestDispatcher("/pages/teacherPanel.jsp");
         rd.forward(request, response);
