@@ -66,10 +66,17 @@
                 <select class="form-input-select" name="language_id" required>
                     <option value="0" <c:if test="${test.language == 0}">selected</c:if>>English (UK)</option>
                     <option value="1" <c:if test="${test.language == 1}">selected</c:if>>Nederlands</option>
+<<<<<<< HEAD
                 </select>
             </label>
             
             <input type="submit" class="button" id="button" value="Save">
+=======
+                    </select>
+                </label>
+
+                <input type="submit" class="button" id="button" value="Save">
+>>>>>>> f3720d4781b5fb8d80d276579e16d1f9927438fb
 
             <% if (Helper.isTeacher(user)) {%>
             <li>

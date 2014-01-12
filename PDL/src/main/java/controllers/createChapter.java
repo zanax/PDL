@@ -14,7 +14,6 @@ import models.Chapter;
 import models.Course;
 import models.Helper;
 
-
 @WebServlet(name = "createChapter", urlPatterns = {"/createChapter"})
 public class createChapter extends HttpServlet {
 
@@ -47,14 +46,14 @@ public class createChapter extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         String course_id = request.getParameter("course_id").trim();
         String chapterName = request.getParameter("chapterName").trim();
         String chapter_description = request.getParameter("chapter_description").trim();
         String chapter_content = request.getParameter("chapter_content").trim();
         String s_language = request.getParameter("language_id");
         int language = Helper.isInt(s_language);
-        
+        String videoUrl = request.getParameter("videoUrl").trim();
+
         this.errors.clear();
         this.success = false;
 
@@ -76,7 +75,7 @@ public class createChapter extends HttpServlet {
 
         Course course = null;
         int int_course_id = Helper.isInt(course_id);
-        
+
         if (int_course_id > 0) {
             course = DB.getInstance().getCourse(int_course_id, Helper.getLanguage(request.getSession()));
             if (course == null) {
@@ -92,11 +91,12 @@ public class createChapter extends HttpServlet {
             chapter.setCourse_id(int_course_id);
             chapter.setChapterName(chapterName);
             chapter.setChapter_description(chapter_description);
-            chapter.setChapter_content(chapter_content);            
+            chapter.setChapter_content(chapter_content);
+            chapter.setVideoUrl(videoUrl);
             chapter.setLanguage(language);
-            
+
             int chapter_id = DB.getInstance().insertChapter(chapter);
-            
+
             if (chapter_id > 0) {
                 this.success = true;
                 url = "editChapter?id=" + chapter_id;
@@ -114,7 +114,7 @@ public class createChapter extends HttpServlet {
         request.setAttribute("course_id", course_id);
         request.setAttribute("chapterName", chapterName);
         request.setAttribute("chapter_description", chapter_description);
-        request.setAttribute("chapter_content", chapter_content);        
+        request.setAttribute("chapter_content", chapter_content);
         request.setAttribute("success", this.success);
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

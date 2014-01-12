@@ -818,6 +818,7 @@ public class DB {
                 chapter.setChapterName(rs.getString("chapterName"));
                 chapter.setChapter_description(rs.getString("chapter_description"));
                 chapter.setChapter_content(rs.getString("chapter_content"));
+                chapter.setVideoUrl(rs.getString("videoUrl"));
                 chapter.setLanguage(language);
             }
 
@@ -860,6 +861,7 @@ public class DB {
                 chapter.setChapter_description(rs.getString("chapter_description"));
                 chapter.setChapterName(rs.getString("chapterName"));
                 chapter.setChapter_content(rs.getString("chapter_content"));
+                chapter.setVideoUrl(rs.getString("videoUrl"));
 
                 //Course vertaling
                 chapter.setDescription(rs.getString("description"));
@@ -2196,8 +2198,8 @@ public class DB {
             //Plaats vertaling in de DB als chapter succesvol in DB is geplaatst.
             if (id > 0) {
                 sql = "  insert"
-                        + "     into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content) "
-                        + "     values (?, ?, ?, ?, ?) ";
+                        + "     into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content, videoUrl) "
+                        + "     values (?, ?, ?, ?, ?, ?) ";
                 prepared_statement = conn.prepareStatement(sql);
 
                 prepared_statement.setInt(1, id);
@@ -2205,6 +2207,7 @@ public class DB {
                 prepared_statement.setString(3, chapter.getChapterName());
                 prepared_statement.setString(4, chapter.getChapter_description());
                 prepared_statement.setString(5, chapter.getChapter_content());
+                prepared_statement.setString(6, chapter.getVideoUrl());
 
                 prepared_statement.execute();
             }
@@ -2219,7 +2222,6 @@ public class DB {
     }
 
     public List<Chapter> getChapters(int language) {
-
         List<Chapter> chapters = new ArrayList<Chapter>();
 
         try {
@@ -2342,13 +2344,14 @@ public class DB {
 
             if (affected_rows > 0) {
                 //Set the translations
-                sql = "     insert into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content)"
-                        + " values(?, ?, ?, ?, ?)"
+                sql = "     insert into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content, videoUrl)"
+                        + " values(?, ?, ?, ?, ?, ?)"
                         + " on duplicate key "
                         + "     update "
                         + "         chapterName         =   values(chapterName          ), "
                         + "         chapter_description =   values(chapter_description  ), "
-                        + "         chapter_content     =   values(chapter_content      ) ";
+                        + "         chapter_content     =   values(chapter_content      ), "
+                        + "         videoUrl     =   values(videoUrl      ) ";
 
                 prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 prepared_statement.setInt(1, chapter.getId());
@@ -2356,6 +2359,7 @@ public class DB {
                 prepared_statement.setString(3, chapter.getChapterName());
                 prepared_statement.setString(4, chapter.getChapter_description());
                 prepared_statement.setString(5, chapter.getChapter_content());
+                prepared_statement.setString(6, chapter.getVideoUrl());
 
                 affected_rows = prepared_statement.executeUpdate();
             }

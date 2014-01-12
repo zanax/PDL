@@ -50,14 +50,29 @@
     </div>
     <div class="course">
         <div id="course-content">
-            <c:forEach var="chapter" items="${chapters}">
-                <a href="viewChapter?id=${chapter.id}">
-                    <div class="button full-width">
-                        ${chapter.chapterName}
-                    </div>
-                </a>
-                <br>
-            </c:forEach>
+            <c:if test="${enrolled == true}">
+
+                <c:forEach var="chapter" items="${chapters}" >
+                    <a href="viewChapter?id=${chapter.id}">
+                        <div class="button full-width">
+                            ${chapter.chapterName}
+                        </div>
+                    </a>
+                    <br>
+                </c:forEach>
+            </c:if>
+
+                <c:if test="${enrolled != true}">
+                    <c:forEach var="chapter" items="${chapters}" end="0" >
+                    <a href="viewChapter?id=${chapter.id}">
+                        <div class="button full-width">
+                            ${chapter.chapterName}
+                        </div>
+                    </a>
+                    <br>
+                </c:forEach>
+            </c:if>
+            
         </div>
     </div>
 

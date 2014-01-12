@@ -13,6 +13,7 @@ public class Chapter {
     private String bgImgSrc;
     private String chapter_content;
     private boolean isActive;
+    private String videoUrl;
 
     public Chapter() {
     }
@@ -109,4 +110,11 @@ public class Chapter {
         this.language = language;
     }
 
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 }

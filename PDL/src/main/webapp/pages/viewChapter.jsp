@@ -32,23 +32,24 @@
 
     </div>
 </div>
-
-<c:if test="${show != null}">
-
-
-
-    <div class="course">
-        <div id="course-content">
-            ${chapter.chapter_content}           
-        </div>
-        <div  >
-            <iframe width="640" height="390" src="//www.youtube.com/embed/IhgtPXvRtX8" frameborder="0" allowfullscreen></iframe>
-
-        </div>
-
+<div class="course">
+    <div id="course-content">
+        ${chapter.chapter_content}           
     </div>
+</div>
 
 
+
+<c:if test="${not empty chapter.videoUrl}">
+    <div class="content-header">
+        Video
+    </div> 
+
+    <div class="content-inner">
+        <div align="center" id="course-content-image">
+            <iframe width="640" height="390"  src="//www.youtube.com/embed/${chapter.videoUrl}" frameborder="0" align="middle" allowfullscreen></iframe>
+        </div>
+    </div>
 </c:if>
 
 <%@include file="/includes/footer.jsp" %>

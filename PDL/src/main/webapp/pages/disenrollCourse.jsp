@@ -42,6 +42,12 @@
                 <label class="label">
                     <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
                 </label>
+<<<<<<< HEAD
+=======
+                <input type="submit" value="Disenroll" class="button" id="button">
+                <a href="courseCatalog" class="button cancel" id="button">Cancel</a>
+
+>>>>>>> f3720d4781b5fb8d80d276579e16d1f9927438fb
             </form>
         </div>
     </div>   

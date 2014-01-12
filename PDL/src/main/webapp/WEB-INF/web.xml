@@ -59,7 +59,7 @@
     <servlet>
         <servlet-name>popularCourses</servlet-name>
         <servlet-class>controllers.popularCourses</servlet-class>
-    </servlet> 
+    </servlet>
     <servlet>
         <servlet-name>createCourse</servlet-name>
         <servlet-class>controllers.createCourse</servlet-class>
@@ -160,19 +160,16 @@
         <servlet-name>studentPanel</servlet-name>
         <servlet-class>controllers.studentPanel</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>Index</servlet-name>
-        <servlet-class>controllers.Index</servlet-class>
-    </servlet>
-
-
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <servlet-mapping>
         <servlet-name>makeTest</servlet-name>
         <url-pattern>/makeTest</url-pattern>
@@ -329,18 +326,16 @@
         <servlet-name>studentPanel</servlet-name>
         <url-pattern>/studentPanel</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Index</servlet-name>
-        <url-pattern>/Index</url-pattern>
-    </servlet-mapping>
-
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <session-config>
         <session-timeout>
             30
