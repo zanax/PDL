@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Grade;
 import models.Helper;
 import models.Test;
 import models.User;
@@ -25,18 +26,19 @@ import models.User;
  */
 @WebServlet(name = "editGrade", urlPatterns = {"/editGrade"})
 public class editGrade extends HttpServlet {
+
     private List<String> errors;
-    
-    public editGrade(){
+
+    public editGrade() {
         this.errors = new ArrayList<String>();
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/editGrade.jsp";
-        if( Helper.isTeacher(request.getSession().getAttribute("user"))){
+        if (Helper.isTeacher(request.getSession().getAttribute("user"))) {
             try {
                 int testID = Integer.parseInt(request.getParameter("testID"));
                 int studentID = Integer.parseInt(request.getParameter("studentID"));
@@ -44,18 +46,31 @@ public class editGrade extends HttpServlet {
                 if (student != null) {
                     Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
                     if (test != null) {
-                        //int grade = DB.getInstance().getg
+                        Grade grade = DB.getInstance().getGrade(studentID, testID);
+                        if (grade != null) {
+                            request.setAttribute("show", true);
+                            request.setAttribute("student", student);
+                            request.setAttribute("test", test);
+                            request.setAttribute("grade", grade);
+                        } else {
+                            request.setAttribute("errors", "Grade not found");
+                        }
+                    } else {
+                        request.setAttribute("errors", "Test not found");
                     }
+                } else {
+                    request.setAttribute("errors", "Student not found");
                 }
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
+                request.setAttribute("errors", "Failed to get the fields.");
             }
         } else {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -63,6 +78,30 @@ public class editGrade extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        this.errors.clear();
+        String url = "/pages/editGrade.jsp";
+        
+        if (Helper.isTeacher(request.getSession().getAttribute("user"))) {
+            try {
+                int testID = Integer.parseInt(request.getParameter("testID"));
+                int studentID = Integer.parseInt(request.getParameter("studentID"));
+                int editedGrade = Integer.parseInt(request.getParameter("grade"));
+                Grade grade = new Grade();
+                grade.setTestId(testID);
+                grade.setGrade(editedGrade);
+                grade.setUserId(studentID);
+                if (DB.getInstance().updateGrade(grade)) {
+                    request.setAttribute("success", true);
+                } else {
+                    request.setAttribute("errors", "Failed to save the Grade");
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                request.setAttribute("errors", "Failed to get the fields.");
+            }
+        }
+        
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
 }

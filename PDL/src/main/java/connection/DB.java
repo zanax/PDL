@@ -2036,7 +2036,7 @@ public class DB {
         return grades;
     }
 
-    public Grade getGrade() {
+    public Grade getGrade(int studentID, int testID) {
         Grade grade = null;
 
         try {
@@ -2046,9 +2046,12 @@ public class DB {
                     + "         * "
                     + "     from "
                     + "         Grade "
-                    + "     where id = ? ";
+                    + "     where user_id = ? and test_id = ?";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            prepared_statement.setInt(1, studentID);
+            prepared_statement.setInt(2, testID);
 
             ResultSet rs = prepared_statement.executeQuery();
 
@@ -2094,6 +2097,37 @@ public class DB {
         return false;
     }
 
+    public boolean updateGrade(Grade grade) {
+        int affected_rows = 0;
+
+        try {
+            startConnection();
+
+            String sql = " UPDATE Grade "
+                    + "   SET grade = ?"
+                    + "   WHERE user_id = ? and test_id = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            prepared_statement.setInt(1, grade.getGrade());
+            prepared_statement.setInt(2, grade.getUserId());
+            prepared_statement.setInt(3, grade.getTestId());
+
+            System.out.println(prepared_statement.toString());
+
+            affected_rows = prepared_statement.executeUpdate();
+
+            System.out.println("rows changed: " + affected_rows);
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return (affected_rows > 0 ? true : false);
+    }
+
     public boolean updateQuestion(Question question) {
         int affected_rows = 0;
 
@@ -2105,7 +2139,7 @@ public class DB {
                     + "   answer1 = ?, answer2 = ?, answer3 = ?, test_id = ?, type = ?, description = ? "
                     + "   WHERE Question.id = ?  ";
 
-            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+            PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             prepared_statement.setString(1, question.getQuestion());
             prepared_statement.setString(2, question.getCorrectAnswer());
@@ -2127,7 +2161,7 @@ public class DB {
 
             prepared_statement.setInt(9, question.getId());
 
-            prepared_statement.execute();
+            affected_rows = prepared_statement.executeUpdate();
 
             closeConnection();
 
@@ -2158,15 +2192,14 @@ public class DB {
                 id = (int) generatedKeys.getLong(1);
             }
             generatedKeys.close();
-            
-            
+
             //Plaats vertaling in de DB als chapter succesvol in DB is geplaatst.
             if (id > 0) {
                 sql = "  insert"
                         + "     into ChapterVertaling(chapter_id, language_id, chapterName, chapter_description, chapter_content) "
                         + "     values (?, ?, ?, ?, ?) ";
                 prepared_statement = conn.prepareStatement(sql);
-                
+
                 prepared_statement.setInt(1, id);
                 prepared_statement.setInt(2, chapter.getLanguage());
                 prepared_statement.setString(3, chapter.getChapterName());
@@ -2175,7 +2208,7 @@ public class DB {
 
                 prepared_statement.execute();
             }
-            
+
             closeConnection();
 
         } catch (SQLException e) {
@@ -2223,8 +2256,9 @@ public class DB {
         return chapters;
     }
 
-        /**
-     * Gebruik deze methode om alle chapters op te halen, onafhankelijk van taal.
+    /**
+     * Gebruik deze methode om alle chapters op te halen, onafhankelijk van
+     * taal.
      *
      * @return
      */
@@ -2275,7 +2309,7 @@ public class DB {
                 if (chapter.getChapter_description() == null) {
                     chapter.setChapter_description("No translation");
                 }
-                if (chapter.getChapter_content()== null) {
+                if (chapter.getChapter_content() == null) {
                     chapter.setChapter_content("No translation");
                 }
 
@@ -2289,7 +2323,7 @@ public class DB {
 
         return chapters;
     }
-    
+
     public int updateChapter(Chapter chapter) {
         int affected_rows = 0;
 
