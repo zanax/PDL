@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import connection.DB;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Helper;
-import models.Teacher;
+import models.Test;
+import models.User;
 
 /**
  *
- * @author Zanax
+ * @author Maarten
  */
 @WebServlet(name = "editGrade", urlPatterns = {"/editGrade"})
 public class editGrade extends HttpServlet {
@@ -34,7 +36,21 @@ public class editGrade extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/editGrade.jsp";
-        if( ! Helper.isTeacher(request.getSession().getAttribute("user")) &&  ! Helper.isTeacher(request.getSession().getAttribute("user"))){
+        if( Helper.isTeacher(request.getSession().getAttribute("user"))){
+            try {
+                int testID = Integer.parseInt(request.getParameter("testID"));
+                int studentID = Integer.parseInt(request.getParameter("studentID"));
+                User student = DB.getInstance().getUser(studentID);
+                if (student != null) {
+                    Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
+                    if (test != null) {
+                        //int grade = DB.getInstance().getg
+                    }
+                }
+            } catch(NumberFormatException e) {
+                e.printStackTrace();
+            }
+        } else {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
