@@ -59,29 +59,30 @@
                 <label class="label">
                     <span class="form-span">Language: *</span>
                     <select class="form-input-select" name="language_id" required>
-                        <option value="0" <c:if test="${language == 0}">selected</c:if>>English (UK)</option>
-                        <option value="1" <c:if test="${language == 1}">selected</c:if>>Nederlands</option>
+                        <option value="0" <c:if test="${course.language == 0}">selected</c:if>>English (UK)</option>
+                        <option value="1" <c:if test="${course.language == 1}">selected</c:if>>Nederlands</option>
                         </select>
                     </label>
-
                     <input type="hidden" name="id" value="${course.id}">
-                <input type="submit" value="Save" class="button" id="button">
-                <% if (Helper.isTeacher(user)) {%>
-                <li>
-                    <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% }%>
-                <% if (Helper.isAdmin(user)) {%>
-                <li>
-                    <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% } else {%>
-                <li>
-                </li>
-                <%}%>
-            </form>
-        </c:if>
-    </div>
-</div>
 
-<%@include file="/includes/footer.jsp" %>
+                </div>
+                </div>
+                <div class="course">
+                    <div id="course-content">
+                        <input type="submit" value="Save" class="button" id="button">
+                        </form>
+                        <% if (Helper.isTeacher(user)) {%>
+                        <li>
+                            <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                        </li>
+                        <% }%>
+                        <% if (Helper.isAdmin(user)) {%>
+                        <li>
+                            <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                        </li>
+                        <%}%>
+                    </div>
+                </div>
+            </c:if>
+
+            <%@include file="/includes/footer.jsp" %>

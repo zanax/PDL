@@ -61,6 +61,14 @@ div.content-header {
     padding-left: 150px;
 }
 
+.chat-label{
+    clear: left;
+    float: left;
+    margin: 5px 0;
+    position: relative;
+    padding-left: 71px;
+}
+
 .form-span {
     position: absolute;
     left: 0;
@@ -121,12 +129,17 @@ div.content-header {
     float: right;
 }
 
+.button.cancel-left{
+    float: left;
+    display: inline-block;
+}
+
 #button{
     float: right;
 }
 
 #button.cancel{
-	float: left;
+    float: left;
 }
 
 .success_message{

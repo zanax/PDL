@@ -18,6 +18,7 @@ public class Helper {
     private static String[][] translations = {
         //Words
         {"My Courses", "Mijn Cursussen"},
+        {"Go to course", "Ga naar cursus"},
         {"My Grades", "Mijn Cijfers"},
         {"Student Panel", "Student Paneel"},
         {"Courses", "Cursussen"},
@@ -31,6 +32,7 @@ public class Helper {
         {"For", "Naar"},
         {"More", "Meer"},
         {"Info", "Info"},
+        {"More info", "Meer info"},
         {"Back", "Terug"},
         {"Cancel", "Annuleren"},
         {"Search for courses", "Zoeken naar cursussen"},

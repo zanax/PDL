@@ -78,7 +78,7 @@ public class createQuestion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             errors.clear();
             
             Question questionObj = new Question();

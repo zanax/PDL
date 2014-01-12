@@ -150,8 +150,8 @@ public class changeUser extends HttpServlet {
         }
 
         if (!email.equals(selected_user.getEmail())) {
-            selected_user = DB.getInstance().getUser(email);
-            if (selected_user != null) {
+            User test_user = DB.getInstance().getUser(email);
+            if (test_user != null) {
                 this.errors.add("E-mail:\"" + email + "\" is already registered with us.");
             }
         }

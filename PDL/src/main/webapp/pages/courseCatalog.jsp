@@ -18,7 +18,7 @@
                 Subscriptions: ${course.numberOfStudents}
             </div>
             <div class="course-button info">
-                <a href="courseDetails?id=${course.id}" class="button" id="button">More info</a>
+                <a href="courseDetails?id=${course.id}" class="button" id="button"><%= Helper.translateWord(language, "More info")%></a>
             </div>
         </div>
     </div>

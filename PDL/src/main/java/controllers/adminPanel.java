@@ -59,7 +59,7 @@ public class adminPanel extends HttpServlet {
             request.setAttribute("tests", tests);
             
              //chapters ophalen
-            ArrayList<Chapter> chapters = DB.getInstance().getChapters();
+            ArrayList<Chapter> chapters = DB.getInstance().getChapters(Helper.getLanguage(request.getSession()));
             request.setAttribute("chapters", chapters);
 
             //questions ophalen

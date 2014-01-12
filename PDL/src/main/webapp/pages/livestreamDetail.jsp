@@ -6,16 +6,16 @@
     Livestream - ${course.name}
 </div>
 
-<div class="course" id="video">
+<div class="course" id="chat-part">
     <div id="course-content" style="text-align: center;">
         <!-- local/remote videos container -->
         <div id="videos-container"></div>
     </div>
 </div>
-<script>$('video').hide();</script>
+<script>$('chat-part').hide();</script>
 
 <% if (Helper.isAdmin(user) || Helper.isTeacher(user)) {%>
-<div class="course" id="create-stream">
+<div class="course" id="create-chat">
     <div id="course-content">
         <section class="experiment">
             <section>                    
@@ -30,7 +30,7 @@
 </div>
 <% } %>
 
-<div class="course" id="available-streams">
+<div class="course" id="chat-rooms">
     <div id="course-content">
         <section class="experiment">
             <section>
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div class="course" id="stop-stream">
+<div class="course" id="leave-chat">
     <div id="course-content">
         <a href="">
             <div class="button full-width cancel">
@@ -52,19 +52,16 @@
         </a>
     </div>
 </div>
-<script>$('stop-stream').hide();</script> 
+<script>$('leave-chat').hide();</script> 
 <%@include file="/includes/footer.jsp" %>
 
 <script>
     window.addEvent('domready', function() {
         $('setup-new-conference').addEvent('click', function(){
-           $('available-streams').hide();
-           $('create-stream').hide();
-           
-           $('video').toggle();
-           $('stop-stream').toggle();
+            toggleContent();
         });
-    });
+        
+        alterDynamicChatButtons();
 </script>
 
 <script>

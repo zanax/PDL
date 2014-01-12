@@ -55,7 +55,7 @@ public class courseDetails extends HttpServlet {
 
             Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
-            List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")));
+            List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
             List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 

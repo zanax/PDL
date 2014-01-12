@@ -46,6 +46,7 @@ public class createCourse extends HttpServlet {
             throws ServletException, IOException {
         this.errors.clear();
         String url = "/pages/createCourse.jsp";
+
         if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
@@ -69,7 +70,7 @@ public class createCourse extends HttpServlet {
             throws ServletException, IOException {
         String url = "/pages/createCourse.jsp";
         
-        if (request.getSession().getAttribute("user") instanceof Teacher) {
+        if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             // Course
             Course course = new Course();
             // Get parameters
