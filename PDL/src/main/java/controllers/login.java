@@ -117,7 +117,6 @@ public class login extends HttpServlet {
         } else {
             request.setAttribute("errors", errors);
         }
-        System.out.println("url: " + url);
 
         request.setAttribute("success", success);
         RequestDispatcher rdIndex = request.getRequestDispatcher(url);

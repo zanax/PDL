@@ -57,8 +57,6 @@ public class disableChapter extends HttpServlet {
 
         int chapter_id = Integer.parseInt(chapter_nr);
 
-        System.out.println("dit is een grap " + "String: " + chapter_nr + "int: " + chapter_id);
-
         DB.getInstance().disableChapter(chapter_id);
 
         RequestDispatcher rd = request.getRequestDispatcher("/pages/teacherPanel.jsp");

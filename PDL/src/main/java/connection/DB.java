@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.crypto.Data;
 import models.Admin;
 import models.Course;
 import models.Grade;
@@ -1947,7 +1946,7 @@ public class DB {
 
     }
 
-    public void enrollCourse(int course_id, long user_id) {
+    public boolean enrollCourse(int course_id, long user_id) {
         try {
             startConnection();
 
@@ -1961,10 +1960,10 @@ public class DB {
             prepared_statement.execute();
 
             closeConnection();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } return false;
     }
 
     public void amountPlusOne(int course_id) {

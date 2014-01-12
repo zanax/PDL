@@ -47,7 +47,6 @@ public class disableQuestion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        System.out.println("de doGet is aangeroepen.");
         Question question = DB.getInstance().getQuestion(Integer.parseInt(request.getParameter("id")));
 
         request.setAttribute("question", question);
@@ -73,8 +72,6 @@ public class disableQuestion extends HttpServlet {
          String question_nr = request.getParameter("id").trim();
 
         int question_id = Integer.parseInt(question_nr);
-
-        System.out.println("dit is een grap " + "String: " + question_nr + "int: " + question_id);
 
         DB.getInstance().disableQuestion(question_id);
         

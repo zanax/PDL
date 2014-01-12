@@ -51,15 +51,12 @@ public class createChapter extends HttpServlet {
         String course_id = request.getParameter("course_id").trim();
         String chapterName = request.getParameter("chapterName").trim();
         String chapter_description = request.getParameter("chapter_description").trim();
-        System.out.println("chapter_description: " + chapter_description);
         String chapter_content = request.getParameter("chapter_content").trim();
         String s_language = request.getParameter("language_id");
         int language = Helper.isInt(s_language);
         
-        //String language_id = request.getParameter("language_id");
         this.errors.clear();
         this.success = false;
-        //int int_language = Helper.isInt(language_id);
 
         if (course_id.equals("")) {
             this.errors.add("\"Course\" is a required field.");
@@ -98,10 +95,7 @@ public class createChapter extends HttpServlet {
             chapter.setChapter_content(chapter_content);            
             chapter.setLanguage(language);
             
-            
             int chapter_id = DB.getInstance().insertChapter(chapter);
-
-            System.out.println("chapter_id: " + chapter_id);
             
             if (chapter_id > 0) {
                 this.success = true;

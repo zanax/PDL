@@ -33,12 +33,12 @@
             </c:if>
             <c:if test="${enrolled == false}">
                 <div class="course-button info">
-                    <a href="enrollCourse" class="button" id="button">Enroll in this course</a>
+                    <a href="enrollCourse?courseID=${course.id}" class="button" id="button">Enroll in this course</a>
                 </div>
             </c:if>
             <c:if test="${enrolled == true}">
                 <div class="course-button info">
-                    <a href="disenrollCourse" class="button" id="button">Disenroll from this course</a>
+                    <a href="disenrollCourse?courseID=${course.id}" class="button" id="button">Disenroll from this course</a>
                 </div>
             </c:if>
 

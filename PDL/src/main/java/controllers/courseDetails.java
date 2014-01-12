@@ -49,57 +49,53 @@ public class courseDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         if (request.getParameter("id") != null) {
-            System.out.println(DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession())));
+            try {
+                Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
-            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                if (course != null) {
+                    request.setAttribute("course", course);
+                    request.setAttribute("chapters", chapters);
+                    request.setAttribute("tests", tests);
+                    request.setAttribute("show", true);
 
-            List<Chapter> chapters = DB.getInstance().getCourseChapters(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                    int course_id = course.getId();
 
-            List<Test> tests = DB.getInstance().getCourseTests(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                    if (request.getSession().getAttribute("user") != null) {
 
-            if (course != null) {
-                request.setAttribute("course", course);
-                request.setAttribute("chapters", chapters);
-                request.setAttribute("tests", tests);
-                request.setAttribute("show", true);
+                        request.setAttribute("logged_in", true);
 
-                int course_id = course.getId();
-                System.out.println("course id: " + course_id);
+                        List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"), Helper.getLanguage(request.getSession()));
 
-                if (request.getSession().getAttribute("user") != null) {
+                        boolean enrolled = false;
 
-                    request.setAttribute("logged_in", true);
-
-                    List<Course> subbed_courses = DB.getInstance().getUserCourses((User) request.getSession().getAttribute("user"), Helper.getLanguage(request.getSession()));
-
-                    boolean enrolled = false;
-
-                    if (!subbed_courses.isEmpty()) {
-                        System.out.println("subbed_courses Size: " + subbed_courses.size());
-                        for (Course subbed_course : subbed_courses) {
-                            if (subbed_course != null) {
-                                if (subbed_course.getId() == course_id) {
-                                    enrolled = true;
-                                    break;
+                        if (!subbed_courses.isEmpty()) {
+                            for (Course subbed_course : subbed_courses) {
+                                if (subbed_course != null) {
+                                    if (subbed_course.getId() == course_id) {
+                                        enrolled = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
+
+                        request.setAttribute("enrolled", enrolled);
+
+                    } else {
+                        request.setAttribute("logged_in", false);
                     }
 
-                    request.setAttribute("enrolled", enrolled);
-
                 } else {
-                    request.setAttribute("logged_in", false);
+                    request.setAttribute("errors", "Something went wrong with the Database");
                 }
-
-            } else {
-                request.setAttribute("errors", "Something went wrong with the Database");
+            } catch (NumberFormatException e) {
+                request.setAttribute("errors", "Failed to get field.");
             }
         } else {
             request.setAttribute("errors", "We missed the ID");
-
         }
         RequestDispatcher rd = request.getRequestDispatcher("/pages/courseDetails.jsp");
         rd.forward(request, response);

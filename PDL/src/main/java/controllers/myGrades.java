@@ -54,18 +54,11 @@ public class myGrades extends HttpServlet {
             request.setAttribute("grades", grades);
 
             //courses ophalen
-            
-            //ArrayList<Course> courses = DB.getInstance().getCourses();    //All courses
-            //request.setAttribute("courses", courses);
 
             //tests ophalen
             
             List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));          //All tests
             request.setAttribute("tests", tests);
-
-            //System.out.println(grades);
-            //System.out.println(courses);
-            //System.out.println(tests);
 
         }
 

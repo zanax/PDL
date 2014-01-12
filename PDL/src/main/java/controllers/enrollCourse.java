@@ -46,17 +46,18 @@ public class enrollCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            User user = (User) request.getSession().getAttribute("user");
-            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
-            courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
-            if (!courses.isEmpty()) {
-                request.setAttribute("show", true);
-                request.setAttribute("courses", courses);
-            } else {
-                request.setAttribute("errors", "You have no Courses to enroll to");
+            try {
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                Course course = DB.getInstance().getCourse(courseID, Helper.getLanguage(request.getSession()));
+                if( course != null) {
+                    request.setAttribute("course", course);
+                    request.setAttribute("show", true);
+                } else {
+                   request.setAttribute("errors", "Failed to get fields."); 
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errors", "Failed to get fields.");
             }
-        } else {
-            request.setAttribute("errors", "You have not the right permissions");
         }
         RequestDispatcher rd = request.getRequestDispatcher("/pages/enrollCourse.jsp");
         rd.forward(request, response);
@@ -74,34 +75,17 @@ public class enrollCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            this.errors.clear();
+            try {
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                if (DB.getInstance().enrollCourse(courseID, ((User) request.getSession().getAttribute("user")).getId())) {
+                    DB.getInstance().amountPlusOne(courseID);
 
-            // ID
-            int id = 0;
-            if (!request.getParameter("id").equals("")) {
-                id = Integer.parseInt(request.getParameter("id"));
-            } else {
-                this.errors.add("\"Course\" is a required field.");
+                    request.setAttribute("courseID", courseID);
+                    request.setAttribute("success", true);
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errors", "Failed to get fields.");
             }
-
-            // Check
-            if (this.errors.isEmpty()) {
-                request.setAttribute("id", id);
-                DB.getInstance().enrollCourse(id, ((User) request.getSession().getAttribute("user")).getId());
-                DB.getInstance().amountPlusOne(id);
-
-                request.setAttribute("success", true);
-
-                request.getRequestDispatcher("/pages/enrollCourse.jsp").forward(request, response);
-                return;
-            } else {
-                User user = (User) request.getSession().getAttribute("user");
-                List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
-                courses.removeAll(DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession())));
-                request.setAttribute("courses", courses);
-                request.setAttribute("errors", this.errors);
-            }
-            request.setAttribute("show", true);
         } else {
             request.setAttribute("errors", "You have not the right permissions");
         }
