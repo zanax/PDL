@@ -7,7 +7,6 @@ package controllers;
 
 import connection.DB;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,16 +38,18 @@ public class disenrollCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            User user = (User) request.getSession().getAttribute("user");
-            List<Course> courses = DB.getInstance().getUserCourses(user, Helper.getLanguage(request.getSession()));
-            if (!courses.isEmpty()) {
-                request.setAttribute("show", true);
-                request.setAttribute("courses", courses);
-            } else {
-                request.setAttribute("errors", "You have no Courses to disenroll to");
+            try {
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                Course course = DB.getInstance().getCourse(courseID, Helper.getLanguage(request.getSession()));
+                if (course != null) {
+                    request.setAttribute("course", course);
+                    request.setAttribute("show", true);
+                } else {
+                    request.setAttribute("errors", "Failed to get fields.");
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errors", "Failed to get fields.");
             }
-        } else {
-            request.setAttribute("errors", "You have not the right permissions");
         }
         RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp");
         rd.forward(request, response);
@@ -66,54 +67,30 @@ public class disenrollCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getSession().getAttribute("user") != null) {
-            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
-            if (!courses.isEmpty()) {
-                if (request.getParameter("id") != null) {
-                    if (request.getParameter("agree") != null) {
-                        int course_id = Integer.parseInt(request.getParameter("id"));
-                        long user_id = ((User) request.getSession().getAttribute("user")).getId();
-                        //if () {
-                        DB.getInstance().disenrollCourse(user_id, course_id);
-                        request.setAttribute("success", true);
+            try {
+                int courseID = Integer.parseInt(request.getParameter("courseID"));
+                if (DB.getInstance().disenrollCourse(((User) request.getSession().getAttribute("user")).getId(), courseID)) {
+                    DB.getInstance().amountMinusOne(courseID);
 
-                        DB.getInstance().amountMinusOne(course_id);
-                        System.out.print(course_id);
-                        RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp"); // TEMP
-                        rd.forward(request, response);
-                        return;
-
-                        //} else {
-                        //    request.setAttribute("errors", "There were some problems with the Database");
-                    //}
-                } else {
-                    request.setAttribute("errors", "You did not agree to disenroll from the Course");
+                    request.setAttribute("courseID", courseID);
+                    request.setAttribute("success", true);
                 }
-            } else {
-                request.setAttribute("errors", "You did not choose a Course to disenroll from");
+            } catch (NumberFormatException e) {
+                request.setAttribute("errors", "Failed to get fields.");
             }
-            request.setAttribute("courses", courses);
-            request.setAttribute("show", true);
         } else {
-            request.setAttribute("errors", "You have no Courses to disenroll to");
-        }
-    }
-
-    
-        else {
             request.setAttribute("errors", "You have not the right permissions");
+        }
+        request.getRequestDispatcher("/pages/disenrollCourse.jsp").forward(request, response); // Verwijst terug naar de page
     }
-    RequestDispatcher rd = request.getRequestDispatcher("/pages/disenrollCourse.jsp");
 
-    rd.forward (request, response);
-}
-
-/**
- * Returns a short description of the servlet.
- * 
+    /**
+     * Returns a short description of the servlet.
+     *     
 * @return a String containing servlet description
- */
-@Override
-        public String getServletInfo() {
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

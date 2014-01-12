@@ -45,8 +45,6 @@ public class disableCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        System.out.println("de doGet is aangeroepen.");
         Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
 
         request.setAttribute("course", course);
@@ -72,8 +70,6 @@ public class disableCourse extends HttpServlet {
          String course_nr = request.getParameter("course_id").trim();
 
         int course_id = Integer.parseInt(course_nr);
-
-        System.out.println("dit is een grap " + "String: " + course_nr + "int: " + course_id);
 
         DB.getInstance().disableCourse(course_id, Helper.getLanguage(request.getSession()));
         

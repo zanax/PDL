@@ -4,30 +4,44 @@
     Enroll Course
 </div>
 
-<div class="course">
-    <div id="course-content">
-        <c:forEach var="error" items="${errors}">
-            <div class="error_message">
-                ${error}
-            </div>
-        </c:forEach>
-        <c:if test="${success != null && success}">
+<c:if test="${not empty errors}">
+    <div class="course">
+        <div id="course-content">
+            <c:forEach var="error" items="${errors}">
+                <div class="error_message">
+                    ${error}
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</c:if>
+
+<c:if test="${success != null && success}">
+    <div class="course">
+        <div id="course-content">
             <div class="success_message">
-                U have successfully enrolled to the Course.
+                U have successfully enrolled the course.
             </div>
-        </c:if>
-        <c:if test="${show != null && show}">
+            <a href="courseDetails?id=${courseID}" class="button cancel" id="button">Go To Course</a>
+        </div>
+    </div>
+</c:if>
+
+<c:if test="${show != null && show}">
+    <div class="course">
+        <div id="course-content">
             <form method="post" action="enrollCourse">
                 <label class="label">
-                    <span class="form-span">Course: *</span>
-                    <select class="form-input-select" name="id" required>
-                        <option value="">Select Course...</option>
-                        <c:forEach var="course" items="${courses}">
-                            <option value="${course.id}">${course.name}</option>
-                        </c:forEach>
-                    </select>
+                    <input name="courseID" type="hidden" value="${course.id}">
+                    <span class="form-span">Course:</span>
+                    ${course.name}
                 </label>
-<<<<<<< HEAD
+                <label class="label">
+                    <input type="submit" value="Enroll Course" class="button" id="button">
+                </label>
+                <label class="label">
+                    <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
+                </label>
                 <label class="label">
                     <span class="form-span">Payment Method: *</span>
                     <select class="form-input-select" name="paymentMethod" required>
@@ -37,16 +51,12 @@
                         <option value="creditcard">Credit Card</option>
                     </select>
                 </label>
-                <input type="submit" value="Pay for this Course" class="button" id="button">
-                <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
-
-=======
+       
                 <input type="submit" value="Enroll Course" class="button" id="button">
                 <a href="courseDetails?id=${course.id}" class="button cancel" id="button">Cancel</a>
->>>>>>> ad9ac49bb45e6f95e4afec0da997b53b77e39091
             </form>
-        </c:if>
+        </div>
     </div>
-</div>
+</c:if>
 
 <%@include file="/includes/footer.jsp" %>

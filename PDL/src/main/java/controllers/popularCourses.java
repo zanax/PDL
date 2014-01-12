@@ -42,7 +42,6 @@ public class popularCourses extends HttpServlet {
 
         List<Course> courses = DB.getInstance().getPopularCourses(Helper.getLanguage(request.getSession()));
         request.setAttribute("courses", courses);
-        System.out.print(courses);
 
         RequestDispatcher rd = request.getRequestDispatcher("/pages/popularCourses.jsp");
         rd.forward(request, response);

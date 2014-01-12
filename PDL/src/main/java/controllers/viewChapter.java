@@ -56,9 +56,6 @@ public class viewChapter extends HttpServlet {
             if (chapter != null) {
                 request.setAttribute("chapter", chapter);
                 request.setAttribute("show", true);
-                System.out.println("chapter: " + chapter.getTitle());
-                
-
             } else {
                 request.setAttribute("errors", "Something went wrong with the Database");
             }

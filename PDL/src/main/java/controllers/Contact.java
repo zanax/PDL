@@ -57,19 +57,11 @@ public class Contact extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-
-//        System.out.println("De doPost is wel aangeroepen.");
 
         String email = request.getParameter("email");
         String name = request.getParameter("name");
         String message = request.getParameter("message");
         String subject = request.getParameter("subject");
-
-//        System.out.println("Dit is het e-mail adres vd afzender: " + email);
-//        System.out.println("Dit is de naam vd afzender: " + name);
-//        System.out.println("Dit is het bericht vd afzender: " + message);
-//        System.out.println("Dit is het onderwerp vd afzender: " + subject);
 
         String body = message + " from: " + name +  " " + email;
         
@@ -90,14 +82,10 @@ public class Contact extends HttpServlet {
     }// </editor-fold>
 
     public void sendMail(String to, String subject, String body) {
-
-        //System.out.println("de sendMail methode is aangeroepen.");
         String from = "32learn.contact";  // GMail user name (just the part before "@gmail.com")
         String pass = "3!2Leren."; // GMail password
 
-
         Properties props = System.getProperties();
-        //System.out.println("Dit staat in props: " + props);
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
