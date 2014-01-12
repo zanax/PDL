@@ -6,22 +6,28 @@
 
 <div class="course">
     <div id="course-content">
-
+            <c:if test="${success != null && success}">
+                <a href="contact" >
+                    <div class="success_message">
+                        Your message was sent successfully.
+                    </div>
+                </a>
+            </c:if>
             <form method="post" action="contact">
                 <label class="label">
-                    <span class="form-span"><%= Helper.translateWord(language, "Name") %>:</span>
-                    <input name="name" type="text" placeholder="<%= Helper.translateWord(language, "Name") %>" value="${name}" class="form-input" required>
+                    <span class="form-span"><%= Helper.translateWord(language, "Your name") %>:</span>
+                    <input name="name" type="text" placeholder="<%= Helper.translateWord(language, " Your name") %>" value="${name}" class="form-input" >
                 </label>
                 <label class="label">
-                    <span class="form-span"><%= Helper.translateWord(language, "Subject") %>:</span>
+                    <span class="form-span"><%= Helper.translateWord(language, "Subject") %>: *</span>
                     <input name="subject" type="text" placeholder="<%= Helper.translateWord(language, "Subject") %>" value="${subject}" class="form-input" required>
                 </label>
                 <label class="label">
-                    <span class="form-span"><%= Helper.translateWord(language, "Message") %>:</span>
+                    <span class="form-span"><%= Helper.translateWord(language, "Message") %>: *</span>
                     <textarea name="message" placeholder="<%= Helper.translateWord(language, "Message") %>" class="form-input-textarea" required>${message}</textarea>
                 </label>
                 <label class="label">
-                    <span class="form-span"><%= Helper.translateWord(language, "E-mail") %>:</span>
+                    <span class="form-span"><%= Helper.translateWord(language, " Your e-mail") %>: *</span>
                     <input type="text" name="email" placeholder="you@mail.com" class="form-input" required value="${email}">
                 </label>
                 <input type="submit" class="button" id="button" name="contact" value="<%= Helper.translateWord(language, "Send") %>">

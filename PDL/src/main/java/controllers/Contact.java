@@ -27,16 +27,6 @@ import javax.mail.internet.MimeMessage;
 @WebServlet(name = "contact", urlPatterns = {"/contact"})
 public class Contact extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,15 +35,6 @@ public class Contact extends HttpServlet {
 
     }
 
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -63,23 +44,16 @@ public class Contact extends HttpServlet {
         String message = request.getParameter("message");
         String subject = request.getParameter("subject");
 
-        String body = message + " from: " + name +  " " + email;
-        
-        sendMail("32learn.contact@gmail.com", subject, body);
+        String body = message + " from: " + name + " " + email;
 
+        if(email != ""  && message != "" && subject != ""){
+        sendMail("32learn.contact@gmail.com", subject, body);
+        request.setAttribute("success", true);
+        
         RequestDispatcher rd = request.getRequestDispatcher("/pages/contact.jsp");
         rd.forward(request, response);
+        }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
     public void sendMail(String to, String subject, String body) {
         String from = "32learn.contact";  // GMail user name (just the part before "@gmail.com")
