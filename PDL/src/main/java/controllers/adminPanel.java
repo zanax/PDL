@@ -51,23 +51,23 @@ public class adminPanel extends HttpServlet {
             url = "/pages/404.jsp";
         } else {
             //courses ophalen
-            ArrayList<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
+            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
 
             //tests ophalen
-            ArrayList<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
+            List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             request.setAttribute("tests", tests);
             
              //chapters ophalen
-            ArrayList<Chapter> chapters = DB.getInstance().getChapters(Helper.getLanguage(request.getSession()));
+            List<Chapter> chapters = DB.getInstance().getChapters(Helper.getLanguage(request.getSession()));
             request.setAttribute("chapters", chapters);
 
             //questions ophalen
-            ArrayList<Question> questions = DB.getInstance().getQuestions();
+            List<Question> questions = DB.getInstance().getQuestions();
             request.setAttribute("questions", questions);
             
             //questions ophalen
-            ArrayList<User> users = DB.getInstance().getUsers();
+            List<User> users = DB.getInstance().getUsers();
             request.setAttribute("users", users);
         }
 

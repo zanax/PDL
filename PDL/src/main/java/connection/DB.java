@@ -988,49 +988,9 @@ public class DB {
         return test;
     }
 
-//    public List<Test> getTestsByCourseID(List<Integer> ids) {
-//        List<Test> tests = new ArrayList<Test>();
-//
-//        try {
-//            startConnection();
-//            for (int id : ids) {
-//                String sql = "  select "
-//                        + "         *"
-//                        + "     from"
-//                        + "         Test"
-//                        + "     where"
-//                        + "         course_id = ?"
-//                        + "     limit 1";
-//
-//                PreparedStatement prepared_statement = conn.prepareStatement(sql);
-//                prepared_statement.setInt(1, id);
-//
-//                ResultSet rs = prepared_statement.executeQuery();
-//
-//                while (rs.next()) {
-//                    Test test = new Test(id);
-//                    test.setAmount_of_questions(rs.getInt("amount_of_questions"));
-//                    test.setChapter_id(rs.getInt("chapter_id"));
-//                    test.setCourse_id(rs.getInt("course_id"));
-//                    test.setDescription(rs.getString("description"));
-//                    test.setEnd_date(rs.getString("end_date"));
-//                    test.setStart_date(rs.getString("start_date"));
-//                    test.setTime(rs.getInt("time"));
-//                    test.setTitle(rs.getString("title"));
-//                    tests.add(test);
-//                }
-//            }
-//
-//            closeConnection();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return tests;
-//    }
-    public ArrayList<Test> getTests(int language) {
+    public List<Test> getTests(int language) {
 
-        ArrayList<Test> tests = new ArrayList<Test>();
+        List<Test> tests = new ArrayList<Test>();
 
         try {
             startConnection();
@@ -1077,8 +1037,8 @@ public class DB {
      *
      * @return
      */
-    public ArrayList<Test> getTestsIncludingNoTranslations(int language) {
-        ArrayList<Test> tests = new ArrayList<Test>();
+    public List<Test> getTestsIncludingNoTranslations(int language) {
+        List<Test> tests = new ArrayList<Test>();
 
         try {
             startConnection();
@@ -1198,8 +1158,8 @@ public class DB {
         return tests;
     }
 
-    public ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<User>();
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<User>();
 
         try {
             startConnection();
@@ -1241,8 +1201,53 @@ public class DB {
         return users;
     }
 
-    public ArrayList<Course> getCourses(int language) {
-        ArrayList<Course> courses = new ArrayList<Course>();
+    public List<User> getCourseUsers(int courseID) {
+        List<User> users = new ArrayList<User>();
+
+        try {
+            startConnection();
+
+            String sql = "SELECT User.* "
+                    + "FROM SubbedCourses "
+                    + "INNER JOIN User "
+                    + "ON User.user_id = SubbedCourses.userID "
+                    + "WHERE SubbedCourses.courseID = ?";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            prepared_statement.setInt(1, courseID);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("user_id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setSurname(rs.getString("surname"));
+                user.setAddress(rs.getString("address"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setGender(rs.getString("gender").charAt(0));
+                user.setEmail(rs.getString("email"));
+                user.setIsBanned(rs.getBoolean("banned"));
+                user.setPassword(rs.getString("password"));
+                user.setCity(rs.getString("city"));
+                user.setCountry(rs.getString("country"));
+                user.setLanguage(rs.getInt("language_id"));
+                user.setIsTeacher(rs.getBoolean("is_teacher"));
+                user.setIsAdmin(rs.getBoolean("is_admin"));
+
+                users.add(user);
+            }
+
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public List<Course> getCourses(int language) {
+        List<Course> courses = new ArrayList<Course>();
 
         try {
             startConnection();
@@ -1298,8 +1303,8 @@ public class DB {
      *
      * @return
      */
-    public ArrayList<Course> getCoursesIncludingNoTranslations(int language) {
-        ArrayList<Course> courses = new ArrayList<Course>();
+    public List<Course> getCoursesIncludingNoTranslations(int language) {
+        List<Course> courses = new ArrayList<Course>();
 
         try {
             startConnection();
@@ -1361,8 +1366,8 @@ public class DB {
         return courses;
     }
 
-    public ArrayList<Course> getPopularCourses(int language) {
-        ArrayList<Course> courses = new ArrayList<Course>();
+    public List<Course> getPopularCourses(int language) {
+        List<Course> courses = new ArrayList<Course>();
 
         try {
             startConnection();
@@ -1480,9 +1485,9 @@ public class DB {
         return question;
     }
 
-    public ArrayList<Question> getQuestions() {
+    public List<Question> getQuestions() {
 
-        ArrayList<Question> questions = new ArrayList<Question>();
+        List<Question> questions = new ArrayList<Question>();
 
         try {
             startConnection();
@@ -1793,8 +1798,6 @@ public class DB {
     }
 
     public boolean disenrollCourse(long user_id, int course_id) {
-        boolean ressult = false;
-
         try {
             startConnection();
 
@@ -1808,15 +1811,17 @@ public class DB {
             prepared_statement.setLong(1, user_id);
             prepared_statement.setInt(2, course_id);
 
-            ressult = prepared_statement.execute();
+            prepared_statement.execute();
 
             closeConnection();
+
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return ressult;
+        return false;
     }
 
     //delete course
@@ -1839,9 +1844,9 @@ public class DB {
 //        }
 //
 //    }
-    public ArrayList<Test> getCourseTests(int course_id, int language) {
+    public List<Test> getCourseTests(int course_id, int language) {
 
-        ArrayList<Test> tests = new ArrayList<Test>();
+        List<Test> tests = new ArrayList<Test>();
 
         try {
             startConnection();
@@ -1904,7 +1909,7 @@ public class DB {
     }
 
     public void disableCourse(int course_id, int language) {
-        ArrayList<Test> tests = getCourseTests(course_id, language);
+        List<Test> tests = getCourseTests(course_id, language);
         String sql = "";
 
         try {
@@ -2113,11 +2118,7 @@ public class DB {
             prepared_statement.setInt(2, grade.getUserId());
             prepared_statement.setInt(3, grade.getTestId());
 
-            System.out.println(prepared_statement.toString());
-
             affected_rows = prepared_statement.executeUpdate();
-
-            System.out.println("rows changed: " + affected_rows);
 
             closeConnection();
 
@@ -2218,9 +2219,9 @@ public class DB {
         return id;
     }
 
-    public ArrayList<Chapter> getChapters(int language) {
+    public List<Chapter> getChapters(int language) {
 
-        ArrayList<Chapter> chapters = new ArrayList<Chapter>();
+        List<Chapter> chapters = new ArrayList<Chapter>();
 
         try {
             startConnection();
@@ -2262,8 +2263,8 @@ public class DB {
      *
      * @return
      */
-    public ArrayList<Chapter> getChaptersIncludingNoTranslations(int language) {
-        ArrayList<Chapter> chapters = new ArrayList<Chapter>();
+    public List<Chapter> getChaptersIncludingNoTranslations(int language) {
+        List<Chapter> chapters = new ArrayList<Chapter>();
 
         try {
             startConnection();

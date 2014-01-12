@@ -42,7 +42,7 @@ public class Index extends HttpServlet {
 
         List<Course> courses = DB.getInstance().getPopularCourses(Helper.getLanguage(request.getSession()));
         request.setAttribute("courses", courses);
-        System.out.print(courses);
+        //System.out.print(courses);
 
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         rd.forward(request, response);
