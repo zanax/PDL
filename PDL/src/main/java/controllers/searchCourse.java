@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Course;
+import models.Helper;
 import models.User;
 
 /**
@@ -50,7 +51,7 @@ public class searchCourse extends HttpServlet {
         String criteria = request.getParameter("keyword");
         
 
-        List<Course> courses = DB.getInstance().searchCourse(criteria);
+        List<Course> courses = DB.getInstance().searchCourses(criteria, Helper.getLanguage(request.getSession()));
         
         if(courses.isEmpty()){
             request.setAttribute("errors", "There are no courses matching your keyword(s)");
