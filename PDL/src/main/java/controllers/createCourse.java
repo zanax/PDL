@@ -7,8 +7,13 @@ package controllers;
 
 import connection.DB;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Course;
 import models.Helper;
 import models.Teacher;
+import models.User;
 
 /**
  *
@@ -34,7 +40,8 @@ public class createCourse extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -47,18 +54,19 @@ public class createCourse extends HttpServlet {
         this.errors.clear();
         String url = "/pages/createCourse.jsp";
 
-        if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
+        if (!Helper.isTeacher(request.getSession().getAttribute("user")) && !Helper.isAdmin(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -69,7 +77,7 @@ public class createCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "/pages/createCourse.jsp";
-        
+
         if (Helper.isTeacher(request.getSession().getAttribute("user")) || Helper.isAdmin(request.getSession().getAttribute("user"))) {
             // Course
             Course course = new Course();
@@ -82,15 +90,16 @@ public class createCourse extends HttpServlet {
             String category = request.getParameter("category");
             String s_language = request.getParameter("language_id");
             int language = Helper.isInt(s_language);
-            
+
             this.errors.clear();
-            
+
             // Name
             if (name.equals("")) {
                 this.errors.add("\"Name\" is a required field.");
             } else {
                 course.setName(name);
             }
+
             // Maximm Students
             if (!maximumStudents.equals("")) {
                 try {
@@ -107,12 +116,16 @@ public class createCourse extends HttpServlet {
                 course.setDescription(description);
             }
             // Start Date
-            if (!startDate.equals("")) {
-                course.setStartDate(null);
+            if (startDate.equals("")) {
+                this.errors.add("\"Start Date\" is a required field.");
+            } else {
+                course.setStartDate(startDate);
             }
             // End Date
-            if (!endDate.equals("")) {
-                course.setEndDate(null);
+            if (endDate.equals("")) {
+                this.errors.add("\"End Date\" is a required field.");
+            } else {
+                course.setEndDate(endDate);
             }
             // Category
             if (category.equals("")) {
@@ -120,18 +133,20 @@ public class createCourse extends HttpServlet {
             } else {
                 course.setCategory(category);
             }
-            if( ! Helper.allowedLanguage(language)){
+            if (!Helper.allowedLanguage(language)) {
                 this.errors.add("Invalid language selected. Please try again.");
-            }
-            else{
+            } else {
                 course.setLanguage(language);
             }
-            
+
             // Error Check
             if (errors.isEmpty()) {
-                int id = DB.getInstance().insertCourse(course);
+                
+                User teacher = (User) request.getSession().getAttribute("user");
+                int teacher_id = (int) teacher.getId();
+                
+                int id = DB.getInstance().insertCourse(course, teacher_id);
                 if (id != -1) {
-                    request.setAttribute("createdCourse", name);
                     request.setAttribute("success", true);
                     url = "editCourse?id=" + id;
                     response.sendRedirect(url);

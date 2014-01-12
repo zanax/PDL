@@ -511,18 +511,22 @@ public class DB {
     }
 
     // Course
-    public int insertCourse(Course course) {
+    public int insertCourse(Course course, int teacher_id) {
         int id = -1;
-
+        
         try {
             startConnection();
 
             String sql = "insert "
-                    + "   into Course(category)"
-                    + "   values (?)  ";
+                    + "   into Course(category, endDate, startDate, maximumStudents, teacher_id)"
+                    + "   values (?, ?, ?, ?, ?)  ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, course.getCategory());
+            prepared_statement.setString(2, course.getStartDate());
+            prepared_statement.setString(3, course.getEndDate());
+            prepared_statement.setInt(4, course.getMaximumStudents());
+            prepared_statement.setInt(5, teacher_id);
 
             prepared_statement.execute();
 
@@ -534,13 +538,12 @@ public class DB {
 
             if (id > 0) {
                 sql = "  insert"
-                        + "     into CourseVertaling(course_id, language_id, name, description) "
-                        + "     values (?, ?, ?, ?) ";
+                        + "     into CourseVertaling(language_id, name, description) "
+                        + "     values (?, ?, ?) ";
                 prepared_statement = conn.prepareStatement(sql);
-                prepared_statement.setInt(1, id);
-                prepared_statement.setInt(2, course.getLanguage());
-                prepared_statement.setString(3, course.getName());
-                prepared_statement.setString(4, course.getDescription());
+                prepared_statement.setInt(1, course.getLanguage());
+                prepared_statement.setString(2, course.getName());
+                prepared_statement.setString(3, course.getDescription());
 
                 prepared_statement.execute();
             }
@@ -683,6 +686,8 @@ public class DB {
                 course.setName(rs.getString("name"));
                 course.setDescription(rs.getString("description"));
                 course.setCategory(rs.getString("category"));
+                course.setEndDate(rs.getString("endDate"));
+                course.setStartDate(rs.getString("startDate"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
                 course.setImgSrc(rs.getString("img_src"));
                 course.setLanguage(rs.getInt("language_id"));
@@ -1273,12 +1278,12 @@ public class DB {
                 Course course = new Course(rs.getInt("courseID"));
                 course.setCategory(rs.getString("category"));
                 course.setDescription(rs.getString("description"));
-                course.setEndDate(rs.getDate("endDate"));
+                course.setEndDate(rs.getString("endDate"));
 //                course.setHeadTeacher(this.getTeacher());
                 course.setIsActive(rs.getBoolean("isActive"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
                 course.setName(rs.getString("name"));
-                course.setStartDate(rs.getDate("startDate"));
+                course.setStartDate(rs.getString("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
                 //course.setBg_imgSrc(rs.getString("background_img_src"));
@@ -1323,10 +1328,10 @@ public class DB {
             while (rs.next()) {
                 Course course = new Course(rs.getInt("courseID"));
                 course.setCategory(rs.getString("category"));
-                course.setEndDate(rs.getDate("endDate"));
+                course.setEndDate(rs.getString("endDate"));
                 course.setIsActive(rs.getBoolean("isActive"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
-                course.setStartDate(rs.getDate("startDate"));
+                course.setStartDate(rs.getString("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
                 course.setLanguage(language);
@@ -1394,12 +1399,12 @@ public class DB {
                 Course course = new Course(rs.getInt("courseID"));
                 course.setCategory(rs.getString("category"));
                 course.setDescription(rs.getString("description"));
-                course.setEndDate(rs.getDate("endDate"));
+                course.setEndDate(rs.getString("endDate"));
 //                course.setHeadTeacher(this.getTeacher());
                 course.setIsActive(rs.getBoolean("isActive"));
                 course.setMaximumStudents(rs.getInt("maximumStudents"));
                 course.setName(rs.getString("name"));
-                course.setStartDate(rs.getDate("startDate"));
+                course.setStartDate(rs.getString("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
 
