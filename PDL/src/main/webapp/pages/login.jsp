@@ -27,11 +27,6 @@
                 <input name="password" type="password" placeholder="<%= Helper.translateWord(language, "Password")%>" required class="form-input" style="text-align: center;">
             </div>
             <input class="button right" type="submit" value="<%= Helper.translateWord(language, "Log in")%>" id="button">
-<<<<<<< HEAD
-=======
-            <a href="Index" class="button cancel" id="button">Cancel</a>
->>>>>>> f3720d4781b5fb8d80d276579e16d1f9927438fb
-
         </form>
     </div>
 </div>
