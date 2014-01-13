@@ -701,6 +701,8 @@ public class DB {
 
         return course;
     }
+    
+   
 
     public List<Course> searchCourses(String criteria, int language) {
 
@@ -747,13 +749,15 @@ public class DB {
             startConnection();
 
             String sql = "update Course "
-                    + "   set category = ?, maximumStudents = ?"
+                    + "   set category = ?, maximumStudents = ?, startDate = ?, endDate = ?"
                     + "   where Course.courseID = ?  ";
 
             PreparedStatement prepared_statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepared_statement.setString(1, course.getCategory());
             prepared_statement.setInt(2, course.getMaximumStudents());
-            prepared_statement.setInt(3, course.getId());
+            prepared_statement.setString(3, course.getStartDate());
+            prepared_statement.setString(4, course.getEndDate());
+            prepared_statement.setInt(5, course.getId());
 
             affected_rows = prepared_statement.executeUpdate();
 
@@ -1278,13 +1282,7 @@ public class DB {
                 course.setStartDate(rs.getString("startDate"));
                 course.setNumberOfStudents(rs.getInt("numberOfStudents"));
                 course.setImgSrc(rs.getString("img_src"));
-                //course.setBg_imgSrc(rs.getString("background_img_src"));
                 course.setLanguage(language);
-
-                //course.setPopularity(rs.getInt("popularity"));
-//                course.setStudents(null);
-//                course.setTests(null);
-//                course.setChapters(null);
                 courses.add(course);
             }
 
@@ -1295,7 +1293,7 @@ public class DB {
 
         return courses;
     }
-
+    
     /**
      * Gebruik deze methode om alle courses op te halen, onafhankelijk van taal.
      *

@@ -27,6 +27,7 @@ import models.Teacher;
 public class editCourse extends HttpServlet {
 
     private List<String> errors;
+    Course course = null;
 
     public editCourse() {
         this.errors = new ArrayList<String>();
@@ -36,14 +37,17 @@ public class editCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.errors.clear();
+        
         String url = "/pages/editCourse.jsp";
+        
         if( ! Helper.isTeacher(request.getSession().getAttribute("user")) && ! Helper.isAdmin(request.getSession().getAttribute("user"))){
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
             url = "/pages/404.jsp";
         }
         else if (request.getParameter("id") != null) {
-            Course course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
+                
+            course = DB.getInstance().getCourse(Integer.parseInt(request.getParameter("id")), Helper.getLanguage(request.getSession()));
             
             if (course != null) {
                 request.setAttribute("course", course);
