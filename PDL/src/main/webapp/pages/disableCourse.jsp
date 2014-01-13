@@ -32,18 +32,11 @@
                 <input type="hidden" name="id" value="${course.id}">
                 <input type="submit" value="Disable course" class="button">
                 <% if (Helper.isTeacher(user)) {%>
-                <li>
-                    <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
                 <% }%>
                 <% if (Helper.isAdmin(user)) {%>
-                <li>
-                    <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% } else {%>
-                <li>
-                </li>
-                <%}%>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% }%>
             </div>
         </form>
     </div>
