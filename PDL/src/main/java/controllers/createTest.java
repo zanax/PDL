@@ -106,9 +106,6 @@ public class createTest extends HttpServlet {
             test.setLanguage(int_language);
 
             int test_id = DB.getInstance().insertTest(test);
-
-                        System.out.println("test_id: " + test_id);
-
             
             if (test_id > 0) {
                 this.success = true;
