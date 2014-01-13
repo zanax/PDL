@@ -38,7 +38,6 @@ public class changeLanguage extends HttpServlet {
         
         Helper.setLanguage(language, request);
         
-        RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("/PDL/Index");
     }
 }
