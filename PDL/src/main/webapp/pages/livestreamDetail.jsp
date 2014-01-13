@@ -62,6 +62,7 @@
         });
         
         alterDynamicChatButtons();
+    });
 </script>
 
 <script>
