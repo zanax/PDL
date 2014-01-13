@@ -26,22 +26,14 @@
                 </div>
             </div>
             <div class="course-button info" style="left: 725px;">
-
                 <input type="hidden" name="id" value="${question.id}">
                 <input type="submit" value="Disable question" class="button">
                 <% if (Helper.isTeacher(user)) {%>
-                <li>
                     <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
                 <% }%>
                 <% if (Helper.isAdmin(user)) {%>
-                <li>
                     <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% } else {%>
-                <li>
-                </li>
-                <%}%>
+                <% } %>
             </div>
         </form>
     </div>
