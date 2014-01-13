@@ -68,7 +68,7 @@
                             </li>                            
                             <%}%>
                             <li>
-                                <a href="http://145.92.6.85:8080/jforum-2.1.9/forums/list.page">Forum</a>
+                                <a href='http://145.92.6.85:8080/jforum-2.1.9/forums/list.page' target='_new'>Forum</a>
                             </li>
                             <% if (user == null) {%>
                             <li>
