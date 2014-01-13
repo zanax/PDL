@@ -141,7 +141,6 @@ public class Helper {
                 language = Helper.isInt((String) session_language);
             }
         }
-        System.out.println(language);
         return language;
     }
 
@@ -151,7 +150,6 @@ public class Helper {
                 word = trans_words[language];
             }
         }
-
         return word;
     }
 }
