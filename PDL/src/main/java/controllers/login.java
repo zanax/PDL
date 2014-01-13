@@ -25,14 +25,13 @@ import models.User;
  */
 @WebServlet(name = "login", urlPatterns = {"/login"})
 public class login extends HttpServlet {
-    
-        private List<String> errors;
-        
-        
-        public login(){
-            
-            this.errors = new ArrayList<String>();
-        }
+
+    private List<String> errors;
+
+    public login() {
+
+        this.errors = new ArrayList<String>();
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -46,19 +45,19 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         this.errors.clear();
-        
-        String url = "/pages/login.jsp";    
-        
-        if(request.getSession().getAttribute("user")!=null){
-            
+
+        String url = "/pages/login.jsp";
+
+        if (request.getSession().getAttribute("user") != null) {
+
             this.errors.add("You are already logged in.");
             request.setAttribute("errors", this.errors);
-            
+
             url = "/pages/404.jsp";
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -110,7 +109,12 @@ public class login extends HttpServlet {
                 Helper.setLanguage(user.getLanguage(), request);
 
                 url = "/index.jsp";
+
                 success = true;
+                
+                response.sendRedirect("/PDL/Index"); //Redirect to Home page
+                return;
+
             } else {
                 request.setAttribute("errors", errors);
             }

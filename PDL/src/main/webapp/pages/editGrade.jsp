@@ -26,28 +26,6 @@
     </div>
 </c:if>
 
-<<<<<<< HEAD
-            <form method="get" action="editGrade">
-
-                <input type="submit" value="Submit" class="button" id="button"> 
-                <% if (Helper.isTeacher(user)) {%>
-                <li>
-                    <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% }%>
-                <% if (Helper.isAdmin(user)) {%>
-                <li>
-                    <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
-                </li>
-                <% } else {%>
-                <li>
-                </li>
-                <%}%>
-            </form>
-
-
-        </c:if>
-=======
 <c:if test="${show != null && show}">
     <div class="course">
         <div id="course-content">
@@ -77,7 +55,6 @@
                 <% }%>
             </label>
         </div>
->>>>>>> ad9ac49bb45e6f95e4afec0da997b53b77e39091
     </div>
 </c:if>
 
