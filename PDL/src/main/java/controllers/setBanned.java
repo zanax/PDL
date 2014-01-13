@@ -34,14 +34,12 @@ public class setBanned extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String url = "adminPanel";
 
-        User user = null;
-
-        user = (User) DB.getInstance().getEveryUser(Integer.parseInt(request.getParameter("id")));
-
-
         if (request.getParameter("id") != null) {
+
+            User user = (User) DB.getInstance().getEveryUser(Integer.parseInt(request.getParameter("id")));
 
             if (user.isIsBanned()) {
 
@@ -52,6 +50,7 @@ public class setBanned extends HttpServlet {
                     request.setAttribute("errors", "Oops! Something went wrong.");
                     url = "/pages/404.jsp";
                 }
+
             } else {
 
                 if (DB.getInstance().banUser(Integer.parseInt(request.getParameter("id"))) > 0) {

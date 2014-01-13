@@ -49,6 +49,7 @@ public class changeUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String url = "/pages/changeUser.jsp";
 
         if (!Helper.isAdmin(request.getSession().getAttribute("user"))) {
@@ -56,16 +57,27 @@ public class changeUser extends HttpServlet {
             request.setAttribute("errors", this.errors);
 
             url = "/pages/404.jsp";
+
         } else {
-            selected_user = (User) DB.getInstance().getEveryUser(Integer.parseInt(request.getParameter("id")));
-            if (selected_user != null) {
-                request.setAttribute("selected_user", selected_user);
-                request.setAttribute("show", true);
+
+            if (request.getParameter("id") != null) {
+
+                selected_user = (User) DB.getInstance().getEveryUser(Integer.parseInt(request.getParameter("id")));
+
+                if (selected_user != null) {
+                    request.setAttribute("selected_user", selected_user);
+                    request.setAttribute("show", true);
+                } else {
+                    request.setAttribute("errors", "Something went wrong with the database.");
+                    url = "/pages/404.jsp";
+                }
+
             } else {
-                request.setAttribute("errors", "Something went wrong with the database.");
+                request.setAttribute("errors", "Oops! Something went wrong.");
                 url = "/pages/404.jsp";
             }
         }
+
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
