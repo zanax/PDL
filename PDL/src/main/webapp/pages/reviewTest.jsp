@@ -17,7 +17,6 @@
 </c:if>
 
 <c:if test="${show != null && show}">
-
     <div class="course">
         <div id="course-content">
             <label class="label">
@@ -39,12 +38,14 @@
                     ${question.question}
                 </label>
                 <br>
-                <label class="label">
-                    <span class="form-span">Your Answer:</span>
-                    ${answers.get(question.id)}
+                <% if(Helper.isStudent(user)) { %>
+                    <label class="label">
+                        <span class="form-span">Your Answer:</span>
+                        ${answers.get(question.id)}
+                        <br>
+                    </label>
                     <br>
-                </label>
-                <br>
+                <% } %>
                 <label class="label">
                     <span class="form-span">Correct Answer:</span>
                     ${question.correctAnswer}

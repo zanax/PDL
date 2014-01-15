@@ -188,6 +188,7 @@
                     <td>${test.isActive}</td>
                     <td style="text-align: center;">
                         <a href="editTest?id=${test.id}"><img src="img/edit_green.png"></a>
+                        <a href="reviewTest?id=${test.id}"><img src="img/edit_normal.png"></a>
                         <a href="deleteTest?id=${test.id}"><img src="img/delete_red.png"></a>
                     </td>
                 </tr>
@@ -250,6 +251,36 @@
     </div>
 </div>
 
+<div class="content-inner">
+    <div id="content-inner-block">
+        <div class="content-inner title">
+            Grade Test
+        </div>
+        <table class="table">
+            <th style="width: auto;">
+                Test
+            </th>
+            <th style="width: auto;">
+                Student
+            </th>
+            <th style="width: 30px;">
+                Actions
+            </th>
+            <c:forEach items="${madedTests}" var="madedTest">
+                 <c:forEach items="${madedTest.value}" var="Test">
+                    <tr>
+                        <td>${Test}</td>
+                        <td>${madedTest.key}</td>
+                        <td style="text-align: center;">
+                            <a href="gradeTest?testID=${Test}&studentID=${madedTest.key}"><img src="img/edit_green.png"></a>
+                        </td>
+                    </tr>
+                 </c:forEach>
+            </c:forEach>
+        </table>
+    </div>
+</div>
+
 <div class="course">
     <div id="course-content">
         <div id="course-content-image">
@@ -267,9 +298,7 @@
             <a href="editUser" class="button" id="button">Ga naar</a>
         </div>
     </div>
-</div>
-
-
+</div>          
 
 <script type="text/javascript">
     var $rows = $('#userTable tr');

@@ -9,7 +9,10 @@ import connection.DB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,6 +66,10 @@ public class teacherPanel extends HttpServlet {
             //questions ophalen
             List<Question> questions = DB.getInstance().getQuestions();
             request.setAttribute("questions", questions);
+            
+            //madedTests ophalen
+            Map<Integer,Set<Integer>> madedTests = DB.getInstance().getMadedTests();
+            request.setAttribute("madedTests", madedTests);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -69,6 +71,10 @@ public class adminPanel extends HttpServlet {
             //questions ophalen
             List<User> users = DB.getInstance().getUsers();
             request.setAttribute("users", users);
+            
+            //madedTests ophalen
+            Map<Integer,Set<Integer>> madedTests = DB.getInstance().getMadedTests();
+            request.setAttribute("madedTests", madedTests);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

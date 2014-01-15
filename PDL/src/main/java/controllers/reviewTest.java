@@ -34,9 +34,9 @@ public class reviewTest extends HttpServlet {
             throws ServletException, IOException {
         // Nodig: testID
         if (request.getSession().getAttribute("user") != null) {
-            if (request.getParameter("testID") != null) {
+            if (request.getParameter("id") != null) {
                 try {
-                    int testID = Integer.parseInt(request.getParameter("testID"));
+                    int testID = Integer.parseInt(request.getParameter("id"));
                     Test test = DB.getInstance().getTest(testID, Helper.getLanguage(request.getSession()));
                     if (test != null) {
                         List<Question> questions = DB.getInstance().getQuestions(testID);

@@ -10,6 +10,8 @@ import java.sql.Statement;
 import models.Chapter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import models.Admin;
@@ -1595,6 +1597,36 @@ public class DB {
 
     }
 
+    public Map<Integer,Set<Integer>> getMadedTests() {
+       Map<Integer,Set<Integer>> madedTests = new HashMap<Integer,Set<Integer>>();
+
+        try {
+            startConnection();
+
+            String sql = "  select"
+                    + "   test_id, user_id"
+                    + "   from UserAnswer";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet resultSet = prepared_statement.executeQuery();
+
+            while (resultSet.next()) {
+                int testID = resultSet.getInt("test_id");
+                int userID = resultSet.getInt("user_id");
+                if(madedTests.get(userID) == null) madedTests.put(userID, new HashSet<Integer>());
+                madedTests.get(userID).add(testID);
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return madedTests;
+    }
+    
     public boolean areadyMadeTest(int user_id, int test_id) {
         boolean resultt = false;
         try {
