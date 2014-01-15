@@ -43,15 +43,15 @@ public class adminPanel extends HttpServlet {
         this.errors.clear();
         String url = "/pages/adminPanel.jsp";
         
-
         if (!Helper.isAdmin(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
 
             url = "/pages/404.jsp";
+            
         } else {
             //courses ophalen
-            List<Course> courses = DB.getInstance().getCourses(Helper.getLanguage(request.getSession()));
+            List<Course> courses = DB.getInstance().getCoursesIncludingNoTranslations(Helper.getLanguage(request.getSession()));
             request.setAttribute("courses", courses);
 
             //tests ophalen
