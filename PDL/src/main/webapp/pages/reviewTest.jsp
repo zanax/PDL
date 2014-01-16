@@ -53,7 +53,17 @@
             </div>
         </div>
     </c:forEach>
-
+        <div class="course">
+            <div id="course-content">
+                <% if (Helper.isTeacher(user)) {%>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% } else if (Helper.isAdmin(user)) {%>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% } else if (Helper.isStudent(user)) {%>
+                <a href="studentPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% } %>
+            </div>
+        </div>
 </c:if>
 
 

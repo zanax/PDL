@@ -21,6 +21,12 @@
         <div id="course-content">
             <div class="success_message">
                 U have successfully graded the Test. 
+                <% if (Helper.isTeacher(user)) {%>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% }%>
+                <% if (Helper.isAdmin(user)) {%>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% }%>
             </div>
         </div>
     </div>
@@ -40,6 +46,7 @@
                     ${student.firstname} ${student.surname}
                 </label>
                 <input type="submit" value="Grade Test" class="button" id="button">
+
             </div>
         </div>
 
@@ -73,6 +80,16 @@
                 </div>
             </div>
         </c:forEach>
+        <div class="course">
+            <div id="course-content">
+                <% if (Helper.isTeacher(user)) {%>
+                <a href="teacherPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% }%>
+                <% if (Helper.isAdmin(user)) {%>
+                <a href="adminPanel" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+                <% }%>
+            </div>
+        </div>
     </form>
 
 </c:if>

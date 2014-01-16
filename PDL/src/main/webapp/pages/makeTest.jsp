@@ -37,13 +37,13 @@
 
     function dis(mins, secs) {
         var disp;
-        if(mins <= 9) {
+        if (mins <= 9) {
             disp = " 0";
         } else {
             disp = " ";
         }
         disp += mins + ":";
-        if(secs <= 9) {
+        if (secs <= 9) {
             disp += "0" + secs;
         } else {
             disp += secs;
@@ -53,15 +53,15 @@
 
     function redo() {
         secs--;
-        if(secs === -1) {
+        if (secs === -1) {
             secs = 59;
             mins--;
         }
-        document.makeTest.disp.value = dis(mins,secs);
-        if((mins === 0) && (secs === 0)) {
+        document.makeTest.disp.value = dis(mins, secs);
+        if ((mins === 0) && (secs === 0)) {
             document.forms["makeTest"].submit();
         } else {
-            cd = setTimeout("redo()",1000);
+            cd = setTimeout("redo()", 1000);
         }
     }
 
@@ -74,11 +74,11 @@
 </script>
 
 <c:if test="${show != null && show}">
-    
+
     <script>
         window.onload = init;
     </script>
-    
+
     <form name="makeTest" method="post" action="makeTest">
         <div class="course">
             <div id="course-content">
@@ -143,6 +143,13 @@
                 </div>
             </div>
         </c:forEach>
+        
+        <div class="course">
+            <div id="course-content">
+                <a href="Index" class="button cancel" id="button"><%= Helper.translateWord(language, "Back")%></a>
+            </div>
+        </div>
+
     </form>
 
 </c:if>

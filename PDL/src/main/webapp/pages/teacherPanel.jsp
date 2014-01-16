@@ -235,9 +235,6 @@
             Edit Grade
         </div>
         <table class="table">
-            <th style="width: 25px; ">
-                #ID
-            </th>
             <th style="width: auto;">
                 Test
             </th>
@@ -249,7 +246,6 @@
             </th>
             <c:forEach items="${grades}" var="grade">
                 <tr>
-                    <td>${grade.id}</td>
                     <td>${grade.testId}</td>
                     <td>${grade.userId}</td>
                     <td style="text-align: center;">
