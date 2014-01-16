@@ -2069,6 +2069,36 @@ public class DB {
         return grades;
     }
 
+    public List<Grade> getGrades() {
+        List<Grade> grades = new ArrayList<Grade>();
+
+        try {
+            startConnection();
+
+            String sql = "SELECT * FROM Grade";
+
+            PreparedStatement prepared_statement = conn.prepareStatement(sql);
+
+            ResultSet rs = prepared_statement.executeQuery();
+
+            while (rs.next()) {
+                Grade grade = new Grade(rs.getInt("id"));
+                grade.setUserId(rs.getInt("user_id"));
+                grade.setTestId(rs.getInt("test_id"));
+                grade.setGrade(rs.getInt("grade"));
+                grades.add(grade);
+
+            }
+
+            closeConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return grades;
+    }
+    
     public Grade getGrade(int studentID, int testID) {
         Grade grade = null;
 

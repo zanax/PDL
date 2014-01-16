@@ -42,7 +42,17 @@ public class reviewTest extends HttpServlet {
                         List<Question> questions = DB.getInstance().getQuestions(testID);
                         if (questions != null) {
                             User user = (User) request.getSession().getAttribute("user");
-                            Map<Integer, String> answers = DB.getInstance().getAnswers((int) user.getId(), testID);
+                            if(Helper.isTeacher(user) || Helper.isAdmin(user)) {
+                                if(request.getParameter("student") != null) {
+                                    user = DB.getInstance().getUser(Integer.parseInt(request.getParameter("student")));
+                                    request.setAttribute("showAnswer", true);
+                                }
+                            } else {
+                                request.setAttribute("showAnswer", true);
+                            }
+                            int user_id = (int) user.getId();
+                            Map<Integer, String> answers = DB.getInstance().getAnswers(user_id, testID);
+
                             request.setAttribute("student", user);
                             request.setAttribute("answers", answers);
                             request.setAttribute("questions", questions);

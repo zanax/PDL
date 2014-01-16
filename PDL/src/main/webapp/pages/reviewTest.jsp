@@ -25,7 +25,7 @@
             </label>
             <label class="label">
                 <span class="form-span">Student:</span>
-                ${student.firstname}
+                ${student.firstname} ${student.surname}
             </label>
         </div>
     </div>
@@ -38,14 +38,14 @@
                     ${question.question}
                 </label>
                 <br>
-                <% if(Helper.isStudent(user)) { %>
+                <c:if test="${showAnswer != null && showAnswer}">
                     <label class="label">
-                        <span class="form-span">Your Answer:</span>
+                        <span class="form-span">Given Answer:</span>
                         ${answers.get(question.id)}
                         <br>
                     </label>
                     <br>
-                <% } %>
+                </c:if>
                 <label class="label">
                     <span class="form-span">Correct Answer:</span>
                     ${question.correctAnswer}

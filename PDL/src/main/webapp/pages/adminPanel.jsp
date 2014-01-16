@@ -281,6 +281,39 @@
     </div>
 </div>
 
+<div class="content-inner">
+    <div id="content-inner-block">
+        <div class="content-inner title">
+            Edit Grade
+        </div>
+        <table class="table">
+            <th style="width: 25px; ">
+                #ID
+            </th>
+            <th style="width: auto;">
+                Test
+            </th>
+            <th style="width: auto;">
+                Student
+            </th>
+            <th style="width: 30px;">
+                Actions
+            </th>
+            <c:forEach items="${grades}" var="grade">
+                <tr>
+                    <td>${grade.id}</td>
+                    <td>${grade.testId}</td>
+                    <td>${grade.userId}</td>
+                    <td style="text-align: center;">
+                        <a href="reviewTest?id=${grade.testId}&student=${grade.userId}"><img src="img/edit_normal.png"></a>
+                        <a href="editGrade?testID=${grade.testId}&studentID=${grade.userId}"><img src="img/edit_green.png"></a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+</div>
+
 <div class="course">
     <div id="course-content">
         <div id="course-content-image">

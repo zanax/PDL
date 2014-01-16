@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
 import models.Course;
+import models.Grade;
 import models.Helper;
 import models.Question;
 import models.Test;
@@ -70,6 +71,10 @@ public class teacherPanel extends HttpServlet {
             //madedTests ophalen
             Map<Integer,Set<Integer>> madedTests = DB.getInstance().getMadedTests();
             request.setAttribute("madedTests", madedTests);
+            
+            //Grades ophalen
+            List<Grade> grades = DB.getInstance().getGrades();
+            request.setAttribute("grades", grades);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

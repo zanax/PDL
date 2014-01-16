@@ -51,7 +51,7 @@ public class makeTest extends HttpServlet {
                     Test test = DB.getInstance().getTest(test_id, Helper.getLanguage(request.getSession()));
                     if (test != null) { 
                         if (DB.getInstance().isTestActive(test_id)) {
-                            try { //TODO: Aanpasen als format verandert!
+                            try { 
                                 DateFormat dateFormat = new SimpleDateFormat("d-M-yyyy");
                                 Date today = new Date();
                                 Date startDate = dateFormat.parse(test.getStart_date());

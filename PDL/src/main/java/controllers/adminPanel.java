@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Chapter;
 import models.Course;
+import models.Grade;
 import models.Helper;
 import models.Question;
 import models.Test;
@@ -44,13 +45,13 @@ public class adminPanel extends HttpServlet {
         //TODO: Check if teacher
         this.errors.clear();
         String url = "/pages/adminPanel.jsp";
-        
+
         if (!Helper.isAdmin(request.getSession().getAttribute("user"))) {
             this.errors.add("You do not have the correct permissions to visit this page.");
             request.setAttribute("errors", this.errors);
 
             url = "/pages/404.jsp";
-            
+
         } else {
             //courses ophalen
             List<Course> courses = DB.getInstance().getCoursesIncludingNoTranslations(Helper.getLanguage(request.getSession()));
@@ -59,22 +60,26 @@ public class adminPanel extends HttpServlet {
             //tests ophalen
             List<Test> tests = DB.getInstance().getTests(Helper.getLanguage(request.getSession()));
             request.setAttribute("tests", tests);
-            
-             //chapters ophalen
+
+            //chapters ophalen
             List<Chapter> chapters = DB.getInstance().getChapters(Helper.getLanguage(request.getSession()));
             request.setAttribute("chapters", chapters);
 
             //questions ophalen
             List<Question> questions = DB.getInstance().getQuestions();
             request.setAttribute("questions", questions);
-            
+
             //questions ophalen
             List<User> users = DB.getInstance().getUsers();
             request.setAttribute("users", users);
-            
+
             //madedTests ophalen
-            Map<Integer,Set<Integer>> madedTests = DB.getInstance().getMadedTests();
+            Map<Integer, Set<Integer>> madedTests = DB.getInstance().getMadedTests();
             request.setAttribute("madedTests", madedTests);
+
+            //Grades ophalen
+            List<Grade> grades = DB.getInstance().getGrades();
+            request.setAttribute("grades", grades);
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
